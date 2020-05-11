@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/../stylesheets/manu.css">
+    <link rel="stylesheet" href="/../stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>통합 택배 조회 서비스</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        .mlogin {
+            position: absolute;
+            right: 50px;
+        }
+        .mlogin table {
+            text-align: left;
+            border-collapse: unset !important;
+        }
+        .mlogin table td, .mlogin table th {
+            padding: 2px !important;
+        }
+        #uid, #upass {
+            width: 140px;
+            height: 15px;
+            padding-bottom: 2px;
+            color: #fff;
+            font-size: 13px !important;
+            margin: 0px 10px 0px 0px !important;
+        }
+        #userloginsubmit {
+            width: 60px;
+            height: 20px;
+            background-color: #d17000;
+            color : white;
+            border: 1px solid orange;
+            font-weight: bold;
+        }
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .main {
+            width: 100%;
+            height: fit-content;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+        }
+        .lookuptable {
+            width: 80%;
+            margin: auto;
+            margin-top: 100px;
+            border-collapse: collapse;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        .trfirst td {
+            text-align: center !important;
+            box-sizing: border-box;
+        }
+        .trsecond td {
+            border-right: 1px solid rgba(0,0,0,0.12);
+            padding: 3px !important;
+            box-sizing: border-box;
+        }
+        .elli {
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            -o-text-overflow:ellipsis;
+            overflow: hidden;
+            -moz-binding: url('ellipsis.xml#ellipsis');
+        }
+        .mlookuptable {
+            width: 80%;
+            margin: auto;
+            margin-top: 20px;
+            border-collapse: collapse;
+            justify-content: center;
+        }
+        @media only screen and (max-width: 600px) {
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+            .lookuptable {
+                display: none;
+            }
+            #semenu {
+                display: none;
+            }
+            .tcode {
+                display: none;
+            }
+            .explain {
+                display: none;
+            }
+            .mtcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mtcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width:100%;
+                height: 60px;
+                position: relative;
+            }
+            #mjcode {
+                position: absolute;
+                left: 2%;
+                width: 80%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #mjcodesubmit {
+                position: absolute;
+                right: 3px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #mjcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mexplain {
+                position: absolute;
+                bottom: -150px;
+                width: 100%;
+                height: 100px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .mexplain1 {
+                height: 100%;
+                width: 85%;
+                margin: auto;
+                text-align: center;
+                padding: 15px 0;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            #mmenubar {
+                display: none;
+            }
+            .mlookuptable {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mexplain {
+                display: none;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            #jcode {
+                position: absolute;
+                left: 5%;
+                width: 88%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 30px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .explain {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 200px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .explain1 {
+                height: 100%;
+                width: 50%;
+                margin: auto;
+                text-align: center;
+                padding: 30px 0;
+            }
+            .explain a {
+                font-size: .8rem;
+            }
+            .explain table tr {
+                border-bottom: none !important;
+            }
+            .explain table tr td {
+                border-right: 1px solid darkgray;
+                padding:0;
+                margin: 0;
+                text-align: center;
+            }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            #mmenubar {
+                display: none;
+            }
+            .mlookuptable {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mlogin {
+                display: none;
+            }
+            .tcodeinput .fa {
+                display: none;
+            }
+            .mexplain {
+                display: none;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            #jcode {
+                position: absolute;
+                left: 5%;
+                width: 88%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .explain {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 200px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .explain1 {
+                height: 100%;
+                width: 50%;
+                margin: auto;
+                text-align: center;
+                padding: 30px 0;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            #mmenubar {
+                display: none;
+            }
+            .lookuptable {
+                display: none;
+            }
+            .mlogin {
+                display: none;
+            }
+            .tcodeinput .fa {
+                display: none;
+            }
+            .explain {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            #jcode {
+                position: absolute;
+                left: 5%;
+                width: 88%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 30px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .mexplain {
+                position: absolute;
+                bottom: -100px;
+                width: 100%;
+                height: 100px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .mexplain1 {
+                height: 100%;
+                width: 85%;
+                margin: auto;
+                text-align: center;
+                padding: 15px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo hide-on-med-and-down" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>통합 택배 조회 서비스</span>
+        </div>
+        <div class="mlogin hide-on-med-and-down">
+            <form action="/account/login" method="POST" onsubmit="userCheck(event, this)"></form>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>아이디</th>
+                            <th>비밀번호</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
+                            <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
+                            <td><input type="button" value="로그인" id="userloginsubmit"></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#found">계정을 잊으셨나요?</a></td>
+                            <td><a href="/account/signup.html">회원가입</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    <div class="main">
+        <div class="menu" style="display: none;">
+            <div class="menutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
+            <div class="mmenutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+            <div class="tcode" style="position: relative;">
+                <label style="font-size: 15px;">택배 조회 코드</label>
+                <label style="font-size: 15px; position: absolute; right: 0;">택배회사 물표 번호</label>
+                <div class="tcodeinput">
+                    <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
+                    <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
+                    <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
+                </div>
+            </div>
+            <div class="mtcode" style="position: relative;">
+                <label style="font-size: 15px;">택배 조회 코드</label>
+                <label style="font-size: 15px; position:absolute; right: 0;">택배회사 물표 번호</label>
+                <div class="mtcodeinput">
+                    <form action="http://info.sweettracker.co.kr/tracking/5" method="POST" onsubmit="checktracking(event, this);"></form>
+                        <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                        <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                </div>
+            </div>
+            <div class="lookuptable">
+                <table border="1" class="responsive-table" style="table-layout: fixed; margin-bottom: 200px;">
+                    <tbody>
+                        <tr class="trfirst" style="font-weight: bold;">
+                            <td style="width: 10%;">물표 번호</td>
+                            <td style="width: 7%;">받는 사람</td>
+                            <td style="width: 60%;">상품 이름</td>
+                            <td style="width: 7%;">현재 위치</td>
+                            <td style="width: 8%;">배송 상태</td>
+                            <td style="width: 10%;">자세히 보기</td>
+                        </tr>
+                        <tr class="trsecond">
+                            <td style="border-left:1px solid rgba(0,0,0,0.12);text-align:center;">
+                                <div class="ctnum elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                            <td style="border-left:1px solid rgba(0,0,0,0.12);text-align:center;">
+                                <div class="ctuname elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                            <td>
+                                <div class="ctname elli" style="width: 100%; height: 22px; margin: 0; padding:0 15px;"></div>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="ctloca elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="ctstate elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="ctdetail elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mlookuptable">
+                <table border="1" class="striped" style="margin-bottom: 50px;">
+                    <tbody>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12); width: 90px;">물표 번호</td>
+                            <td><div class="ctnum elli" style="width: 100%; margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgab(0,0,0,0.12); width: 90%;">받는 사람</td>
+                            <td><div class="ctuname elli" style="width: 100%; margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">상품 이름</td>
+                            <td><div class="ctname elli" style="width: 100%; margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">현재 위치</td>
+                            <td><div class="ctloca elli" style="width: 100%; margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">배송 상태</td>
+                            <td><div class="ctstate elli" style="width: 100%; margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">자세히 보기</td>
+                            <td><div class="ctdetail elli" style="width: 100%; margin: 0;"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mexplain">
+                <div class="mexplain1">
+                    <label>이 통합 택배 조회 서비스는 다양하고,<br> 대부분의 고객이 많이 이용하시는 택배사들을 위주로 서비스를 제공 하고 있습니다.</label><br>
+                    <label><a href="/about/#taekbae">자세히 보기</a></label>
+                </div>
+            </div>
+        </div>
+        <div class="explain">
+            <div class="explain1">
+                <label>이 통합 택배 조회 서비스는 다양하고, 대부분의 고객이 많이 이용하시는 택배사들을 위주로 서비스를 제공 하고 있습니다.</label><br><br>
+                <label>무료로 조회할 수 있는 국내 택배사 (국내택배 26개사)</label><br>
+                <table>
+                    <tr>
+                        <td><a href="https://www.kunyoung.com/">건영택배</a></td>
+                        <td><a href="https://kdexp.com/main.kd">경동택배</a></td>
+                        <td><a href="https://www.homepick.com/">홈픽택배</a></td>
+                        <td><a href="http://www.goodstoluck.co.kr/">굿투럭</a></td>
+                        <td><a href="https://ex.nhlogis.co.kr/main.do">농협택배</a></td>
+                        <td><a href="http://www.ds3211.co.kr/">대신택배</a></td>
+                        <td><a href="https://www.ilogen.com/web">로젠택배</a></td>
+                        <td><a href="https://www.lotteglogis.com/">롯데택배</a></td>
+                        <td><a href="http://www.sebang.com/">세방</a></td>
+                        <td style="border-right: none !important;"><a href="https://www.anytrack.co.kr/">애니트랙</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://service.epost.go.kr/">우체국택배</a></td>
+                        <td><a href="https://www.ilyanglogis.com/">일양로지스</a></td>
+                        <td><a href="http://www.chunilps.co.kr/">천일택배</a></td>
+                        <td><a href="http://www.e-handex.co.kr/">한덱스</a></td>
+                        <td><a href="http://www.hanips.com/">한의사랑택배</a></td>
+                        <td><a href="https://www.hanjin.co.kr/">한진택배</a></td>
+                        <td><a href="https://hdexp.co.kr/index.hd">합동택배</a></td>
+                        <td><a href="http://honamlogis.co.kr/">호남택배</a></td>
+                        <td><a href="https://www.cjlogistics.com/">CJ대한통운</a></td>
+                        <td style="border-right: none !important;"><a href="https://www.cupost.co.kr/">CU편의점택배</a></td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: none !important;"></td>
+                        <td style="border-right: none !important;"></td>
+                        <td><a href="https://www.cvsnet.co.kr/main/index.do">CVSnet 편의점택배</a></td>
+                        <td><a href="https://www.kgb.co.kr/index.asp">KGB택배</a></td>
+                        <td><a href="http://kglnetworks.com/">KGL네트웍스</a></td>
+                        <td><a href="http://www.slx.co.kr/">SLX</a></td>
+                        <td><a href="https://play.google.com/store/apps/details?id=com.bandsoft.hilogis&hl=ko">하이택배</a></td>
+                        <td><a href="http://www.foreverps.co.kr/theme/business02/html/delivery/transportation.php">FLF퍼레버택배</a></td>
+                    </tr>
+                </table>
+                <label><a href="/about/#taekbae">자세히 보기</a></label>
+            </div>
+        </div>
+    </div>
+    <script src="/../javascripts/menu.js"></script>
+    <script>
+        let jcodesubmit = document.getElementById("jcodesubmit");
+        let jcode = document.getElementById("jcode");
+        let lookuptable = document.querySelector(".lookuptable");
+
+        let mjcodesubmit = document.getElementById("mjcodesubmit");
+        let mjcode = document.getElementById("mjcode");
+
+        jcodesubmit.onclick = () => { checktracking(); }
+        jcode.onkeyup = () => {
+            if(event.keyCode == 13) { checktracking(); }
+        }
+        mjcodesubmit.onclick = () => { checktracking(); }
+
+        let ctnum = document.querySelector(".ctnum");
+        let ctuname = document.querySelector(".ctuname");
+        let ctname = document.querySelector(".ctname");
+        let ctloca = document.querySelector(".ctloca");
+        let ctstate = document.querySelector(".ctstate");
+        let ctdetail = document.querySelector(".ctdetail");
+
+
+        // LOGIN
+        function userCheck(e, form) {
+            e.preventDefault();
+
+            let userInfo = {
+                id: form.userid.value,
+                password: form.userpass.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/account/login/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        console.log(data.msg);
+                        // 로그인 성공
+                    } else if(data.result == "fail") {
+                        alert(data.msg);
+                        uid.style.borderBottom = "2px solid red";
+                        upass.style.borderBottom = "2px solid red";
+                        upass.value = "";
+                    } else {
+                        alert("로그인 도중 에러가 발생했습니다. 나중에 다시 시도해주십시오.");
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+
+
+        //TRACKING
+        function checktracking() {
+            let info = {
+                num: jcode.value
+            }
+            console.log(jcode.value);
+            console.log(info.num);
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/tracking/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = () => {
+                let data = JSON.parse(xhr.responseText);
+                if(xhr.status == 200) {
+                    console.log(data.msg);
+                } else {
+                    if(i == 0) {
+                        console.log(data.msg);
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(info));
+        }
+    </script>
+</body>
+</html>

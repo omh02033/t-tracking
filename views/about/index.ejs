@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/../stylesheets/manu.css">
+    <link rel="stylesheet" href="/../stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>더보기</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        .mlogin {
+            position: absolute;
+            right: 50px;
+        }
+        .mlogin table {
+            text-align: left;
+            border-collapse: unset !important;
+        }
+        .mlogin table td, .mlogin table th {
+            padding: 2px !important;
+        }
+        #uid, #upass {
+            width: 140px;
+            height: 15px;
+            padding-bottom: 2px;
+            color: #fff;
+            font-size: 13px !important;
+            margin: 0px 10px 0px 0px !important;
+        }
+        #userloginsubmit {
+            width: 60px;
+            height: 20px;
+            background-color: #d17000;
+            color : white;
+            border: 1px solid orange;
+            font-weight: bold;
+        }
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .main {
+            width: 100%;
+            height: fit-content;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+        }
+        .emphasized {
+            box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px, rgba(0,0,0,0.5) 2px 2px 3px 3px;
+            z-index: 100;
+        }
+        .card {
+            margin: 0 !important;
+        }
+        #ser1pay .row, #ser2pay .row, #ser3pay .row {
+            margin: 0 !important;
+        }
+        .taekbae {
+            width: 80%;
+            margin: auto;
+        }
+        .taekbae table {
+            margin-bottom: 80px;
+        }
+        .taekbae .domestic table tr td, .taekbae .international table tr td {
+            border-right: 1px solid darkgray;
+        }
+        @keyframes ser1 {0%{background-color: rgba(168,255,255,0.0);} 100%{background-color: rgba(168,255,255,0.4);}}
+        @keyframes ser2 {0%{background-color: rgba(255,192,203,0.0);} 100%{background-color: rgba(255,192,203,0.4);}}
+        @keyframes ser3 {0%{background-color: rgba(250,123,220,0.0);} 100%{background-color: rgba(220,93,220,0.2);}}
+        @media only screen and (max-width: 600px) {
+            #menubar {
+                display: none;
+            }
+            #semenu {
+                display: none;
+            }
+            .payservice {
+                display: none;
+            }
+            .payservicemain {
+                text-align: center;
+            }
+            .mpayservice {
+                width: 236px;
+                height: fit-content;
+                margin: auto;
+            }
+            .mpayservice > div {
+                width: 236px;
+                height: 266.89px;
+                border: 1px solid darkgray;
+                margin-bottom: 30px;
+                border-radius: 15px;
+                text-align: center;
+                padding: 15px;
+            }
+            .service1 {
+                background-color: rgba(168,255,255,0.4);
+            }
+            .service2 {
+                background-color: rgba(255,192,203,0.4);
+            }
+            .service3 {
+                background-color: rgba(220,93,220,0.2);
+            }
+            .mpayservice label {
+                font-size: 15px;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            #mmenubar {
+                display: none;
+            }
+            .mpayservice {
+                display: none;
+            }
+            .payservicemain {
+                width: 1000px;
+                padding: 30px;
+                margin: auto;
+                text-align: center;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                margin-bottom: 250px;
+            }
+            .payservice {
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+            .payservice > div {
+                width: 236px;
+                height: 266.89px;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                text-align: center;
+                padding: 15px;
+            }
+            .payservice > div > label {
+                font-size: 15px !important;
+                display: block;
+            }
+            .payservice > span {
+                font-size: 50px;
+                font-weight: bold;
+            }
+            .service1:hover {
+                animation: ser1 1s ease-in-out;
+                animation-fill-mode:both;
+            }
+            .service2:hover {
+                animation: ser2 1s ease-in-out;
+                animation-fill-mode:both;
+            }
+            .service3:hover {
+                animation: ser3 1s ease-in-out;
+                animation-fill-mode:both;
+            }
+            .main .card {
+                width: 472.94px;
+            }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            #mmenubar {
+                display: none;
+            }
+            .mpayservice {
+                display: none;
+            }
+            .payservicemain {
+                width: 1000px;
+                padding: 30px;
+                margin: auto;
+                text-align: center;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                margin-bottom: 250px;
+            }
+            .payservice {
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+            .payservice > div {
+                width: 236px;
+                height: 266.89px;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                text-align: center;
+                padding: 15px;
+            }
+            .payservice > div > label {
+                font-size: 15px !important;
+                display: block;
+            }
+            .payservice > span {
+                font-size: 50px;
+                font-weight: bold;
+            }
+            .service1:hover {
+                animation: ser1 1s ease-in-out;
+                animation-fill-mode:both;
+            }
+            .service2:hover {
+                animation: ser2 1s ease-in-out;
+                animation-fill-mode:both;
+            }
+            .service3:hover {
+                animation: ser3 1s ease-in-out;
+                animation-fill-mode:both;
+            }
+            .main .card {
+                width: 472.94px;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            #menubar {
+                display: none;
+            }
+            #semenu {
+                display: none;
+            }
+            .payservice {
+                display: none;
+            }
+            .payservicemain {
+                text-align: center;
+            }
+            .mpayservice {
+                width: 236px;
+                height: fit-content;
+                margin: auto;
+            }
+            .mpayservice > div {
+                width: 236px;
+                height: 266.89px;
+                border: 1px solid darkgray;
+                margin-bottom: 30px;
+                border-radius: 15px;
+                text-align: center;
+                padding: 15px;
+            }
+            .service1 {
+                background-color: rgba(168,255,255,0.4);
+            }
+            .service2 {
+                background-color: rgba(255,192,203,0.4);
+            }
+            .service3 {
+                background-color: rgba(220,93,220,0.2);
+            }
+            .mpayservice label {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo hide-on-med-and-down" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>더보기</span>
+        </div>
+        <div class="mlogin hide-on-med-and-down">
+            <form action="/account/login" method="POST" onsubmit="userCheck(event, this)"></form>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>아이디</th>
+                            <th>비밀번호</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
+                            <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
+                            <td><input type="button" value="로그인" id="userloginsubmit"></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#found">계정을 잊으셨나요?</a></td>
+                            <td><a href="#signup">회원가입</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu" style="display: none;">
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="menutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" style="display: none; position: relative; z-index: 50;" id="semenu">
+            <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="mmenutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <a name="taekbae"></a>
+            <h3 style="margin-top: 0px; margin-bottom: 70px; font-weight: bold; text-align: center;">조회 가능 택배사</h3>
+            <div class="taekbae" id="taebae">
+                <div class="domestic">
+                    <h5 style="font-weight: bold; margin-top: 0px;">국내택배</h5><h6 style="margin-bottom: 30px;">(26개사)</h6>
+                    <table class="centered striped">
+                        <tr>
+                            <td><a href="https://www.kunyoung.com/">건영택배</a></td>
+                            <td><a href="https://kdexp.com/main.kd">경동택배</a></td>
+                            <td style="border: none !important;"><a href="https://www.homepick.com/">홈픽택배</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="http://www.goodstoluck.co.kr/">굿투럭</a></td>
+                            <td><a href="https://ex.nhlogis.co.kr/main.do">농협택배</a></td>
+                            <td style="border: none !important;"><a href="http://www.ds3211.co.kr/">대신택배</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.ilogen.com/web">로젠택배</a></td>
+                            <td><a href="https://www.lotteglogis.com/">롯데택배</a></td>
+                            <td style="border: none !important;"><a href="http://www.sebang.com/">세방</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.anytrack.co.kr/">애니트랙</a></td>
+                            <td><a href="https://service.epost.go.kr/">우체국택배</a></td>
+                            <td style="border: none !important;"><a href="https://www.ilyanglogis.com/">일양로지스</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="http://www.chunilps.co.kr/">천일택배</a></td>
+                            <td><a href="http://www.e-handex.co.kr/">한덱스</a></td>
+                            <td style="border: none !important;"><a href="http://www.hanips.com/">한의사랑택배</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.hanjin.co.kr/">한진택배</a></td>
+                            <td><a href="https://hdexp.co.kr/index.hd">합동택배</a></td>
+                            <td style="border: none !important;"><a href="http://honamlogis.co.kr/">호남택배</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.cjlogistics.com/">CJ대한통운</a></td>
+                            <td><a href="https://www.cupost.co.kr/">CU편의점택배</a></td>
+                            <td style="border: none !important;"><a href="https://www.cvsnet.co.kr/main/index.do">CVSnet 편의점택배</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.kgb.co.kr/index.asp">KGB택배</a></td>
+                            <td><a href="http://kglnetworks.com/">KGL네트웍스</a></td>
+                            <td style="border: none !important;"><a href="http://www.slx.co.kr/">SLX</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://play.google.com/store/apps/details?id=com.bandsoft.hilogis&hl=ko">하이택배</a></td>
+                            <td><a href="http://www.foreverps.co.kr/theme/business02/html/delivery/transportation.php">FLF퍼레버택배</a></td>
+                            <td style="border: none !important;"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="international">
+                    <h5 style="font-weight: bold;">국제택배</h5><h6 style="margin-bottom: 30px;">(17개사)</h6>
+                    <table class="centered striped">
+                        <tr>
+                            <td><a href="https://www.lotteglogis.com/">롯데글로벌 로지스</a></td>
+                            <td><a href="http://www.pantos.com/kr/main.do">범한판토스</a></td>
+                            <td style="border: none !important;"><a href="http://www.airboyexpress.com/">에어보이익스프레스</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.global.ecmsglobal.com/?lang=ko">APEX(ECMS Express)</a></td>
+                            <td><a href="https://www.cjlogistics.com/ko/support/guide/express">CJ대한통운 국제특송</a></td>
+                            <td style="border: none !important;"><a href="http://service.cwaycorp.com/">Cway Express</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.dhl.com/">DHL</a></td>
+                            <td><a href="https://www.dhl.com/global-en/home/tracking.html">DHL Global Mail</a></td>
+                            <td style="border: none !important;"><a href="https://www.ems.post/">EMS</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.fedex.com/">Fedex</a></td>
+                            <td><a href="https://gsiexpress.com/">GSI Express</a></td>
+                            <td style="border: none !important;"><a href="http://www.gsmnton.com/gsm/handler/Index">GSMNtoN(인로스)</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.aftership.com/">i-Parcel</a></td>
+                            <td><a href="https://www.tnt.com/">TNT Express</a></td>
+                            <td style="border: none !important;"><a href="https://europarcel.com.au/">EuroParcel(유로택배)</a></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid darkgray;">
+                            <td><a href="https://www.ups.com/">UPS</a></td>
+                            <td><a href="https://www.usps.com/">USPS</a></td>
+                            <td style="border: none !important;"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="payt"></div>
+            </div>
+
+            <a name="pay"></a>
+            <div class="payservicemain" style="margin-top: 200px;">
+                <h3 style="margin-bottom: 70px; font-weight: bold;">유료 서비스</h3>
+                <div class="payservice">
+                    <div class="service1">
+                        <h5 style="font-weight: normal;">더 많은 조회</h5>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <label style="margin-bottom: 30px;">기존 택배 조회 API가 재공하는<br>택배사보다 더 많은 택배사를<br>조회할 수 있습니다 !</label>
+                        <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                    </div>
+                    <span>+</span>
+                    <div class="service2">
+                        <h5 style="font-weight: normal;">계정 연동</h5>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <label style="margin-bottom: 30px;">택배 조회 코드를 모르셔도<br>마켓 사이트와 계정 연동하여<br>조회할 수 있습니다 !</label>
+                        <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                    </div>
+                    <span>=</span>
+                    <div class="service3">
+                        <h5 style="font-weight: normal;">둘다 마음껏 !</h5>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <label style="margin-bottom: 30px;">더 많은 택배 조회를 하면서도<br>마켓 사이트와 계정 연동하여<br>더더욱 많은 조회를 !</label>
+                        <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                    </div>
+                </div>
+
+                <div class="mpayservice">
+                    <div class="service1">
+                        <h5 style="font-weight: normal;">더 많은 조회</h5>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <label style="margin-bottom: 30px; display: block;">기존 택배 조회 API가 재공하는<br>택배사보다 더 많은 택배사를<br>조회할 수 있습니다 !</label>
+                        <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                    </div>
+                    <div class="service2">
+                        <h5 style="font-weight: normal;">계정 연동</h5>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <label style="margin-bottom: 30px; display: block;">택배 조회 코드를 모르셔도<br>마켓 사이트와 계정 연동하여<br>조회할 수 있습니다 !</label>
+                        <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                    </div>
+                    <div class="service3">
+                        <h5 style="font-weight: normal;">둘다 마음껏 !</h5>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <label style="margin-bottom: 30px; display: block;">더 많은 택배 조회를 하면서도<br>마켓 사이트와 계정 연동하여<br>더더욱 많은 조회를 !</label>
+                        <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ser1pay">
+            <div class="row">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">'더 많은 조회' 결제</span>
+                        <p>기존 택배 조회 API가 재공하는 택배사보다 더 많은 택배사의 상품을 조회할 수 있습니다 !<br><br>가격 : 500 원</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                        <a id="ser1cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ser2pay">
+            <div class="row">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">'계정 연동' 결제</span>
+                        <p>택배 조회 코드를 모르셔도 마켓 사이트와 계정을 연동하여 연동된 계정에 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 600 원</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                        <a id="ser2cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ser3pay">
+            <div class="row">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">'둘다 마음껏 !' 결제</span>
+                        <p>기존 택배 조회 API가 재공하는 택배사보다 더 많은 택배사의 상품을 조회할 수 있으면서도 마켓 사이트와 계정을 연동하여 더욱 더 많은 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 1000 원</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                        <a id="ser3cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/../javascripts/menu.js"></script>
+    <script>
+        let ser1button = document.getElementById("ser1button");
+        let ser2button = document.getElementById("ser2button");
+        let ser3button = document.getElementById("ser3button");
+
+        let ser1pay = document.getElementById("ser1pay");
+        let ser2pay = document.getElementById("ser2pay");
+        let ser3pay = document.getElementById("ser3pay");
+
+        let ser1cancel = document.getElementById("ser1cancel");
+        let ser2cancel = document.getElementById("ser2cancel");
+        let ser3cancel = document.getElementById("ser3cancel");
+
+        let mser1button = document.getElementById("mser1button");
+        let mser2button = document.getElementById("mser2button");
+        let mser3button = document.getElementById("mser3button");
+
+        let tser1 = false;
+        let tser2 = false;
+        let tser3 = false;
+
+        window.onload = () => {
+            ser1pay.style.display = "none";
+            ser2pay.style.display = "none";
+            ser3pay.style.display = "none";
+        }
+
+        ser1button.onclick = () => {
+            ser2pay.style.display = "none";
+            ser3pay.style.display = "none";
+            if(tser1) {
+                ser1pay.style.display = "none";
+                tser1 = false;
+                ser1pay.classList.remove('emphasized');
+            } else {
+                ser1pay.style.display = "inline-block";
+                ser1pay.style.position = "absolute";
+                ser1pay.style.right = "50px";
+                tser1 = true;
+                ser1pay.classList.add('emphasized');
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+            }
+        }
+        ser2button.onclick = () => {
+            ser1pay.style.display = "none";
+            ser3pay.style.display = "none";
+            if(tser2) {
+                ser2pay.style.display = "none";
+                tser2 = false;
+                ser2pay.classList.remove('emphasized');
+            } else {
+                ser2pay.style.display = "inline-block";
+                ser2pay.style.position = "absolute";
+                ser2pay.style.right = "50px";
+                tser2 = true;
+                ser2pay.classList.add('emphasized');
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+            }
+        }
+        ser3button.onclick = () => {
+            ser1pay.style.display = "none";
+            ser2pay.style.display = "none";
+            if(tser3) {
+                ser3pay.style.display = "none";
+                tser3 = false;
+                ser3pay.classList.remove('emphasized');
+            } else {
+                ser3pay.style.display = "inline-block";
+                ser3pay.style.position = "absolute";
+                ser3pay.style.right = "50px";
+                tser3 = true;
+                ser3pay.classList.add('emphasized');
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+            }
+        }
+        mser1button.onclick = () => {
+            ser2pay.style.display = "none";
+            ser3pay.style.display = "none";
+            if(tser1) {
+                ser1pay.style.display = "none";
+                tser1 = false;
+                ser1pay.classList.remove('emphasized');
+            } else {
+                ser1pay.style.display = "inline-block";
+                ser1pay.style.position = "absolute";
+                ser1pay.style.right = "0";
+                ser1pay.style.top = "30%;";
+                tser1 = true;
+                ser1pay.classList.add('emphasized');
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+            }
+        }
+        mser2button.onclick = () => {
+            ser1pay.style.display = "none";
+            ser3pay.style.display = "none";
+            if(tser2) {
+                ser2pay.style.display = "none";
+                tser2 = false;
+                ser2pay.classList.remove('emphasized');
+            } else {
+                ser2pay.style.display = "inline-block";
+                ser2pay.style.position = "absolute";
+                ser2pay.style.right = "0";
+                ser2pay.style.top = "30%;";
+                tser2 = true;
+                ser2pay.classList.add('emphasized');
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+            }
+        }
+        mser3button.onclick = () => {
+            ser1pay.style.display = "none";
+            ser2pay.style.display = "none";
+            if(tser3) {
+                ser3pay.style.display = "none";
+                tser3 = false;
+                ser3pay.classList.remove('emphasized');
+            } else {
+                ser3pay.style.display = "inline-block";
+                ser3pay.style.position = "absolute";
+                ser3pay.style.right = "0";
+                ser3pay.style.top = "30%;";
+                tser3 = true;
+                ser3pay.classList.add('emphasized');
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+            }
+        }
+        ser1cancel.onclick = () => {
+            ser1pay.style.display = "none";
+            ser2pay.style.display = "none";
+            ser3pay.style.display = "none";
+            ser1pay.classList.remove('emphasized');
+            window.scroll({top: 1500, left: 0, behavior: 'smooth'});
+        }
+        ser2cancel.onclick = () => {
+            ser1pay.style.display = "none";
+            ser2pay.style.display = "none";
+            ser3pay.style.display = "none";
+            ser2pay.classList.remove('emphasized');
+            window.scroll({top: 1700, left: 0, behavior: 'smooth'});
+        }
+        ser3cancel.onclick = () => {
+            ser1pay.style.display = "none";
+            ser2pay.style.display = "none";
+            ser3pay.style.display = "none";
+            ser3pay.classList.remove('emphasized');
+            window.scroll({top: 2000, left: 0, behavior: 'smooth'});
+        }
+
+        // LOGIN
+        function userCheck(e, form) {
+            e.preventDefault();
+
+            let userInfo = {
+                id: form.userid.value,
+                password: form.userpass.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/account/login/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        console.log(data.msg);
+                        // 로그인 성공
+                    } else if(data.result == "fail") {
+                        alert(data.msg);
+                        uid.style.borderBottom = "2px solid red";
+                        upass.style.borderBottom = "2px solid red";
+                        upass.value = "";
+                    } else {
+                        alert("로그인 도중 에러가 발생했습니다. 나중에 다시 시도해주십시오.");
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+    </script>
+</body>
+</html>

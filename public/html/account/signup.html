@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/../stylesheets/manu.css">
+    <link rel="stylesheet" href="/../stylesheets/top.css">
+    <title>회원가입</title>
+    <style>
+        .main {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            right: 0;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .logo {
+                display: none;
+            }
+            #menubar {
+                display: none;
+            }
+            .loginmain {
+                display: none;
+            }
+            .mmright {
+                box-sizing: border-box;
+                width: 100%;
+                height: 300px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+            }
+            .loginp input {
+                width: 200px !important;
+                text-align: center;
+            }
+            .loginp h4 {
+                margin-bottom: 50px;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            #mmenubar {
+                display: none;
+            }
+            .mmright {
+                display: none;
+            }
+            .mleft {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position:relative;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                position: absolute;
+                left: 5px;
+                width: 88%;
+                height: 65%;
+                text-align: center;
+            }
+            .loginp input {
+                width: 300px !important;
+                text-align: center;
+            }
+            .loginp h4 {
+                margin-bottom: 50px;
+            }
+            .mright {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            .loginmain {
+                width: 1300px;
+                height: 600px;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                margin: auto;
+                display: flex;
+            }
+            .mleft table {
+                margin: auto;
+                width: fit-content !important;
+            }
+            .mleft table tr, .mleft table td {
+                padding: 5px !important;
+                border: 1px solid darkgray !important;
+                text-align: center;
+            }
+            .mleft table tr {
+                position: relative;
+            }
+        }
+        @media only screen and (min-width: 601px) {
+            #mmenubar {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 993px) {
+            #mmenubar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="logo" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>회원가입</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu" style="display: none;">
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="menutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" style="display: none; z-index: 50;" id="semenu">
+            <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="mmenutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <div class="loginmain">
+                <div class="mleft">
+                    <table border="1" class="striped">
+                        <tr>
+                            <td style="width: 200px;">아이디</td>
+                            <td><label class="btn waves-effect waves-orange" id="wid">진행중..</label></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호</td style="width: 200px;">
+                            <td><label class="btn waves-effect waves-orange" id="wpass">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호 확인</td>
+                            <td><label class="btn waves-effect waves-orange" id="wphone">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>전화번호</td>
+                            <td><label class="btn waves-effect waves-orange" id="wnick">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>닉네임</td>
+                            <td><label class="btn waves-effect waves-orange" id="wINB">미완</label></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mright">
+                    <div class="loginp">
+                        <h3>회원가입</h3>
+                        <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
+                            <div id="sid">
+                                <h4>아이디</h4>
+                                <input type="text" name="uid" id="uid" minlength="5" placeholder="ID" required><br>
+                                <span class="checkid"></span>
+                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign1"><i class="material-icons right">navigate_next</i>다음</a><br>
+                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:43%;" id="idcheck" onclick="idoverlapcheck()">중복 확인</a>
+                            </div>
+                            <div id="spass" style="display: none;">
+                                <h4>비밀번호</h4>
+                                <input type="password" name="upass" id="upass" minlength="6" maxlength="18" placeholder="PASSWORD (6~18)" required>
+                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign2"><i class="material-icons right">navigate_next</i>다음</a>
+                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back2"><i class="material-icons left">navigate_before</i>이전</a>
+                            </div>
+                            <div id="sphone" style="display: none;">
+                                <h4>비밀번호 확인</h4>
+                                <input type="password" name="conpass" id="upasscon" placeholder="Confirm Password" required>
+                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign3"><i class="material-icons right">navigate_next</i>다음</a>
+                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back3"><i class="material-icons left">navigate_before</i>이전</a>
+                            </div>
+                            <div id="snick" style="display: none;">
+                                <h4>전화번호</h4>
+                                <input type="number" name="uphone" id="uphone" minlength="10" maxlength="11" placeholder="PHONE NUMBER ( - 빼고 쓰십시오)" required>
+                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign4"><i class="material-icons right">navigate_next</i>다음</a>
+                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back4"><i class="material-icons left">navigate_before</i>이전</a>
+                            </div>
+                            <div id="sINB" style="display: none;">
+                                <h4>이름</h4>
+                                <input type="text" name="unick" id="unick" maxlength="5" placeholder="NICK NAME" required>
+                                <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="signsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
+                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back5"><i class="material-icons left">navigate_before</i>이전</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="mmright">
+                <div class="loginp">
+                    <h3>회원가입</h3>
+                    <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
+                        <div id="msid">
+                            <h4>아이디</h4>
+                            <input type="text" name="uid" id="muid" minlength="4" maxlength="45" placeholder="ID" required><br>
+                            <span class="checkid"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign1"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:45%;" id="midcheck" onclick="idoverlapcheck()">중복 확인</a>
+                        </div>
+                        <div id="mspass" style="display: none;">
+                            <h4>비밀번호</h4>
+                            <input type="password" name="upass" id="mupass" minlength="6" maxlength="18" placeholder="PASSWORD (6~18)" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign2"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback2"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="msphone" style="display: none;">
+                            <h4>비밀번호 확인</h4>
+                            <input type="password" name="conpass" id="mupasscon" placeholder="Confirm Password" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="msnick" style="display: none;">
+                            <h4>전화번호</h4>
+                            <input type="number" name="uphone" id="muphone" minlength="10" maxlength="11" placeholder="PHONE NUMBER ( - 빼고 쓰십시오.)" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign4"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="msINB" style="display: none;">
+                            <h4>이름</h4>
+                            <input type="text" name="unick" id="munick" maxlength="5" placeholder="NICK NAME" required>
+                            <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback5"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/../javascripts/menu.js"></script>
+    <script>
+        let wid = document.getElementById("wid");
+        let wpass = document.getElementById("wpass");
+        let wphone = document.getElementById("wphone");
+        let wnick = document.getElementById("wnick");
+        let wINB = document.getElementById("wINB");
+
+        let sid = document.getElementById("sid");
+        let spass = document.getElementById("spass");
+        let sphone = document.getElementById("sphone");
+        let snick = document.getElementById("snick");
+        let sINB = document.getElementById("sINB");
+
+        let sign1 = document.getElementById("sign1");  // 아이디 창
+        let sign2 = document.getElementById("sign2");  // 비밀번호 창
+        let sign3 = document.getElementById("sign3");  // 비밀번호 확인 창
+        let sign4 = document.getElementById("sign4");  // 전화번호 창
+
+        let back2 = document.getElementById("back2");
+        let back3 = document.getElementById("back3");
+        let back4 = document.getElementById("back4");
+        let back5 = document.getElementById("back5");
+
+        let uid = document.getElementById("uid");            // 유저 아이디
+        let upass = document.getElementById("upass");        // 유저 비밀번호
+        let upasscon = document.getElementById("upasscon");  // 비밀번호 확인
+        let uphone = document.getElementById("uphone");      // 유저 전화번호
+        let unick = document.getElementById("unick");        // 유저 이름
+
+
+        let msid = document.getElementById("msid");
+        let mspass = document.getElementById("mspass");
+        let msphone = document.getElementById("msphone");
+        let msnick = document.getElementById("msnick");
+        let msINB = document.getElementById("msINB");
+
+        let msign1 = document.getElementById("msign1");  // 아이디 창
+        let msign2 = document.getElementById("msign2");  // 비밀번호 창
+        let msign3 = document.getElementById("msign3");  // 비밀번호 확인 창
+        let msign4 = document.getElementById("msign4");  // 전화번호 창
+
+        let mback2 = document.getElementById("mback2");
+        let mback3 = document.getElementById("mback3");
+        let mback4 = document.getElementById("mback4");
+        let mback5 = document.getElementById("mback5");
+
+        let muid = document.getElementById("muid");             // 유저 아이디
+        let mupass = document.getElementById("mupass");         // 유저 비밀번호
+        let mupasscon = document.getElementById("mupasscon");   // 비밀번호 확인
+        let muphone = document.getElementById("muphone");       // 유저 전화번호
+        let munick = document.getElementById("munick");         // 유저 이름
+
+        let idcheckspan = document.querySelector(".checkid");
+
+        let idcheck = false
+
+
+        function idoverlapcheck() {
+            let userInfo = {
+                id: uid.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/account/overlap/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        idcheck = true;
+                        idcheckspan.innerHTML = "사용 가능한 아이디 입니다.";
+                        idcheckspan.style.color = "green";
+                    } else {
+                        idcheckspan.innerHTML = "이미 사용중인 아이디 입니다.";
+                        idcheckspan.style.color = "red";
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+
+
+        sign1.onclick = () => {
+            if(uid.value == "") {
+                alert('아이디를 입력해주세요.');
+            } else if(uid.value.length < 5) {
+                alert('아이디는 5글자 이상 적어주세요.');
+            } else {
+                if(idcheck) {
+                    sid.style.display = "none";
+                    spass.style.display = "block";
+                    wid.innerHTML = "완료";
+                    wpass.innerHTML = "진행중..";
+                } else {
+                    alert('아이디 중복 확인을 해주세요.');
+                }
+            }
+        }
+        uid.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(uid.value == "") {
+                    alert('아이디를 입력해주세요.');
+                } else if(uid.value.length < 5) {
+                    alert('아이디는 5글자 이상 적어주세요.');
+                } else {
+                    if(idcheck) {
+                        sid.style.display = "none";
+                        spass.style.display = "block";
+                        wid.innerHTML = "완료";
+                        wpass.innerHTML = "진행중..";
+                    } else {
+                        alert('아이디 중복 확인을 해주세요.');
+                    }
+                }
+            }
+        }
+        sign2.onclick = () => {
+            if(upass.value == "") {
+                alert('비밀번호를 입력해주세요.');
+            } else if(upass.value.length < 6) {
+                alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
+            } else if(upass.value.length > 18) {
+                alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
+            } else {
+                spass.style.display = "none";
+                sphone.style.display = "block";
+                wpass.innerHTML = "완료";
+                wphone.innerHTML = "진행중..";
+            }
+        }
+        upass.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(upass.value == "") {
+                    alert('비밀번호를 입력해주세요.');
+                } else if(upass.value.length < 6) {
+                    alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
+                } else if(upass.value.length > 18) {
+                    alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
+                } else {
+                    spass.style.display = "none";
+                    sphone.style.display = "block";
+                    wpass.innerHTML = "완료";
+                    wphone.innerHTML = "진행중..";
+                }
+            }
+        }
+        sign3.onclick = () => {
+            if(upass.value == upasscon.value) {
+                sphone.style.display = "none";
+                snick.style.display = "block";
+                wphone.innerHTML = "완료";
+                wnick.innerHTML = "진행중..";
+            } else if(upasscon.value == "") {
+                alert('비밀번호를 다시 써주세요.');
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+        }
+        upasscon.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(upass.value == upasscon.value) {
+                    sphone.style.display = "none";
+                    snick.style.display = "block";
+                    wphone.innerHTML = "완료";
+                    wnick.innerHTML = "진행중..";
+                } else if(upasscon.value == "") {
+                    alert('비밀번호를 다시 써주세요.');
+                } else {
+                    alert('비밀번호가 일치하지 않습니다.');
+                }
+            }
+        }
+        sign4.onclick = () => {
+            if(uphone.value == "") {
+                alert('전화번호를 입력해주세요.');
+            } else if(uphone.value.length < 11) {
+                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678');
+            } else if(uphone.value.length > 11) {
+                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678 (짝대기를 빼주세요)');
+            } else {
+                snick.style.display = "none";
+                sINB.style.display = "block";
+                wnick.innerHTML = "완료";
+                wINB.innerHTML = "진행중..";
+            }
+        }
+        uphone.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(uphone.value == "") {
+                    alert('전화번호를 입력해주세요.');
+                } else if(uphone.value.length < 11) {
+                    alert('전화번호를 바르게 입력해 주세요. ex) 01012345678');
+                } else if(uphone.value.length > 11) {
+                    alert('전화번호를 바르게 입력해 주세요. ex) 01012345678 (짝대기를 빼주세요)');
+                } else {
+                    snick.style.display = "none";
+                    sINB.style.display = "block";
+                    wnick.innerHTML = "완료";
+                    wINB.innerHTML = "진행중..";
+                }
+            }
+        }
+
+
+        back2.onclick = () => {
+            spass.style.display = "none";
+            sid.style.display = "block";
+            wid.innerHTML = "진행중..";
+            wpass.innerHTML = "미완";
+        }
+        back3.onclick = () => {
+            sphone.style.display = "none";
+            spass.style.display = "block";
+            wpass.innerHTML = "진행중..";
+            wphone.innerHTML = "미완";
+        }
+        back4.onclick = () => {
+            snick.style.display = "none";
+            sphone.style.display = "block";
+            wphone.innerHTML = "진행중..";
+            wnick.innerHTML = "미완";
+        }
+        back5.onclick = () => {
+            sINB.style.display = "none";
+            snick.style.display = "block";
+            wnick.innerHTML = "진행중..";
+            wINB.innerHTML = "미완";
+        }
+
+
+
+        msign1.onclick = () => {
+            if(muid.value == "") {
+                alert('아이디를 입력해주세요.');
+            } else if(muid.length < 5) {
+                alert('아이디는 5글자 이상 적어주세요.');
+            } else {
+                msid.style.display = "none";
+                mspass.style.display = "block";
+            }
+        }
+        msign2.onclick = () => {
+            if(mupass.value == "") {
+                alert('비밀번호를 입력해주세요.');
+            } else if(mupass.value.length < 6) {
+                alert('비밀번호의 길이는 6자 이상 18자 이하 입니다.');
+            } else if(mupass.value.length > 18) {
+                alert('비밀번호의 길이는 6자 이상 18자 이하 입니다.');
+            } else {
+                mspass.style.display = "none";
+                msphone.style.display = "block";
+            }
+        }
+        msign3.onclick = () => {
+            if(mupasscon.value == mupass.value) {
+                msphone.style.display = "none";
+                msnick.style.display = "block";
+            } else if(mupasscon.value == "") {
+                alert('비밀번호를 다시 입력해주세요.');
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+        }
+        msign4.onclick = () => {
+            if(muphone.value == "") {
+                alert('전화번호를 입력해주세요.');
+            } else if(muphone.value.length < 11) {
+                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678');
+            } else if(muphone.value.length > 11) {
+                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678 (짝대기를 빼주세요)');
+            } else {
+                msnick.style.display = "none";
+                msINB.style.display = "block";
+            }
+        }
+
+
+        mback2.onclick = () => {
+            mspass.style.display = "none";
+            msid.style.display = "block";
+        }
+        mback3.onclick = () => {
+            msphone.style.display = "none";
+            mspass.style.display = "block";
+        }
+        mback4.onclick = () => {
+            msnick.style.display = "none";
+            msphone.style.display = "block";
+        }
+        mback5.onclick = () => {
+            msINB.style.display = "none";
+            msnick.style.display = "block";
+        }
+
+
+        function addUser(e, form) {
+            e.preventDefault();
+
+            let userInfo = {
+                id: form.uid.value,
+                password: form.upass.value,
+                phone: form.uphone.value,
+                nick: form.unick.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/account/signup/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        let loginpage = confirm('회원가입에 성공하셨습니다 ! 로그인 화면으로 가시겠습니까?');
+                        if(loginpage) {
+                            location.replace('/account/login');
+                        } else {
+                            location.replace('/');
+                        }
+                    } else {
+                        alert('회원가입 등록 과정에서 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+    </script>
+</body>
+</html>
