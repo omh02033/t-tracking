@@ -457,7 +457,7 @@
             <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
             <div class="tcode" style="position: relative;">
                 <label style="font-size: 15px;">택배 조회 코드</label>
-                <label style="font-size: 15px; position: absolute; right: 0;">택배회사 물표 번호</label>
+                <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
                 <div class="tcodeinput">
                     <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
                     <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
@@ -466,7 +466,7 @@
             </div>
             <div class="mtcode" style="position: relative;">
                 <label style="font-size: 15px;">택배 조회 코드</label>
-                <label style="font-size: 15px; position:absolute; right: 0;">택배회사 물표 번호</label>
+                <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
                 <div class="mtcodeinput">
                     <form action="http://info.sweettracker.co.kr/tracking/5" method="POST" onsubmit="checktracking(event, this);"></form>
                         <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
@@ -479,7 +479,7 @@
                         <tr class="trfirst" style="font-weight: bold;">
                             <td style="width: 10%;">물표 번호</td>
                             <td style="width: 7%;">받는 사람</td>
-                            <td style="width: 60%;">상품 이름</td>
+                            <td style="width: 60%;">물품 이름</td>
                             <td style="width: 7%;">현재 위치</td>
                             <td style="width: 8%;">배송 상태</td>
                             <td style="width: 10%;">자세히 보기</td>
@@ -501,7 +501,7 @@
                                 <div class="ctstate elli" style="width: 100%; height: 22px; margin: 0;"></div>
                             </td>
                             <td style="text-align: center;">
-                                <div class="elli" style="width: 100%; height: 22px; margin: 0; cursor: pointer;"><a class="ctdetail"></a></div>
+                                <div class="elli" style="width: 100%; height: 22px; margin: 0; cursor: pointer;"><a class="ctdetail" onclick="detail()"></a></div>
                             </td>
                         </tr>
                     </tbody>
@@ -520,7 +520,7 @@
                             <td><div class="ctuname elli" style="width: 100%; margin: 0;"></div></td>
                         </tr>
                         <tr>
-                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">상품 이름</td>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">물품 이름</td>
                             <td><div class="ctname elli" style="width: 100%; margin: 0;"></div></td>
                         </tr>
                         <tr>
@@ -533,7 +533,7 @@
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid rgba(0,0,0,0.12);">자세히 보기</td>
-                            <td><div class="elli" style="width: 100%; margin: 0;"><a class="ctdetail"></a></div></td>
+                            <td><div class="elli" style="width: 100%; margin: 0;"><a class="ctdetail" onclick="detail()"></a></div></td>
                         </tr>
                     </tbody>
                 </table>
@@ -621,7 +621,7 @@
                 password: form.userpass.value
             }
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/account/login/');
+            xhr.open('POST', '/account/login/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -661,10 +661,11 @@
                     ctnum.innerHTML = data.code;
                     ctuname.innerHTML = data.uname;
                     ctname.innerHTML = data.itemName;
+                    console.log(data.t_code);
                     if(data.where == '') { ctloca.innerHTML = '조회 실패'; }
                     else {
                         ctloca.innerHTML = data.where;
-                        ctloca.href = `https://www.google.co.kr/maps/search/${escape(data.where)}/`;
+                        ctloca.href = `https://www.google.co.kr/maps/search/${data.where}/`;
                     }
                     if(data.level == 1) { ctstate.innerHTML = '배송준비중'; }
                     else if(data.level == 2) { ctstate.innerHTML = '집화완료'; }
@@ -674,7 +675,7 @@
                     else if(data.level == 6) { ctstate.innerHTML = '배송 완료'; }
                     else { ctstate.innerHTML = '조회 실패'; }
                     ctdetail.innerHTML = '자세히 보기';
-                    ctdetail.onclick = `window.open('/track/detail?t_invoice=${data.code}&t_code=${data.t_code}', '', 'width=605,height=705,scrollbar=yes'`;
+                    ctdetail.onclick = () => { window.open(`/tracking/detail?t_invoice=${data.code}&t_code=${data.t_code}`, '', 'width=500,height=705,scrollbar=yes'); }
                 } else {
                     if(i == 0) {
                         console.log(data.msg);

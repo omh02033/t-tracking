@@ -5,6 +5,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <title>자세히 보기</title>
     <style>
+        body {
+            padding: 15px 25px;
+        }
+        .top {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            font-style: normal;
+            color: #777777;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dddddd;
+        }
+        .basicTable {
+            width: 100%;
+            padding: 0 15px 15px 15px;
+            margin-bottom: 20px;
+        }
+        .formgroup {
+            margin-bottom: 15px;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .formgroup > label {
+            font-size: 16px;
+            color: #aaaaaa;
+            font-weight: normal;
+            width: 33.333333%;
+            float: left;
+        }
+        .formgroup > div {
+            font-size: 16px;
+            font-weight: normal;
+            color: #343434;
+            width: 66.666667%;
+            padding: 0 15px;
+        }
+        .status {
+            width: 100%;
+            padding: 0 15px;
+        }
+        .status thead tr td {
+            border-bottom: 2px solid #ddd;
+            padding: 11px;
+            color: #333;
+            font-weight: bold;
+        }
+        .status tbody tr { border-bottom: none !important; }
+        .status tbody tr td {
+            padding: 11px;
+            border-top: 1px solid #f5f5f5 !important;
+            border-bottom: none !important;
+            color: #333;
+        }
         td {
             white-space:nowrap;
             text-overflow:ellipsis;
@@ -15,39 +69,114 @@
     </style>
 </head>
 <body>
-    <table class="striped" style="width: 100%;">
-        <tbody>
-            <tr>
-                <td style="width: 30% !important; border-right: 1px solid darkgray;">fdaskjghasdkfhasfjksfsdjkfhsdjkhfjksdhfjhfsdafasdjkfhsdkfklsdklfhsdjkhf</td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
-    <script>
-        // window.onload = () => {
-        //     let code = getParameterByName('t_code');
-        //     let num = getParameterByName('t_invoice');
-        //     let userInfo = {
-        //         t_code: code,
-        //         t_invoice: num
-        //     }
-        //     let xhr = new XMLHttpRequest();
-        //     xhr.open('POST', 'http://localhost:3000/track/detail/');
-        //     xhr.setRequestHeader('Content-Type', 'application/json');
-        //     xhr.onreadystatechange = function () {
-        //         if(xhr.status === 200) {
-        //             let data = JSON.parse(xhr.responseText);
-        //             console.log(data.msg);
-        //         }
-        //     }
-        //     xhr.send(JSON.stringify(userInfo));
-        // }
+    <div class="top"><span style="font-weight: bold;">통합 택배 조회 서비스</span></div>
+    <div class="basicTable">
+        <div class="formgroup">
+            <label>운송장번호</label>
+            <div id="b_invoice"></div>
+        </div>
+        <div class="formgroup">
+            <label>받는 사람</label>
+            <div id="b_uname"></div>
+        </div>
+        <div class="formgroup">
+            <label>보낸 사람</label>
+            <div id="b_sender"></div>
+        </div>
+        <div class="formgroup">
+            <label>수령 주소</label>
+            <div id="b_home"></div>
+        </div>
+        <div class="formgroup">
+            <label>물품 이름</label>
+            <div id="b_tname"></div>
+        </div>
+    </div>
 
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                results = regex.exec(location.search);
-            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    <div class="status">
+        <table>
+            <thead>
+                <tr>
+                    <td>시간</td>
+                    <td>현재 위치</td>
+                    <td>배송 상태</td>
+                </tr>
+            </thead>
+            <tbody class="statusTbody">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        window.onload = () => {
+            let code = getParameterByName('t_code');
+            let num = getParameterByName('t_invoice');
+
+            let b_invoice = document.getElementById("b_invoice");
+            let b_uname = document.getElementById("b_uname");
+            let b_sender = document.getElementById("b_sender");
+            let b_home = document.getElementById("b_home");
+            let b_tname = document.getElementById("b_tname");
+
+            let statusTbody = document.querySelector(".statusTbody");
+
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+
+            let userInfo = {
+                t_code: code,
+                t_invoice: num
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/tracking/detail/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.msg) {
+                        console.log(data.msg);
+                    }
+                    b_invoice.innerHTML = data.code;
+                    b_uname.innerHTML = data.uname;
+                    b_sender.innerHTML = data.sender;
+                    b_home.innerHTML = data.home;
+                    b_tname.innerHTML = data.itemName;
+                    console.log(data.detail);
+                    console.log(data.uname);
+                    for(let i=0; i<data.detail.length; i++) {
+                        let tr = document.createElement("tr");
+                        statusTbody.append(tr);
+                        let th1 = document.createElement("th");
+                        let th2 = document.createElement("th");
+                        let th3 = document.createElement("th");
+                        th1.innerHTML = data.detail[i].timeString;
+                        th2.innerHTML = data.detail[i].where;
+                        th3.innerHTML = data.detail[i].kind;
+                        console.log(i);
+                        console.log(data.detail.length-1);
+                        if(i == data.detail.length-1) {
+                            th1.style.backgroundColor = "rgba(173,173,173,0.2)";
+                            th1.style.color = "#333";
+                            th2.style.backgroundColor = "rgba(173,173,173,0.2)";
+                            th2.style.color = "#333";
+                            th3.style.backgroundColor = "rgba(173,173,173,0.2)";
+                            th3.style.color = "#333";
+                        } else {
+                            th1.style.color = "#aaaaaa";
+                            th2.style.color = "#aaaaaa";
+                            th3.style.color = "#aaaaaa";
+                        }
+                        let tr1 = document.querySelectorAll("tr");
+                        tr1[i+1].append(th1);
+                        tr1[i+1].append(th2);
+                        tr1[i+1].append(th3);
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
         }
     </script>
 </body>

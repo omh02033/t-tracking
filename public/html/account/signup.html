@@ -218,7 +218,7 @@
                             </div>
                             <div id="sINB" style="display: none;">
                                 <h4>이름</h4>
-                                <input type="text" name="unick" id="unick" maxlength="5" placeholder="NICK NAME" required>
+                                <input type="text" name="unick" id="unick" maxlength="5" placeholder="NAME" required>
                                 <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="signsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
                                 <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back5"><i class="material-icons left">navigate_before</i>이전</a>
                             </div>
@@ -257,7 +257,7 @@
                         </div>
                         <div id="msINB" style="display: none;">
                             <h4>이름</h4>
-                            <input type="text" name="unick" id="munick" maxlength="5" placeholder="NICK NAME" required>
+                            <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
                             <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
                             <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback5"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
@@ -325,11 +325,11 @@
 
 
         function idoverlapcheck() {
-            let userInfo = {
+            let idInfo = {
                 id: uid.value
             }
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/account/overlap/');
+            xhr.open('POST', '/account/overlap/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -345,7 +345,7 @@
                     }
                 }
             }
-            xhr.send(JSON.stringify(userInfo));
+            xhr.send(JSON.stringify(idInfo));
         }
 
 
@@ -572,7 +572,7 @@
                 nick: form.unick.value
             }
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/account/signup/');
+            xhr.open('POST', '/account/signup/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
