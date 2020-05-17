@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/../stylesheets/manu.css">
+    <link rel="stylesheet" href="/../stylesheets/top.css">
+    <title>계정 찾기</title>
+    <style>
+        .main {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+        }
+        #userpass, #ucode {
+            border: none;
+            border-bottom: 1px solid darkgray;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .logo {
+                display: none;
+            }
+            .loginmain {
+                display: none;
+            }
+            #menubar {
+                display: none;
+            }
+            #mmenubar {
+                margin-bottom: 3px !important;
+            }
+            .mloginmain {
+                position: relative;
+                width: 300px;
+                border-radius: 15px;
+                margin: auto;
+                margin: auto;
+                height: 320px;
+            }
+            .mloginp {
+                padding: 15px;
+                margin: auto;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                width: 300px;
+            }
+            .mloginp h2 {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .mloginp table {
+                margin: auto;
+                width: fit-content !important;
+            }
+            .mloginp table tr, .mloginp table td {
+                padding: 5px !important;
+                border: none !important;
+            }
+            .mloginp table td {
+                padding: 20px;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            .mloginmain {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .main1 {
+                width: 100%;
+                position: absolute;
+                right: 0;
+            }
+            .loginmain {
+                width: 1300px;
+                height: 600px;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                margin: auto;
+                display: flex;
+            }
+            .mleft {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position:relative;
+            }
+            #libox {
+                z-index: 999;
+                font-size: 100px;
+                color: white;
+                position:absolute;
+                top: 55%;
+            }
+            .mright {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            .lock {
+                font-size: 350px;
+                color: darkorange;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                position: absolute;
+                left: 5px;
+                width: 88%;
+                height: 65%;
+            }
+            .loginp h2 {
+                text-align: center;
+                /* margin-top: 50px; */
+                margin-bottom: 50px;
+            }
+            .loginp table {
+                margin: auto;
+                width: fit-content !important;
+            }
+            .loginp table tr, .loginp table td {
+                padding: 5px !important;
+                border: none !important;
+            }
+            .loginp table td {
+                padding: 20px;
+            }
+        }
+        @media only screen and (min-width: 601px) {
+            .mloginmain {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 993px) {
+            .mloginmain {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="logo" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>계정 찾기</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu" style="display: none;">
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="menutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" style="display: none; z-index: 50;" id="semenu">
+            <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="mmenutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <div class="loginmain">
+                <div class="mleft">
+                    <i class="lock fa fa-lock"></i>
+                    <i class="fa fa-fingerprint" id="libox"></i>
+                </div>
+                <div class="mright">
+                    <div class="loginp">
+                        <h2>아이디 찾기</h2>
+                        <table>
+                            <tbody>
+                                <form action="/account/fid" method="POST" onsubmit="userCheck(event, this)">
+                                    <tr class="emailinput">
+                                        <td>이메일</td>
+                                        <td><input type="email" name="uemail" id="userpass" placeholder="EMAIL" required></td>
+                                    </tr>
+                                    <tr class="emailinput">
+                                        <td></td>
+                                        <td>
+                                            <button class="btn waves-effect waves-light orange darken-3" type="submit" id="lgsubmit">확인<i class="material-icons right" style="color: green;">check</i></button>
+                                        </td>
+                                    </tr>
+                                </form>
+                                <tr class="codeinput" style="display: none;">
+                                    <td>인증번호</td>
+                                    <td><input type="number" name="code" id="ucode" placeholder="CODE"></td>
+                                </tr>
+                                <tr class="codeinput" style="display: none;">
+                                    <td></td>
+                                    <td><button class="btn waves-effect waves-light deep-purple lighten-4" id="codesub">확인</button></td>
+                                </tr>
+                                <tr class="showid" style="display: none;">
+                                    <td>당신의 아이디 : </td>
+                                    <td><h4 class="sid"></h4></td>
+                                </tr>
+                                <tr class="showid" style="display: none;">
+                                    <td></td>
+                                    <td><button class="btn waves-effect waves-light deep-purple lighten-3" id="idcheck">확인</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mloginmain">
+                <div class="mloginp">
+                    <h2>로그인</h2>
+                    <table>
+                        <tbody>
+                            <form action="/account/fid" method="POST" onsubmit="userCheck(event, this)">
+                                <tr class="emailinput">
+                                    <td>이메일</td>
+                                    <td><input type="email" name="uemail" id="muserpass" placeholder="EMAIL" required></td>
+                                </tr>
+                                <tr class="emailinput">
+                                    <td></td>
+                                    <td>
+                                        <button class="btn waves-effect waves-light orange darken-3" type="submit" id="mlgsubmit">확인<i class="material-icons right" style="color: green;">check</i></button>
+                                    </td>
+                                </tr>
+                            </form>
+                            <tr class="codeinput" style="display: none;">
+                                <td>인증번호</td>
+                                <td><input type="number" name="code" id="mucode" placeholder="CODE"></td>
+                            </tr>
+                            <tr class="codeinput" style="display: none;">
+                                <td></td>
+                                <td><button class="btn waves-effect waves-light deep-purple lighten-4" id="mcodesub">확인</button></td>
+                            </tr>
+                            <tr class="showid" style="display: none;">
+                                <td>당신의 아이디 : </td>
+                                <td><h4 class="sid"></h4></td>
+                            </tr>
+                            <tr class="showid" style="display: none;">
+                                <td></td>
+                                <td><button class="btn waves-effect waves-light deep-purple lighten-3" id="midcheck">확인</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/../javascripts/menu.js"></script>
+    <script>
+        let upass = document.getElementById("userpass");
+        let mupass = document.getElementById("muserpass");
+
+        let codesub = document.getElementById("codesub");
+        let mcodesub = document.getElementById("mcodesub");
+        let ucode = document.getElementById("ucode");
+        let mucode = document.getElementById("mucode");
+
+        let sid = document.querySelectorAll(".sid");
+
+        let codeinput = document.querySelectorAll(".codeinput");
+        let showid = document.querySelectorAll(".showid");
+        
+        let emailinput = document.querySelectorAll(".emailinput");
+
+        let idcheck = document.getElementById("idcheck");
+        let midcheck = document.getElementById("midcheck");
+        idcheck.onclick = () => { location.replace('/account/login'); }
+        midcheck.onclick = () => { location.replace('/account/login'); }
+
+        let chance = 5;
+
+
+        function userCheck(e, form) {
+            e.preventDefault();
+
+            let userInfo = {
+                email: form.uemail.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/fid/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.status === 200 && xhr.readyState === 4) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.msg) { alert(data.msg); }
+                    if(data.result == "success") {
+                        alert('이메일에 인증번호를 보냈습니다. 확인해주세요.');
+                        for(let i=0; i<emailinput.length; i++) { emailinput[i].style.display = "none"; }
+                        for(let i=0; i<codeinput.length; i++) { codeinput[i].style.display = "block"; }
+                        codesub.onclick = () => {
+                            if(chance <= 0) {
+                                alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                location.href = location.href;
+                            } else {
+                                if(ucode.value == data.code) {
+                                    for(let j=0; j<codeinput.length; j++) { codeinput[j].style.display = "none"; }
+                                    for(let j=0; j<showid.length; j++) { showid[j].style.display = "block"; }
+                                    for(let j=0; j<sid.length; j++) { sid[j].innerHTML = data.uid; }
+                                } else {
+                                    alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                    chance--;
+                                }
+                            }
+                        }
+                        mcodesub.onclick = () => {
+                            if(chance <= 0) {
+                                alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요');
+                                location.href = location.href;
+                            } else {
+                                if(mucode.value == data.code) {
+                                    for(let j=0; j<codeinput.length; j++) { codeinput[j].style.display = "none"; }
+                                    for(let j=0; j<showid.length; j++) { showid[j].style.display = "block"; }
+                                    for(let j=0; j<sid.length; j++) { sid[j].innerHTML = data.uid; }
+                                } else {
+                                    alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                    chacne--;
+                                }
+                            }
+                        }
+                    } else if(data.result == "fail") {
+                        alert(data.msg);
+                        uid.style.borderBottom = "3px solid red";
+                        upass.style.borderBottom = "3px solid red";
+                        muid.style.borderBottom = "3px solid red";
+                        mupass.style.borderBottom = "3px solid red";
+                        upass.value = "";
+                        mupass.value = "";
+                    }
+                } else {
+                    let data = JSON.parse(xhr.responseText);
+                    alert(msg);
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+    </script>
+</body>
+</html>

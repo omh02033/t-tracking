@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/../stylesheets/manu.css">
+    <link rel="stylesheet" href="/../stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>계정 찾기</title>
+    <style>
+        .main {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+        }
+        .login:hover, .signup:hover {
+            background: linear-gradient(#ff951c, #ea7d00);
+            background-color: #d67200;
+            box-shadow: 0 1px 1px #ffb45e;
+            color: #fff;
+            font-weight: bold;
+        }
+        .login:active, .signup:active {
+            background: linear-gradient(#d47c18, #bd6501);
+            background-color: #af5e01;
+            box-shadow: 0 1px 1px #ce914c;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #menubar {
+                display: none;
+            }
+            #mmenubar {
+                margin-bottom: 50px !important;
+            }
+            .logo {
+                display: none;
+            }
+            .select {
+                display: none;
+            }
+            .mselect {
+                width: 350px;
+                height: 200px;
+                margin-top: 150px;
+                display: flex;
+                margin: auto;
+                position: relative;
+            }
+            .mlogin, .msignup {
+                width: 150px;
+                height: 200px;
+                box-sizing: border-box;
+                border: 3px solid darkorange;
+                position: absolute;
+                text-align: center;
+            }
+            .mlogin {
+                left: 0;
+            }
+            .msignup {
+                right: 0;
+            }
+            .mlogin h1, .msignup h1 {
+                margin-top: 50px;
+                margin-bottom: 40px;
+                font-size: 2em !important;
+                font-weight: bold;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            #mmenubar {
+                display: none;
+            }
+            .mselect {
+                display: none;
+            }
+            .select {
+                width: 1000px;
+                height: 500px;
+                margin-top: 150px;
+                margin: auto;
+                display: flex;
+                position: relative;
+            }
+            .login, .signup {
+                width: 400px;
+                height: 500px;
+                box-sizing: border-box;
+                border: 3px solid darkorange;
+                position: absolute;
+                text-align: center;
+            }
+            .login {
+                left: 0;
+            }
+            .signup {
+                right: 0;
+            }
+            .login h1, .signup h1 {
+                margin-top: 100px;
+                margin-bottom: 80px;
+                font-size: 2em !important;
+                font-weight: bold;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            #menubar {
+                display: none;
+            }
+            .mselect {
+                display: none;
+            }
+            .select {
+                width: 900px;
+                height: 500px;
+                margin-top: 150px;
+                margin: auto;
+                display: flex;
+                position: relative;
+            }
+            .login, .signup {
+                width: 300px;
+                height: 400px;
+                box-sizing: border-box;
+                border: 3px solid darkorange;
+                position: absolute;
+                text-align: center;
+            }
+            .login {
+                left: 100px;
+            }
+            .signup {
+                right: 100px;
+            }
+            .login h1, .signup h1 {
+                margin-top: 100px;
+                margin-bottom: 80px;
+                font-size: 2em !important;
+                font-weight: bold;
+            }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            #mmenubar {
+                display: none;
+            }
+            .mselect {
+                display: none;
+            }
+            .select {
+                width: 1000px;
+                height: 500px;
+                margin-top: 150px;
+                margin: auto;
+                display: flex;
+                position: relative;
+            }
+            .login, .signup {
+                width: 400px;
+                height: 500px;
+                box-sizing: border-box;
+                border: 3px solid darkorange;
+                position: absolute;
+                text-align: center;
+            }
+            .login {
+                left: 0;
+            }
+            .signup {
+                right: 0;
+            }
+            .login h1, .signup h1 {
+                margin-top: 100px;
+                margin-bottom: 80px;
+                font-size: 2em !important;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>계정 찾기</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu" style="display: none;">
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="menutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" style="display: none; z-index: 50;" id="semenu">
+            <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="mmenutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+        <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer;">menu</i>
+        <div class="main1" style="text-align: center;">
+            <div class="select">
+                <div class="login">
+                    <h1>아이디를 잊었습니다.</h1>
+                    <i class="fa fa-fingerprint" style="color: #d67200; font-size: 150px;"></i>
+                </div>
+                <div class="signup">
+                    <h1>비밀번호를 잊었습니다.</h1>
+                    <i class="fa fa-key" style="color: #d67200; font-size: 150px;"></i>
+                </div>
+            </div>
+            <div class="mselect">
+                <div class="mlogin">
+                    <h1>아이디를 잊었습니다.</h1>
+                    <i class="fa fa-fingerprint" style="color: #d67200; font-size: 50px;"></i>
+                </div>
+                <div class="msignup">
+                    <h1>비밀번호를 잊었습니다.</h1>
+                    <i class="fa fa-key" style="color: #d67200; font-size: 50px;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/../javascripts/menu.js"></script>
+    <script>
+        let limgi = document.querySelector(".fa-fingerprint");
+        let simgi = document.querySelector(".fa-key");
+        let login = document.querySelector(".login");
+        let signup = document.querySelector(".signup");
+
+        let mlogin = document.querySelector(".mlogin");
+        let msignup = document.querySelector(".msignup");
+
+        login.onmouseover = () => {
+            limgi.style.color = "#fff";
+        }
+        login.onmouseout = () => {
+            limgi.style.color = "#d67200";
+        }
+        login.onclick = () => {
+            location.replace('/account/forget/id');
+        }
+        mlogin.onmouseover = () => {
+            limgi.style.color = "#fff";
+        }
+        mlogin.onmouseout = () => {
+            limgi.style.color = "#d67200";
+        }
+        mlogin.onclick = () => {
+            location.replace('/account/forget/id');
+        }
+
+        signup.onmouseover = () => {
+            simgi.style.color = "#fff";
+        }
+        signup.onmouseout = () => {
+            simgi.style.color = "#d67200";
+        }
+        signup.onclick = () => {
+            location.replace('/account/forget/password');
+        }
+        msignup.onmouseover = () => {
+            simgi.style.color = "#fff";
+        }
+        msignup.onmouseout = () => {
+            simgi.style.color = "#d67200";
+        }
+        msignup.onclick = () => {
+            location.replace('/account/forget/password');
+        }
+    </script>
+</body>
+</html>
