@@ -413,31 +413,35 @@
             <span>통합 택배 조회 서비스</span>
         </div>
         <div class="mlogin hide-on-med-and-down">
-            <form action="/account/login" method="POST" onsubmit="userCheck(event, this)"></form>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>아이디</th>
-                            <th>비밀번호</th>
-                        </tr>
-                        <tr>
-                            <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
-                            <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
-                            <td><input type="button" value="로그인" id="userloginsubmit"></td>
-                        </tr>
-                        <tr>
-                            <td><a href="#found">계정을 잊으셨나요?</a></td>
-                            <td><a href="/account/signup.html">회원가입</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <% if('a' == 'b') { %>
+            <% } else { %>
+                <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>아이디</th>
+                                <th>비밀번호</th>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
+                                <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
+                                <td><input type="button" value="로그인" id="userloginsubmit"></td>
+                            </tr>
+                            <tr>
+                                <td><a href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a href="/account/signup">회원가입</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            <% } %>
         </div>
     </div>
     <div class="main">
         <div class="menu" style="display: none;">
             <div class="menutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
             <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
-            <div class="menutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
             <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
@@ -446,7 +450,7 @@
         <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
             <div class="mmenutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
             <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
-            <div class="mmenutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
@@ -468,9 +472,8 @@
                 <label style="font-size: 15px;">택배 조회 코드</label>
                 <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
                 <div class="mtcodeinput">
-                    <form action="http://info.sweettracker.co.kr/tracking/5" method="POST" onsubmit="checktracking(event, this);"></form>
-                        <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
-                        <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                    <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                    <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
                 </div>
             </div>
             <div class="lookuptable">
@@ -512,28 +515,28 @@
                 <table border="1" class="striped" style="margin-bottom: 50px;">
                     <tbody>
                         <tr>
-                            <td style="border-right: 1px solid rgba(0,0,0,0.12); width: 90px;">물표 번호</td>
-                            <td><div class="ctnum elli" style="width: 100%; margin: 0;"></div></td>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12); width: 33.333333%;">물표 번호</td>
+                            <td><div class="ctnum elli" style="margin: 0; width: 66.666667%;"></div></td>
                         </tr>
                         <tr>
-                            <td style="border-right: 1px solid rgab(0,0,0,0.12); width: 90%;">받는 사람</td>
-                            <td><div class="ctuname elli" style="width: 100%; margin: 0;"></div></td>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">받는 사람</td>
+                            <td><div class="ctuname elli" style="margin: 0;"></div></td>
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid rgba(0,0,0,0.12);">물품 이름</td>
-                            <td><div class="ctname elli" style="width: 100%; margin: 0;"></div></td>
+                            <td><div class="ctname elli" style="margin: 0;"></div></td>
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid rgba(0,0,0,0.12);">현재 위치</td>
-                            <td><div class="elli" style="width: 100%; margin: 0;"><a class="ctloca" href="" target="_blank"></a></div></td>
+                            <td><div class="elli" style="margin: 0;"><a class="ctloca" href="" target="_blank"></a></div></td>
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid rgba(0,0,0,0.12);">배송 상태</td>
-                            <td><div class="ctstate elli" style="width: 100%; margin: 0;"></div></td>
+                            <td><div class="ctstate elli" style="margin: 0;"></div></td>
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid rgba(0,0,0,0.12);">자세히 보기</td>
-                            <td><div class="elli" style="width: 100%; margin: 0;"><a class="ctdetail" onclick="detail()"></a></div></td>
+                            <td><div class="elli" style="margin: 0;"><a class="ctdetail" onclick="detail()"></a></div></td>
                         </tr>
                     </tbody>
                 </table>
@@ -598,18 +601,16 @@
         let mjcodesubmit = document.getElementById("mjcodesubmit");
         let mjcode = document.getElementById("mjcode");
 
-        jcodesubmit.onclick = () => { checktracking(); }
-        jcode.onkeyup = () => {
-            if(event.keyCode == 13) { checktracking(); }
-        }
-        mjcodesubmit.onclick = () => { checktracking(); }
+        jcodesubmit.onclick = () => { checktracking('c'); }
+        jcode.onkeyup = () => { if(event.keyCode == 13) { checktracking('c'); } }
+        mjcodesubmit.onclick = () => { checktracking('m'); }
 
-        let ctnum = document.querySelector(".ctnum");
-        let ctuname = document.querySelector(".ctuname");
-        let ctname = document.querySelector(".ctname");
-        let ctloca = document.querySelector(".ctloca");
-        let ctstate = document.querySelector(".ctstate");
-        let ctdetail = document.querySelector(".ctdetail");
+        let ctnum = document.querySelectorAll(".ctnum");
+        let ctuname = document.querySelectorAll(".ctuname");
+        let ctname = document.querySelectorAll(".ctname");
+        let ctloca = document.querySelectorAll(".ctloca");
+        let ctstate = document.querySelectorAll(".ctstate");
+        let ctdetail = document.querySelectorAll(".ctdetail");
 
 
         // LOGIN
@@ -645,43 +646,45 @@
 
 
         //TRACKING
-        function checktracking() {
-            let info = {
-                num: jcode.value
-            }
-            console.log(jcode.value);
+        function checktracking(device) {
+            jcodesubmit.disabled = true;
+            mjcodesubmit.disabled = true;
+            let info = {};
+            if(device == 'c') { info = { num: jcode.value } }
+            else if(device == 'm') { info = { num: mjcode.value } }
+            else { alert('갑작스러운 에러가 발생했습니다. 관리자에게 문의해주세요.'); }
             console.log(info.num);
             let xhr = new XMLHttpRequest();
             xhr.open('POST', '/tracking/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = () => {
                 let data = JSON.parse(xhr.responseText);
-                if(xhr.status == 200) {
-                    console.log(data.msg);
-                    ctnum.innerHTML = data.code;
-                    ctuname.innerHTML = data.uname;
-                    ctname.innerHTML = data.itemName;
-                    console.log(data.t_code);
+                if(xhr.status === 200 && xhr.readyState === 4) {
+                    for(let i=0; i<ctnum.length; i++) { ctnum[i].innerHTML = data.code; }
+                    for(let i=0; i<ctuname.length; i++) { ctuname[i].innerHTML = data.uname; }
+                    for(let i=0; i<ctname.length; i++) { ctname[i].innerHTML = data.itemName; }
                     if(data.where == '') { ctloca.innerHTML = '조회 실패'; }
                     else {
-                        ctloca.innerHTML = data.where;
-                        ctloca.href = `https://www.google.co.kr/maps/search/${data.where}/`;
+                        for(let i=0; i<ctloca.length; i++) {
+                            ctloca[i].innerHTML = data.where;
+                            ctloca[i].href = `https://www.google.co.kr/maps/search/${data.where}/`;
+                        }
                     }
-                    if(data.level == 1) { ctstate.innerHTML = '배송준비중'; }
-                    else if(data.level == 2) { ctstate.innerHTML = '집화완료'; }
-                    else if(data.level == 3) { ctstate.innerHTML = '배송중'; }
-                    else if(data.level == 4) { ctstate.innerHTML = '지점 도착'; }
-                    else if(data.level == 5) { ctstate.innerHTML = '배송출발'; }
-                    else if(data.level == 6) { ctstate.innerHTML = '배송 완료'; }
-                    else { ctstate.innerHTML = '조회 실패'; }
-                    ctdetail.innerHTML = '자세히 보기';
-                    ctdetail.onclick = () => { window.open(`/tracking/detail?t_invoice=${data.code}&t_code=${data.t_code}`, '', 'width=500,height=705,scrollbar=yes'); }
-                } else {
-                    if(i == 0) {
-                        console.log(data.msg);
-                        if(data.msg) { alert(data.msg); }
-                        else { alert('유효하지 않은 운송장 번호 혹은 택배사 코드 입력'); }
+                    if(data.level == 1) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송준비중'; } }
+                    else if(data.level == 2) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '집화완료'; } }
+                    else if(data.level == 3) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송중'; } }
+                    else if(data.level == 4) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '지점 도착'; } }
+                    else if(data.level == 5) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송출발'; } }
+                    else if(data.level == 6) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송 완료'; } }
+                    else { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '조회 실패'; } }
+                    for(let i=0; i<ctdetail.length; i++) {
+                        ctdetail[i].innerHTML = '자세히 보기';
+                        ctdetail[i].onclick = () => { window.open(`/tracking/detail?t_invoice=${data.code}&t_code=${data.t_code}`, '', 'width=500,height=705,scrollbar=yes'); }
                     }
+                    jcodesubmitdisabled = false;
+                    mjcodesubmit.disabled = false;
+                } else if(xhr.status === 400 && xhr.readyState === 4 && data.msg == 'fail'){
+                    alert('유효하지 않은 운송장 번호 혹은 택배사 코드를 입력하였습니다.');
                 }
             }
             xhr.send(JSON.stringify(info));

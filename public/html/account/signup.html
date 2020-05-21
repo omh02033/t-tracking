@@ -178,7 +178,7 @@
                             <td><label class="btn waves-effect waves-orange" id="wphone">미완</label></td>
                         </tr>
                         <tr>
-                            <td>전화번호</td>
+                            <td>이메일</td>
                             <td><label class="btn waves-effect waves-orange" id="wnick">미완</label></td>
                         </tr>
                         <tr>
@@ -196,7 +196,6 @@
                                 <input type="text" name="uid" id="uid" minlength="5" placeholder="ID" required><br>
                                 <span class="checkid"></span>
                                 <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign1"><i class="material-icons right">navigate_next</i>다음</a><br>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:43%;" id="idcheck" onclick="idoverlapcheck()">중복 확인</a>
                             </div>
                             <div id="spass" style="display: none;">
                                 <h4>비밀번호</h4>
@@ -211,10 +210,17 @@
                                 <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back3"><i class="material-icons left">navigate_before</i>이전</a>
                             </div>
                             <div id="snick" style="display: none;">
-                                <h4>전화번호</h4>
-                                <input type="number" name="uphone" id="uphone" minlength="10" maxlength="11" placeholder="PHONE NUMBER ( - 빼고 쓰십시오)" required>
+                                <h4>이메일</h4>
+                                <input type="email" name="uemail" id="uphone" placeholder="EMAIL" required><br>
+                                <span class="waitemail"></span>
                                 <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign4"><i class="material-icons right">navigate_next</i>다음</a>
                                 <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back4"><i class="material-icons left">navigate_before</i>이전</a>
+                            </div>
+                            <div id="scheck" style="display: none;">
+                                <h4>이메일 인증</h4>
+                                <input type="number" name="uecheck" id="uemailcheck" placeholder="CODE">
+                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign45"><i class="material-icons right">navigate_next</i>다음</a>
+                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back45"><i class="material-icons left">navigate_before</i>이전</a>
                             </div>
                             <div id="sINB" style="display: none;">
                                 <h4>이름</h4>
@@ -235,7 +241,6 @@
                             <input type="text" name="uid" id="muid" minlength="4" maxlength="45" placeholder="ID" required><br>
                             <span class="checkid"></span>
                             <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign1"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:45%;" id="midcheck" onclick="idoverlapcheck()">중복 확인</a>
                         </div>
                         <div id="mspass" style="display: none;">
                             <h4>비밀번호</h4>
@@ -250,10 +255,17 @@
                             <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                         <div id="msnick" style="display: none;">
-                            <h4>전화번호</h4>
-                            <input type="number" name="uphone" id="muphone" minlength="10" maxlength="11" placeholder="PHONE NUMBER ( - 빼고 쓰십시오.)" required>
+                            <h4>이메일</h4>
+                            <input type="email" name="uemail" id="muphone" placeholder="EMAIL" required><br>
+                            <span class="waitemail"></span>
                             <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign4"><i class="material-icons right">navigate_next</i>다음</a>
                             <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="mscheck" style="display: none;">
+                            <h4>이메일 인증</h4>
+                            <input type="number" name="uecheck" id="muemailcheck" placeholder="CODE">
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign45"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback45"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                         <div id="msINB" style="display: none;">
                             <h4>이름</h4>
@@ -278,22 +290,26 @@
         let spass = document.getElementById("spass");
         let sphone = document.getElementById("sphone");
         let snick = document.getElementById("snick");
+        let scheck = document.getElementById("scheck");
         let sINB = document.getElementById("sINB");
 
         let sign1 = document.getElementById("sign1");  // 아이디 창
         let sign2 = document.getElementById("sign2");  // 비밀번호 창
         let sign3 = document.getElementById("sign3");  // 비밀번호 확인 창
-        let sign4 = document.getElementById("sign4");  // 전화번호 창
+        let sign4 = document.getElementById("sign4");  // 이메일 창
+        let sign45 = document.getElementById("sign45");// 인증번호 창
 
         let back2 = document.getElementById("back2");
         let back3 = document.getElementById("back3");
         let back4 = document.getElementById("back4");
+        let back45 = document.getElementById("back45");
         let back5 = document.getElementById("back5");
 
         let uid = document.getElementById("uid");            // 유저 아이디
         let upass = document.getElementById("upass");        // 유저 비밀번호
         let upasscon = document.getElementById("upasscon");  // 비밀번호 확인
-        let uphone = document.getElementById("uphone");      // 유저 전화번호
+        let uphone = document.getElementById("uphone");      // 유저 이메일
+        let uemailcheck = document.getElementById("uemailcheck");//인증번호
         let unick = document.getElementById("unick");        // 유저 이름
 
 
@@ -301,27 +317,36 @@
         let mspass = document.getElementById("mspass");
         let msphone = document.getElementById("msphone");
         let msnick = document.getElementById("msnick");
+        let mscheck = document.getElementById("msgcheck");
         let msINB = document.getElementById("msINB");
 
         let msign1 = document.getElementById("msign1");  // 아이디 창
         let msign2 = document.getElementById("msign2");  // 비밀번호 창
         let msign3 = document.getElementById("msign3");  // 비밀번호 확인 창
-        let msign4 = document.getElementById("msign4");  // 전화번호 창
+        let msign4 = document.getElementById("msign4");  // 이메일 창
+        let msign45 = document.getElementById("msign45");// 인증번호 창
 
         let mback2 = document.getElementById("mback2");
         let mback3 = document.getElementById("mback3");
         let mback4 = document.getElementById("mback4");
+        let mback45 = document.getElementById("mback45");
         let mback5 = document.getElementById("mback5");
 
         let muid = document.getElementById("muid");             // 유저 아이디
         let mupass = document.getElementById("mupass");         // 유저 비밀번호
         let mupasscon = document.getElementById("mupasscon");   // 비밀번호 확인
-        let muphone = document.getElementById("muphone");       // 유저 전화번호
+        let muphone = document.getElementById("muphone");       // 유저 이메일
+        let muemailcheck = document.getElementById("muemailcheck");// 인증번호
         let munick = document.getElementById("munick");         // 유저 이름
 
-        let idcheckspan = document.querySelector(".checkid");
+        let idcheckspan = document.querySelectorAll(".checkid");
+        let waitemail = document.querySelectorAll(".waitemail");
 
-        let idcheck = false
+        let idcheck = false;
+        let nowid = '';
+        let mnowid = '';
+
+        let chance = 5;
 
 
         function idoverlapcheck() {
@@ -336,12 +361,28 @@
                     let data = JSON.parse(xhr.responseText);
                     console.log(data.msg);
                     if(data.result == "success") {
+                        nowid = uid.value;
+                        mnowid = muid.value;
                         idcheck = true;
-                        idcheckspan.innerHTML = "사용 가능한 아이디 입니다.";
-                        idcheckspan.style.color = "green";
+                        for(let i=0; i<idcheckspan.length; i++) {
+                            idcheckspan[i].innerHTML = "사용 가능한 아이디 입니다.";
+                            idcheckspan[i].style.color = "green";
+                            
+                        }
+                        if(!nowid == '' && mnowid == '') {
+                            sid.style.display = "none";
+                            spass.style.display = "block";
+                            wid.innerHTML = "완료";
+                            wpass.innerHTML = "진행중..";
+                        } else if(!mnowid == '' && nowid == '') {
+                            msid.style.display = "none";
+                            mspass.style.display = "block";
+                        } else { alert("아이디를 입력해주세요."); }
                     } else {
-                        idcheckspan.innerHTML = "이미 사용중인 아이디 입니다.";
-                        idcheckspan.style.color = "red";
+                        for(let i=0; i<idcheckspan.length; i++) {
+                            idcheckspan[i].innerHTML = "이미 사용중인 아이디 입니다.";
+                            idcheckspan[i].style.color = "red";
+                        }
                     }
                 }
             }
@@ -355,13 +396,15 @@
             } else if(uid.value.length < 5) {
                 alert('아이디는 5글자 이상 적어주세요.');
             } else {
-                if(idcheck) {
+                if(idcheck && nowid == uid.value) {
                     sid.style.display = "none";
                     spass.style.display = "block";
                     wid.innerHTML = "완료";
                     wpass.innerHTML = "진행중..";
                 } else {
-                    alert('아이디 중복 확인을 해주세요.');
+                    for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
+                    idcheck = false;
+                    idoverlapcheck();
                 }
             }
         }
@@ -372,13 +415,17 @@
                 } else if(uid.value.length < 5) {
                     alert('아이디는 5글자 이상 적어주세요.');
                 } else {
-                    if(idcheck) {
+                    if(idcheck && nowid == uid.value) {
                         sid.style.display = "none";
                         spass.style.display = "block";
                         wid.innerHTML = "완료";
                         wpass.innerHTML = "진행중..";
                     } else {
-                        alert('아이디 중복 확인을 해주세요.');
+                        console.log(nowid);
+                        console.log(uid.value);
+                        for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
+                        idcheck = false;
+                        idoverlapcheck();
                     }
                 }
             }
@@ -441,31 +488,153 @@
         }
         sign4.onclick = () => {
             if(uphone.value == "") {
-                alert('전화번호를 입력해주세요.');
-            } else if(uphone.value.length < 11) {
-                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678');
-            } else if(uphone.value.length > 11) {
-                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678 (짝대기를 빼주세요)');
+                alert('이메일를 입력해주세요.');
             } else {
-                snick.style.display = "none";
-                sINB.style.display = "block";
-                wnick.innerHTML = "완료";
-                wINB.innerHTML = "진행중..";
+                let userInfo = {
+                    uemail: uphone.value
+                }
+                for(let i=0; i<waitemail.length; i++) {
+                    waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
+                    waitemail[i].style.color = "black";
+                }
+                alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/account/signup/emailcheck');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.msg) { console.log(data.msg); }
+                        if(data.result == "success") {
+                            alert("이메일로 인증번호를 발송했습니다. 확인해주세요.");
+                            snick.style.display = "none";
+                            scheck.style.display = "block";
+                            sign45.onclick = () => {
+                                if(chance <= 0) {
+                                    alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                    chance = 5;
+                                    scheck.style.display = "none";
+                                    sphone.style.display ="block";
+                                } else {
+                                    if(uemailcheck.value == data.code) {
+                                        chance = 5;
+                                        wnick.innerHTML = "완료";
+                                        wINB.innerHTML = "진행중..";
+                                        scheck.style.display = "none";
+                                        sINB.style.display = "block";
+                                    } else {
+                                        alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                        chance--;
+                                    }
+                                }
+                            }
+                            uemailcheck.onkeyup = (event) => {
+                                if(event.keyCode == 13) {
+                                    if(chance <= 0) {
+                                        alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                        chance = 5;
+                                        scheck.style.display = "none";
+                                        sphone.style.display ="block";
+                                    } else {
+                                        if(uemailcheck.value == data.code) {
+                                            chance = 5;
+                                            wnick.innerHTML = "완료";
+                                            wINB.innerHTML = "진행중..";
+                                            scheck.style.display = "none";
+                                            sINB.style.display = "block";
+                                        } else {
+                                            alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                            chance--;
+                                        }
+                                    }
+                                }
+                            }
+                        } else if(data.msg) {
+                            alert(data.msg);
+                            for(let i=0; i<waitemail.length; i++) {
+                                waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                waitemail[i].style.color = "red";
+                            }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(userInfo));
             }
         }
         uphone.onkeyup = (event) => {
             if(event.keyCode == 13) {
-                if(uphone.value == "") {
-                    alert('전화번호를 입력해주세요.');
-                } else if(uphone.value.length < 11) {
-                    alert('전화번호를 바르게 입력해 주세요. ex) 01012345678');
-                } else if(uphone.value.length > 11) {
-                    alert('전화번호를 바르게 입력해 주세요. ex) 01012345678 (짝대기를 빼주세요)');
-                } else {
-                    snick.style.display = "none";
-                    sINB.style.display = "block";
-                    wnick.innerHTML = "완료";
-                    wINB.innerHTML = "진행중..";
+                if(uphone.value == "") { alert('이메일를 입력해주세요.'); }
+                else {
+                    let userInfo = {
+                        uemail: uphone.value
+                    }
+                    for(let i=0; i<waitemail.length; i++) {
+                        waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
+                        waitemail[i].style.color = "black";
+                    }
+                    alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/account/signup/emailcheck');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function () {
+                        if(xhr.readyState === 4 && xhr.status === 200) {
+                            let data = JSON.parse(xhr.responseText);
+                            if(data.msg) { console.log(data.msg); }
+                            if(data.result == "success") {
+                                alert("이메일로 인증번호를 발송했습니다. 확인해주세요.");
+                                snick.style.display = "none";
+                                scheck.style.display = "block";
+                                sign45.onclick = () => {
+                                    if(chance <= 0) {
+                                        alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                        chance = 5;
+                                        scheck.style.display = "none";
+                                        sphone.style.display ="block";
+                                    } else {
+                                        if(uemailcheck.value == data.code) {
+                                            chance = 5;
+                                            wnick.innerHTML = "완료";
+                                            wINB.innerHTML = "진행중..";
+                                            scheck.style.display = "none";
+                                            sINB.style.display = "block";
+                                        } else {
+                                            alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                            chance--;
+                                        }
+                                    }
+                                }
+                                uemailcheck.onkeyup = (event) => {
+                                    if(event.keyCode == 13) {
+                                        console.log(event.keyCode);
+                                        if(chance <= 0) {
+                                            alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                            chance = 5;
+                                            scheck.style.display = "none";
+                                            sphone.style.display ="block";
+                                        } else {
+                                            if(uemailcheck.value == data.code) {
+                                                chance = 5;
+                                                wnick.innerHTML = "완료";
+                                                wINB.innerHTML = "진행중..";
+                                                scheck.style.display = "none";
+                                                sINB.style.display = "block";
+                                            } else {
+                                                alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                                chance--;
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if(data.msg) {
+                                alert(data.msg);
+                                for(let i=0; i<waitemail.length; i++) {
+                                    waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                    waitemail[i].style.color = "red";
+                                }
+                            }
+                        }
+                    }
+                    xhr.send(JSON.stringify(userInfo));
                 }
             }
         }
@@ -489,6 +658,10 @@
             wphone.innerHTML = "진행중..";
             wnick.innerHTML = "미완";
         }
+        back45.onclick = () => {
+            scheck.style.display = "none";
+            sphone.style.display = "block";
+        }
         back5.onclick = () => {
             sINB.style.display = "none";
             snick.style.display = "block";
@@ -501,11 +674,17 @@
         msign1.onclick = () => {
             if(muid.value == "") {
                 alert('아이디를 입력해주세요.');
-            } else if(muid.length < 5) {
+            } else if(muid.value.length < 5) {
                 alert('아이디는 5글자 이상 적어주세요.');
             } else {
-                msid.style.display = "none";
-                mspass.style.display = "block";
+                if(idcheck && mnowid == muid.value) {
+                    msid.style.display = "none";
+                    mspass.style.display = "block";
+                } else {
+                    for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
+                    idcheck = false;
+                    idoverlapcheck();
+                }
             }
         }
         msign2.onclick = () => {
@@ -532,14 +711,54 @@
         }
         msign4.onclick = () => {
             if(muphone.value == "") {
-                alert('전화번호를 입력해주세요.');
-            } else if(muphone.value.length < 11) {
-                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678');
-            } else if(muphone.value.length > 11) {
-                alert('전화번호를 바르게 입력해 주세요. ex) 01012345678 (짝대기를 빼주세요)');
+                alert('이메일를 입력해주세요.');
             } else {
-                msnick.style.display = "none";
-                msINB.style.display = "block";
+                let userInfo = {
+                    uemail: uphone.value
+                }
+                for(let i=0; i<waitemail.length; i++) {
+                    waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
+                    waitemail[i].style.color = "black";
+                }
+                alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/account/signup/emailcheck');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.msg) { console.log(data.msg); }
+                        if(data.result == "success") {
+                            alert("이메일로 인증번호가 발송되었습니다. 확인해주세요.");
+                            msnick.style.display = "none";
+                            mscheck.style.display = "block";
+                            msign45.onclick = () => {
+                                if(chance <= 0) {
+                                    alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                    chance = 5;
+                                    mscheck.style.display = "none";
+                                    msphone.style.display ="block";
+                                } else {
+                                    if(uemailcheck.value == data.code) {
+                                        chance = 5;
+                                        mscheck.style.display = "none";
+                                        msINB.style.display = "block";
+                                    } else {
+                                        alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                        chance--;
+                                    }
+                                }
+                            }
+                        } else if(data.msg) {
+                            console.log(data.msg);
+                            for(let i=0; i<waitemail.length; i++) {
+                                waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                waitemail[i].style.color = "red";
+                            }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(userInfo));
             }
         }
 
@@ -556,6 +775,10 @@
             msnick.style.display = "none";
             msphone.style.display = "block";
         }
+        mback45.onclick = () => {
+            mscheck.style.display = "none";
+            msnick.style.display = "none";
+        }
         mback5.onclick = () => {
             msINB.style.display = "none";
             msnick.style.display = "block";
@@ -568,7 +791,7 @@
             let userInfo = {
                 id: form.uid.value,
                 password: form.upass.value,
-                phone: form.uphone.value,
+                email: form.uemail.value,
                 nick: form.unick.value
             }
             let xhr = new XMLHttpRequest();

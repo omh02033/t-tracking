@@ -33,7 +33,6 @@
             color: #aaaaaa;
             font-weight: normal;
             width: 33.333333%;
-            float: left;
         }
         .formgroup > div {
             font-size: 16px;
@@ -41,6 +40,7 @@
             color: #343434;
             width: 66.666667%;
             padding: 0 15px;
+            float: right;
         }
         .status {
             width: 100%;
@@ -50,7 +50,7 @@
             border-bottom: 2px solid #ddd;
             padding: 11px;
             color: #333;
-            font-weight: bold;
+            font-weight: bold !important;
         }
         .status tbody tr { border-bottom: none !important; }
         .status tbody tr td {
@@ -60,6 +60,7 @@
             color: #333;
         }
         td {
+            font-weight: normal;
             white-space:nowrap;
             text-overflow:ellipsis;
             -o-text-overflow:ellipsis;
@@ -111,6 +112,8 @@
             let code = getParameterByName('t_code');
             let num = getParameterByName('t_invoice');
 
+            let trindex = 1;
+
             let b_invoice = document.getElementById("b_invoice");
             let b_uname = document.getElementById("b_uname");
             let b_sender = document.getElementById("b_sender");
@@ -134,7 +137,7 @@
             xhr.open('POST', '/tracking/detail/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
-                if(xhr.status === 200) {
+                if(xhr.status === 200 && xhr.readyState === 4) {
                     let data = JSON.parse(xhr.responseText);
                     if(data.msg) {
                         console.log(data.msg);
@@ -144,20 +147,16 @@
                     b_sender.innerHTML = data.sender;
                     b_home.innerHTML = data.home;
                     b_tname.innerHTML = data.itemName;
-                    console.log(data.detail);
-                    console.log(data.uname);
-                    for(let i=0; i<data.detail.length; i++) {
+                    for(let i=data.detail.length; i>=0; i--) {
                         let tr = document.createElement("tr");
                         statusTbody.append(tr);
                         let th1 = document.createElement("th");
                         let th2 = document.createElement("th");
                         let th3 = document.createElement("th");
-                        th1.innerHTML = data.detail[i].timeString;
-                        th2.innerHTML = data.detail[i].where;
-                        th3.innerHTML = data.detail[i].kind;
-                        console.log(i);
-                        console.log(data.detail.length-1);
-                        if(i == data.detail.length-1) {
+                        th1.innerHTML = data.detail[i-1].timeString;
+                        th2.innerHTML = data.detail[i-1].where;
+                        th3.innerHTML = data.detail[i-1].kind;
+                        if(i == data.detail.length) {
                             th1.style.backgroundColor = "rgba(173,173,173,0.2)";
                             th1.style.color = "#333";
                             th2.style.backgroundColor = "rgba(173,173,173,0.2)";
@@ -165,14 +164,18 @@
                             th3.style.backgroundColor = "rgba(173,173,173,0.2)";
                             th3.style.color = "#333";
                         } else {
-                            th1.style.color = "#aaaaaa";
-                            th2.style.color = "#aaaaaa";
-                            th3.style.color = "#aaaaaa";
+                            th1.style.color = "#aaa";
+                            th1.style.fontWeight = "normal";
+                            th2.style.color = "#aaa";
+                            th2.style.fontWeight = "normal";
+                            th3.style.color = "#aaa";
+                            th3.style.fontWeight = "normal";
                         }
                         let tr1 = document.querySelectorAll("tr");
-                        tr1[i+1].append(th1);
-                        tr1[i+1].append(th2);
-                        tr1[i+1].append(th3);
+                        tr1[trindex].append(th1);
+                        tr1[trindex].append(th2);
+                        tr1[trindex].append(th3);
+                        trindex++;
                     }
                 }
             }

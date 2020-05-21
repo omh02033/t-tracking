@@ -241,7 +241,7 @@
                     <i class="fa fa-box-open" style="color: #d67200; font-size: 50px;"></i>
                 </div>
             </div>
-            <a class="waves-effect waves-light btn-small orange" style="margin-top: 50px;"><i class="material-icons left">mood_bad</i>계정을 잊었습니다..</a>
+            <a class="waves-effect waves-light btn-small orange" id="forget" style="margin-top: 50px;"><i class="material-icons left">mood_bad</i>계정을 잊었습니다..</a>
         </div>
     </div>
     <script src="/../javascripts/menu.js"></script>
@@ -253,6 +253,9 @@
 
         let mlogin = document.querySelector(".mlogin");
         let msignup = document.querySelector(".msignup");
+
+        let forget = document.getElementById("forget");
+        forget.onclick = () => { location.replace('/account/forget'); }
 
         login.onmouseover = () => {
             limgi.style.color = "#fff";
