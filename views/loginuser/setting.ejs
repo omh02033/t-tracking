@@ -1,3 +1,469 @@
-<% if(req.decoded){ %>
-    <h1>Hello <%= req.decoded.name %></h1>
-    <%%>
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/../stylesheets/manu.css">
+    <link rel="stylesheet" href="/../stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>통합 택배 조회 서비스</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        .mlogin {
+            position: absolute;
+            right: 50px;
+        }
+        .mlogin table {
+            text-align: left;
+            border-collapse: unset !important;
+        }
+        .mlogin table td, .mlogin table th {
+            padding: 2px !important;
+        }
+        #uid, #upass {
+            width: 140px;
+            height: 15px;
+            padding-bottom: 2px;
+            color: #fff;
+            font-size: 13px !important;
+            margin: 0px 10px 0px 0px !important;
+        }
+        #userloginsubmit {
+            width: 60px;
+            height: 20px;
+            background-color: #d17000;
+            color : white;
+            border: 1px solid orange;
+            font-weight: bold;
+        }
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .main {
+            width: 100%;
+            height: fit-content;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+        }
+        .lookuptable {
+            width: 80%;
+            margin: auto;
+            margin-top: 100px;
+            border-collapse: collapse;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        .trfirst td {
+            text-align: center !important;
+            box-sizing: border-box;
+        }
+        .trsecond td {
+            border-right: 1px solid rgba(0,0,0,0.12);
+            padding: 3px !important;
+            box-sizing: border-box;
+        }
+        .elli {
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            -o-text-overflow:ellipsis;
+            overflow: hidden;
+            -moz-binding: url('ellipsis.xml#ellipsis');
+        }
+        .mlookuptable {
+            width: 80%;
+            margin: auto;
+            margin-top: 20px;
+            border-collapse: collapse;
+            justify-content: center;
+        }
+        .emphasized {
+            z-index: 500;
+            box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px;
+        }
+        .loading {
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            transform: translate(-50%, -50%);
+        }
+        .loadingif {
+            width: 100%;
+            height: 100%;
+        }
+        @media only screen and (max-width: 600px) {
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+            .lookuptable {
+                display: none;
+            }
+            #semenu {
+                display: none;
+            }
+            .tcode {
+                display: none;
+            }
+            .explain {
+                display: none;
+            }
+            .mtcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mtcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width:100%;
+                height: 60px;
+                position: relative;
+            }
+            #mjcode {
+                position: absolute;
+                left: 2%;
+                width: 80%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #mjcodesubmit {
+                position: absolute;
+                right: 3px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #mjcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mexplain {
+                position: absolute;
+                bottom: -150px;
+                width: 100%;
+                height: 100px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .mexplain1 {
+                height: 100%;
+                width: 85%;
+                margin: auto;
+                text-align: center;
+                padding: 15px 0;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            #mmenubar {
+                display: none;
+            }
+            .mlookuptable {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mexplain {
+                display: none;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            #jcode {
+                position: absolute;
+                left: 5%;
+                width: 88%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 30px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .explain {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 200px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .explain1 {
+                height: 100%;
+                width: 50%;
+                margin: auto;
+                text-align: center;
+                padding: 30px 0;
+            }
+            .explain a {
+                font-size: .8rem;
+            }
+            .explain table tr {
+                border-bottom: none !important;
+            }
+            .explain table tr td {
+                border-right: 1px solid darkgray;
+                padding:0;
+                margin: 0;
+                text-align: center;
+            }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            #mmenubar {
+                display: none;
+            }
+            .mlookuptable {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mlogin {
+                display: none;
+            }
+            .tcodeinput .fa {
+                display: none;
+            }
+            .mexplain {
+                display: none;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            #jcode {
+                position: absolute;
+                left: 5%;
+                width: 88%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .explain {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 200px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .explain1 {
+                height: 100%;
+                width: 50%;
+                margin: auto;
+                text-align: center;
+                padding: 30px 0;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            #mmenubar {
+                display: none;
+            }
+            .lookuptable {
+                display: none;
+            }
+            .mlogin {
+                display: none;
+            }
+            .tcodeinput .fa {
+                display: none;
+            }
+            .explain {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            #jcode {
+                position: absolute;
+                left: 5%;
+                width: 88%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 30px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .mexplain {
+                position: absolute;
+                bottom: -100px;
+                width: 100%;
+                height: 100px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .mexplain1 {
+                height: 100%;
+                width: 85%;
+                margin: auto;
+                text-align: center;
+                padding: 15px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo hide-on-med-and-down" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>통합 택배 조회 서비스</span>
+        </div>
+        <div class="mlogin hide-on-med-and-down">
+            <table id="logined">
+                <tbody>
+                    <tr><td><%= decoded.uname %> : <%= decoded.uid %></td></tr>
+                    <tr><td style="text-align: right;"><a href="/account/logout">로그아웃</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="main">
+        <div class="menu" style="display: none;">
+            <div class="menutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
+            <div class="mmenutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+    </div>
+    <script src="/../javascripts/menu.js"></script>
+    <script>
+    </script>
+</body>
+</html>

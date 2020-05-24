@@ -281,44 +281,54 @@
             <span>더보기</span>
         </div>
         <div class="mlogin hide-on-med-and-down">
-            <form action="/account/login" method="POST" onsubmit="userCheck(event, this)"></form>
+            <% if(decoded) { %>
                 <table>
                     <tbody>
-                        <tr>
-                            <th>아이디</th>
-                            <th>비밀번호</th>
-                        </tr>
-                        <tr>
-                            <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
-                            <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
-                            <td><input type="button" value="로그인" id="userloginsubmit"></td>
-                        </tr>
-                        <tr>
-                            <td><a href="#found">계정을 잊으셨나요?</a></td>
-                            <td><a href="#signup">회원가입</a></td>
-                        </tr>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %></td></tr>
+                        <tr><td style="text-align: right;"><a href="/account/logout">로그아웃</a></td></tr>
                     </tbody>
                 </table>
+            <% } else { %>
+                <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>아이디</th>
+                                <th>비밀번호</th>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
+                                <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
+                                <td><input type="submit" value="로그인" id="userloginsubmit"></td>
+                            </tr>
+                            <tr>
+                                <td><a href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a href="/account/signup">회원가입</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            <% } %>
         </div>
     </div>
 
     <div class="main">
         <div class="menu" style="display: none;">
             <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
-            <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
-            <div class="menutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
             <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
-            <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
-            <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/buyer/');">유료 서비스 이용</div>
             <div class="menutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="mmenu" style="display: none; position: relative; z-index: 50;" id="semenu">
             <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
-            <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
-            <div class="mmenutap menutap3" onclick="location.replace('#3');">택배 조회 기록</div>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
-            <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
-            <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer/');">유료 서비스 이용</div>
             <div class="mmenutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
@@ -672,7 +682,7 @@
                     console.log(data.msg);
                     if(data.result == "success") {
                         console.log(data.msg);
-                        // 로그인 성공
+                        location.replace('/about');
                     } else if(data.result == "fail") {
                         alert(data.msg);
                         uid.style.borderBottom = "2px solid red";

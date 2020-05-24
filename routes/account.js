@@ -4,7 +4,7 @@ const path = require('path');
 const mysql = require('mysql');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
-const secretObj = require('../config/jwt');
+const config = require('../config/jwt');
 
 let conn = mysql.createConnection({
     host : 'localhost',
@@ -49,23 +49,27 @@ function sm(email, res) {
 }
 
 router
-.get('/', (req, res) => {
+.get('/', check, (req, res) => {
     res.sendFile('account/index.html', { root: path.join(__dirname, '../public/html') });
 })
-.get('/login/', (req, res) => {
+.get('/login/', check, (req, res) => {
     res.sendFile('account/login.html', { root: path.join(__dirname, '../public/html') });
 })
-.get('/signup/', (req, res) => {
+.get('/signup/', check, (req, res) => {
     res.sendFile('account/signup.html', { root: path.join(__dirname, '../public/html') });
 })
-.get('/forget/', (req, res) => {
+.get('/forget/', check, (req, res) => {
     res.sendFile('account/forget.html', { root: path.join(__dirname, '../public/html') });
 })
-.get('/forget/id/', (req, res) => {
+.get('/forget/id/', check, (req, res) => {
     res.sendFile('account/fid.html', { root: path.join(__dirname, '../public/html') });
 })
-.get('/forget/password/', (req, res) => {
+.get('/forget/password/', check, (req, res) => {
     res.sendFile('account/fpass.html', { root: path.join(__dirname, '../public/html') });
+})
+.get('/logout/', (req, res) => {
+    res.clearCookie('user');
+    res.redirect('/');
 })
 
 .post('/login/', (req, res) => {
@@ -86,7 +90,8 @@ router
         } else if(data.length >= 1) {
             let user = data[0];
             if(user.userpass == upass) {
-                let token = jwt.sign({ unum: user.id, uid: user.userid, uname: user.name }, secretObj.secret, { expiresIn: '30m' } );
+                let token = jwt.sign({ unum: user.id, uid: user.userid, uname: user.name }, config.secret );
+                console.log(token)
                 res.cookie("user", token);
                 res.status(200).json({
                     msg: '로그인에 성공하였습니다.',
@@ -265,3 +270,17 @@ router
 })
 
 module.exports = router;
+
+function check(req, res, next){
+    let token = req.cookies.user;
+    if(!token){
+        res.locals.decoded = null;
+        return next();
+    }
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if(err) {
+            return res.json(err)
+        }
+        return res.sendFile('comeback.html', { root: path.join(__dirname, '../public/html') });
+    });
+}

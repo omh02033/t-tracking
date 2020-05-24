@@ -88,6 +88,24 @@
             border-collapse: collapse;
             justify-content: center;
         }
+        .emphasized {
+            z-index: 500;
+            box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px;
+        }
+        .loading {
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            transform: translate(-50%, -50%);
+        }
+        .loadingif {
+            width: 100%;
+            height: 100%;
+        }
         @media only screen and (max-width: 600px) {
             .exp span {
                 font-size: 35px;
@@ -413,10 +431,16 @@
             <span>통합 택배 조회 서비스</span>
         </div>
         <div class="mlogin hide-on-med-and-down">
-            <% if('a' == 'b') { %>
+            <% if(decoded) { %>
+                <table id="logined">
+                    <tbody>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %></td></tr>
+                        <tr><td style="text-align: right;"><a href="/account/logout">로그아웃</a></td></tr>
+                    </tbody>
+                </table>
             <% } else { %>
                 <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
-                    <table>
+                    <table id="nlogin">
                         <tbody>
                             <tr>
                                 <th>아이디</th>
@@ -425,7 +449,7 @@
                             <tr>
                                 <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
                                 <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
-                                <td><input type="button" value="로그인" id="userloginsubmit"></td>
+                                <td><input type="submit" value="로그인" id="userloginsubmit"></td>
                             </tr>
                             <tr>
                                 <td><a href="/account/forget">계정을 잊으셨나요?</a></td>
@@ -440,20 +464,20 @@
     <div class="main">
         <div class="menu" style="display: none;">
             <div class="menutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
-            <div class="menutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
-            <div class="menutap menutap5" onclick="location.replace('#5');">설정</div>
-            <div class="menutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
             <div class="mmenutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
-            <div class="mmenutap menutap2" onclick="location.replace('#2');">택배 관리</div>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
-            <div class="mmenutap menutap5" onclick="location.replace('#5');">설정</div>
-            <div class="mmenutap menutap55" onclick="location.replace('#55');">유료 서비스 이용</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
@@ -461,20 +485,62 @@
             <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
             <div class="tcode" style="position: relative;">
                 <label style="font-size: 15px;">택배 조회 코드</label>
-                <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
-                <div class="tcodeinput">
-                    <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
-                    <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
-                    <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
-                </div>
+                <% if(decoded) { %>
+                    <% if(payo) { %>
+                        <select name="delichoose" id="delichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: fit-content; height: 25px; padding: 0;">
+                            <option value="domestic">국내택배 (Korean delivery)</option>
+                            <option value="international">국제택배 (International delivery)</option>
+                        </select>
+                        <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
+                        <div class="tcodeinput">
+                            <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
+                            <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
+                            <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } else { %>
+                        <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
+                        <div class="tcodeinput">
+                            <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
+                            <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
+                            <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
+                    <div class="tcodeinput">
+                        <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
+                        <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
+                        <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
+                    </div>
+                <% } %>
             </div>
             <div class="mtcode" style="position: relative;">
                 <label style="font-size: 15px;">택배 조회 코드</label>
-                <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
-                <div class="mtcodeinput">
-                    <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
-                    <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
-                </div>
+                <% if(decoded) { %>
+                    <% if(payo) { %>
+                        <select name="delichoose" id="delichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: 90px; height: 25px; padding: 0;">
+                            <option value="domestic">국내택배 (Korean delivery)</option>
+                            <option value="international">국제택배 (International delivery)</option>
+                        </select>
+                        <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
+                        <div class="mtcodeinput">
+                            <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                            <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } else { %>
+                        <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
+                        <div class="mtcodeinput">
+                            <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                            <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
+                    <div class="mtcodeinput">
+                        <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                        <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                    </div>
+                <% } %>
             </div>
             <div class="lookuptable">
                 <table border="1" class="responsive-table" style="table-layout: fixed; margin-bottom: 200px;">
@@ -513,10 +579,14 @@
 
             <div class="mlookuptable">
                 <table border="1" class="striped" style="margin-bottom: 50px;">
+                    <colgroup>
+                        <col style="width: 33.33333%">
+                        <col style="width: 66.66667%">
+                    </colgroup>
                     <tbody>
                         <tr>
-                            <td style="border-right: 1px solid rgba(0,0,0,0.12); width: 33.333333%;">물표 번호</td>
-                            <td><div class="ctnum elli" style="margin: 0; width: 66.666667%;"></div></td>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">물표 번호</td>
+                            <td><div class="ctnum elli" style="margin: 0;"></div></td>
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid rgba(0,0,0,0.12);">받는 사람</td>
@@ -592,6 +662,7 @@
             </div>
         </div>
     </div>
+    <div class="loading emphasized"><div class="loadingif"><img src="../images/loading.gif" alt="" style="max-width: 100%; height:100%; box-shadow: none !important;"></div></div>
     <script src="/../javascripts/menu.js"></script>
     <script>
         let jcodesubmit = document.getElementById("jcodesubmit");
@@ -601,9 +672,20 @@
         let mjcodesubmit = document.getElementById("mjcodesubmit");
         let mjcode = document.getElementById("mjcode");
 
-        jcodesubmit.onclick = () => { checktracking('c'); }
-        jcode.onkeyup = () => { if(event.keyCode == 13) { checktracking('c'); } }
-        mjcodesubmit.onclick = () => { checktracking('m'); }
+        jcodesubmit.onclick = () => {
+            if(jcode.value.length == 0) { alert('운송장 번호를 입력해주세요'); }
+            else { checktracking('c'); }
+        }
+        jcode.onkeyup = () => {
+            if(event.keyCode == 13) {
+                if(jcode.value.length == 0) { alert('운송장 번호를 입력해주세요'); }
+                else { checktracking('c'); }
+            }
+        }
+        mjcodesubmit.onclick = () => {
+            if(mjcode.value.length == 0) { alert('운송장 번호를 입력해주세요'); }
+            else { checktracking('m'); }
+        }
 
         let ctnum = document.querySelectorAll(".ctnum");
         let ctuname = document.querySelectorAll(".ctuname");
@@ -611,6 +693,11 @@
         let ctloca = document.querySelectorAll(".ctloca");
         let ctstate = document.querySelectorAll(".ctstate");
         let ctdetail = document.querySelectorAll(".ctdetail");
+
+        let loadingScreen = document.querySelector(".loading");
+        let loadingif = document.querySelector(".loadingif");
+
+        if(document.getElementById("delichoose")) { let deliselect = document.getElementById("delichoose"); }
 
 
         // LOGIN
@@ -630,7 +717,7 @@
                     console.log(data.msg);
                     if(data.result == "success") {
                         console.log(data.msg);
-                        // 로그인 성공
+                        location.replace('/');
                     } else if(data.result == "fail") {
                         alert(data.msg);
                         uid.style.borderBottom = "2px solid red";
@@ -644,14 +731,29 @@
             xhr.send(JSON.stringify(userInfo));
         }
 
-
         //TRACKING
         function checktracking(device) {
             jcodesubmit.disabled = true;
             mjcodesubmit.disabled = true;
+            loadingScreen.style.display = "inline-block";
+            loadingScreen.classList.add('emphasized');
             let info = {};
-            if(device == 'c') { info = { num: jcode.value } }
-            else if(device == 'm') { info = { num: mjcode.value } }
+            if(device == 'c') {
+                if(deliselect) {
+                    info = {
+                        select: deliselect.value,
+                        num: jcode.value
+                    }
+                } else { info = { num: jcode.value } }
+            }
+            else if(device == 'm') {
+                if(deliselect) {
+                    info = {
+                        select: deliselect.value,
+                        num: mjcode.value
+                    }
+                } else { info = { num: mjcode.value } }
+            }
             else { alert('갑작스러운 에러가 발생했습니다. 관리자에게 문의해주세요.'); }
             console.log(info.num);
             let xhr = new XMLHttpRequest();
@@ -660,31 +762,36 @@
             xhr.onreadystatechange = () => {
                 let data = JSON.parse(xhr.responseText);
                 if(xhr.status === 200 && xhr.readyState === 4) {
-                    for(let i=0; i<ctnum.length; i++) { ctnum[i].innerHTML = data.code; }
-                    for(let i=0; i<ctuname.length; i++) { ctuname[i].innerHTML = data.uname; }
-                    for(let i=0; i<ctname.length; i++) { ctname[i].innerHTML = data.itemName; }
-                    if(data.where == '') { ctloca.innerHTML = '조회 실패'; }
+                    loadingScreen.classList.remove('emphasized');
+                    loadingScreen.style.display = "none";
+                    if(data.msg) { alert(data.msg); }
                     else {
-                        for(let i=0; i<ctloca.length; i++) {
-                            ctloca[i].innerHTML = data.where;
-                            ctloca[i].href = `https://www.google.co.kr/maps/search/${data.where}/`;
+                        for(let i=0; i<ctnum.length; i++) { ctnum[i].innerHTML = data.code; }
+                        for(let i=0; i<ctuname.length; i++) { ctuname[i].innerHTML = data.uname; }
+                        for(let i=0; i<ctname.length; i++) { ctname[i].innerHTML = data.itemName; }
+                        if(data.where == '') { ctloca.innerHTML = '조회 실패'; }
+                        else {
+                            for(let i=0; i<ctloca.length; i++) {
+                                ctloca[i].innerHTML = data.where;
+                                ctloca[i].href = `https://www.google.co.kr/maps/search/${data.where}/`;
+                            }
                         }
+                        if(data.level == 1) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송준비중'; } }
+                        else if(data.level == 2) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '집화완료'; } }
+                        else if(data.level == 3) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송중'; } }
+                        else if(data.level == 4) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '지점 도착'; } }
+                        else if(data.level == 5) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송출발'; } }
+                        else if(data.level == 6) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송 완료'; } }
+                        else { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '조회 실패'; } }
+                        for(let i=0; i<ctdetail.length; i++) {
+                            ctdetail[i].innerHTML = '자세히 보기';
+                            ctdetail[i].onclick = () => { window.open(`/tracking/detail?t_invoice=${data.code}&t_code=${data.t_code}`, '', 'width=500,height=705,scrollbar=yes'); }
+                        }
+                        jcodesubmitdisabled = false;
+                        mjcodesubmit.disabled = false;
                     }
-                    if(data.level == 1) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송준비중'; } }
-                    else if(data.level == 2) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '집화완료'; } }
-                    else if(data.level == 3) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송중'; } }
-                    else if(data.level == 4) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '지점 도착'; } }
-                    else if(data.level == 5) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송출발'; } }
-                    else if(data.level == 6) { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송 완료'; } }
-                    else { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '조회 실패'; } }
-                    for(let i=0; i<ctdetail.length; i++) {
-                        ctdetail[i].innerHTML = '자세히 보기';
-                        ctdetail[i].onclick = () => { window.open(`/tracking/detail?t_invoice=${data.code}&t_code=${data.t_code}`, '', 'width=500,height=705,scrollbar=yes'); }
-                    }
-                    jcodesubmitdisabled = false;
-                    mjcodesubmit.disabled = false;
-                } else if(xhr.status === 400 && xhr.readyState === 4 && data.msg == 'fail'){
-                    alert('유효하지 않은 운송장 번호 혹은 택배사 코드를 입력하였습니다.');
+                } else if(xhr.status === 400 && xhr.readyState === 4 && data.msg){
+                    alert(data.msg);
                 }
             }
             xhr.send(JSON.stringify(info));

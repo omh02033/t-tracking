@@ -45,6 +45,7 @@
         .status {
             width: 100%;
             padding: 0 15px;
+            margin-bottom: 30px;
         }
         .status thead tr td {
             border-bottom: 2px solid #ddd;
@@ -98,7 +99,7 @@
         <table>
             <thead>
                 <tr>
-                    <td>시간</td>
+                    <td style="width: 150px;">시간</td>
                     <td>현재 위치</td>
                     <td>배송 상태</td>
                 </tr>
@@ -107,10 +108,38 @@
             </tbody>
         </table>
     </div>
+
+    <div class="top"><span style="font-weight: bold;">자세히 보기</span></div>
+    <div class="detail">
+        <table class="striped">
+            <tr>
+                <td style="font-weight: bold;">배송예정 시간</td>
+                <td class="estimate"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">배송기사 이름</td>
+                <td class="manPic"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">배송기사 전화번호</td>
+                <td class="phone"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">수령인 정보</td>
+                <td class="recip"></td>
+            </tr>
+        </table>
+    </div>
+
     <script>
         window.onload = () => {
             let code = getParameterByName('t_code');
             let num = getParameterByName('t_invoice');
+
+            let estimate = document.querySelector(".estimate");
+            let manPic = document.querySelector(".manPic");
+            let phone = document.querySelector(".phone");
+            let recip = document.querySelector(".recip");
 
             let trindex = 1;
 
@@ -139,24 +168,24 @@
             xhr.onreadystatechange = function () {
                 if(xhr.status === 200 && xhr.readyState === 4) {
                     let data = JSON.parse(xhr.responseText);
-                    if(data.msg) {
-                        console.log(data.msg);
-                    }
-                    b_invoice.innerHTML = data.code;
-                    b_uname.innerHTML = data.uname;
-                    b_sender.innerHTML = data.sender;
-                    b_home.innerHTML = data.home;
-                    b_tname.innerHTML = data.itemName;
-                    for(let i=data.detail.length; i>=0; i--) {
+                    if(data.msg) { console.log(data.msg); }
+                    b_invoice.innerHTML = data.data.invoiceNo;
+                    b_uname.innerHTML = data.data.receiverName;
+                    b_sender.innerHTML = data.data.senderName;
+                    b_home.innerHTML = data.data.receiverAddr;
+                    b_tname.innerHTML = data.data.itemName;
+                    for(let i=data.data.trackingDetails.length; i>=0; i--) {
                         let tr = document.createElement("tr");
                         statusTbody.append(tr);
                         let th1 = document.createElement("th");
                         let th2 = document.createElement("th");
                         let th3 = document.createElement("th");
-                        th1.innerHTML = data.detail[i-1].timeString;
-                        th2.innerHTML = data.detail[i-1].where;
-                        th3.innerHTML = data.detail[i-1].kind;
-                        if(i == data.detail.length) {
+                        try {
+                            th1.innerHTML = data.data.trackingDetails[i-1].timeString;
+                            th2.innerHTML = data.data.trackingDetails[i-1].where;
+                            th3.innerHTML = data.data.trackingDetails[i-1].kind;
+                        } catch { continue; }
+                        if(i == data.data.trackingDetails.length) {
                             th1.style.backgroundColor = "rgba(173,173,173,0.2)";
                             th1.style.color = "#333";
                             th2.style.backgroundColor = "rgba(173,173,173,0.2)";
@@ -177,6 +206,11 @@
                         tr1[trindex].append(th3);
                         trindex++;
                     }
+                    console.log(data.data.estimate);
+                    estimate.innerHTML = data.data.estimate;
+                    manPic.innerHTML = data.data.trackingDetails[data.data.trackingDetails.length - 1].manName;
+                    phone.innerHTML = data.data.trackingDetails[data.data.trackingDetails.length - 1].telno2;
+                    recip.innerHTML = data.data.recipient;
                 }
             }
             xhr.send(JSON.stringify(userInfo));

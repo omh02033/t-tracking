@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(cookieParser());
 
 app.use('/', require('./routes/index.js'));
 app.use('/account/', require('./routes/account.js'));
