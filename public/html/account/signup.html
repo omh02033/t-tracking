@@ -251,27 +251,27 @@
                         <div id="msphone" style="display: none;">
                             <h4>비밀번호 확인</h4>
                             <input type="password" name="conpass" id="mupasscon" placeholder="Confirm Password" required>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                         <div id="msnick" style="display: none;">
                             <h4>이메일</h4>
                             <input type="email" name="uemail" id="muphone" placeholder="EMAIL" required><br>
                             <span class="waitemail"></span>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign4"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign4"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                         <div id="mscheck" style="display: none;">
                             <h4>이메일 인증</h4>
                             <input type="number" name="uecheck" id="muemailcheck" placeholder="CODE">
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign45"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback45"><i class="material-icons left">navigate_before</i>이전</a>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign45"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback45"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                         <div id="msINB" style="display: none;">
                             <h4>이름</h4>
                             <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
-                            <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback5"><i class="material-icons left">navigate_before</i>이전</a>
+                            <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback5"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                     </form>
                 </div>
@@ -317,7 +317,7 @@
         let mspass = document.getElementById("mspass");
         let msphone = document.getElementById("msphone");
         let msnick = document.getElementById("msnick");
-        let mscheck = document.getElementById("msgcheck");
+        let mscheck = document.getElementById("mscheck");
         let msINB = document.getElementById("msINB");
 
         let msign1 = document.getElementById("msign1");  // 아이디 창
@@ -342,17 +342,28 @@
         let idcheckspan = document.querySelectorAll(".checkid");
         let waitemail = document.querySelectorAll(".waitemail");
 
+        let echeck = false;
         let idcheck = false;
+        let sendemail = false;
         let nowid = '';
         let mnowid = '';
 
         let chance = 5;
 
+        if(echeck) {
+            msid.style.display = "none";
+            mspass.style.display = "none";
+            msphone.style.display = "none";
+            msnick.style.display = "none";
+            msINB.style.display = "none";
+            mscheck.style.display = "block";
+        }
 
-        function idoverlapcheck() {
-            let idInfo = {
-                id: uid.value
-            }
+        function idoverlapcheck(device) {
+            let idInfo
+            if(device == 'c') {
+                idInfo = { id: uid.value }
+            } else if(device == 'm') { idInfo = { id: muid.value } }
             let xhr = new XMLHttpRequest();
             xhr.open('POST', '/account/overlap/');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -404,7 +415,7 @@
                 } else {
                     for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
                     idcheck = false;
-                    idoverlapcheck();
+                    idoverlapcheck('c');
                 }
             }
         }
@@ -425,7 +436,7 @@
                         console.log(uid.value);
                         for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
                         idcheck = false;
-                        idoverlapcheck();
+                        idoverlapcheck('c');
                     }
                 }
             }
@@ -487,84 +498,10 @@
             }
         }
         sign4.onclick = () => {
-            if(uphone.value == "") {
-                alert('이메일를 입력해주세요.');
-            } else {
-                let userInfo = {
-                    uemail: uphone.value
-                }
-                for(let i=0; i<waitemail.length; i++) {
-                    waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
-                    waitemail[i].style.color = "black";
-                }
-                alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/signup/emailcheck');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if(xhr.readyState === 4 && xhr.status === 200) {
-                        let data = JSON.parse(xhr.responseText);
-                        if(data.msg) { console.log(data.msg); }
-                        if(data.result == "success") {
-                            alert("이메일로 인증번호를 발송했습니다. 확인해주세요.");
-                            snick.style.display = "none";
-                            scheck.style.display = "block";
-                            sign45.onclick = () => {
-                                if(chance <= 0) {
-                                    alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                    chance = 5;
-                                    scheck.style.display = "none";
-                                    sphone.style.display ="block";
-                                } else {
-                                    if(uemailcheck.value == data.code) {
-                                        chance = 5;
-                                        wnick.innerHTML = "완료";
-                                        wINB.innerHTML = "진행중..";
-                                        scheck.style.display = "none";
-                                        sINB.style.display = "block";
-                                    } else {
-                                        alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                        chance--;
-                                    }
-                                }
-                            }
-                            uemailcheck.onkeyup = (event) => {
-                                if(event.keyCode == 13) {
-                                    if(chance <= 0) {
-                                        alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                        chance = 5;
-                                        scheck.style.display = "none";
-                                        sphone.style.display ="block";
-                                    } else {
-                                        if(uemailcheck.value == data.code) {
-                                            chance = 5;
-                                            wnick.innerHTML = "완료";
-                                            wINB.innerHTML = "진행중..";
-                                            scheck.style.display = "none";
-                                            sINB.style.display = "block";
-                                        } else {
-                                            alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                            chance--;
-                                        }
-                                    }
-                                }
-                            }
-                        } else if(data.msg) {
-                            alert(data.msg);
-                            for(let i=0; i<waitemail.length; i++) {
-                                waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
-                                waitemail[i].style.color = "red";
-                            }
-                        }
-                    }
-                }
-                xhr.send(JSON.stringify(userInfo));
-            }
-        }
-        uphone.onkeyup = (event) => {
-            if(event.keyCode == 13) {
-                if(uphone.value == "") { alert('이메일를 입력해주세요.'); }
-                else {
+            if(!sendemail) {
+                if(uphone.value == "") {
+                    alert('이메일를 입력해주세요.');
+                } else {
                     let userInfo = {
                         uemail: uphone.value
                     }
@@ -582,6 +519,11 @@
                             if(data.msg) { console.log(data.msg); }
                             if(data.result == "success") {
                                 alert("이메일로 인증번호를 발송했습니다. 확인해주세요.");
+                                for(let i=0; i<waitemail.length; i++) {
+                                    waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
+                                    waitemail[i].style.color = "green";
+                                }
+                                sendemail = true;
                                 snick.style.display = "none";
                                 scheck.style.display = "block";
                                 sign45.onclick = () => {
@@ -605,7 +547,6 @@
                                 }
                                 uemailcheck.onkeyup = (event) => {
                                     if(event.keyCode == 13) {
-                                        console.log(event.keyCode);
                                         if(chance <= 0) {
                                             alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
                                             chance = 5;
@@ -635,6 +576,96 @@
                         }
                     }
                     xhr.send(JSON.stringify(userInfo));
+                }
+            } else {
+                snick.style.display = "none";
+                scheck.style.display = "block";
+            }
+        }
+        uphone.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(uphone.value == "") { alert('이메일를 입력해주세요.'); }
+                else {
+                    if(!sendemail) {
+                        let userInfo = {
+                            uemail: uphone.value
+                        }
+                        for(let i=0; i<waitemail.length; i++) {
+                            waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
+                            waitemail[i].style.color = "black";
+                        }
+                        alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/account/signup/emailcheck');
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.onreadystatechange = function () {
+                            if(xhr.readyState === 4 && xhr.status === 200) {
+                                let data = JSON.parse(xhr.responseText);
+                                if(data.msg) { console.log(data.msg); }
+                                if(data.result == "success") {
+                                    alert("이메일로 인증번호를 발송했습니다. 확인해주세요.");
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
+                                        waitemail[i].style.color = "green";
+                                    }
+                                    sendemail = true;
+                                    snick.style.display = "none";
+                                    scheck.style.display = "block";
+                                    sign45.onclick = () => {
+                                        if(chance <= 0) {
+                                            alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                            chance = 5;
+                                            scheck.style.display = "none";
+                                            sphone.style.display ="block";
+                                        } else {
+                                            if(uemailcheck.value == data.code) {
+                                                chance = 5;
+                                                wnick.innerHTML = "완료";
+                                                wINB.innerHTML = "진행중..";
+                                                scheck.style.display = "none";
+                                                sINB.style.display = "block";
+                                            } else {
+                                                alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                                chance--;
+                                            }
+                                        }
+                                    }
+                                    uemailcheck.onkeyup = (event) => {
+                                        if(event.keyCode == 13) {
+                                            console.log(event.keyCode);
+                                            if(chance <= 0) {
+                                                alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
+                                                chance = 5;
+                                                scheck.style.display = "none";
+                                                sphone.style.display ="block";
+                                            } else {
+                                                if(uemailcheck.value == data.code) {
+                                                    chance = 5;
+                                                    wnick.innerHTML = "완료";
+                                                    wINB.innerHTML = "진행중..";
+                                                    scheck.style.display = "none";
+                                                    sINB.style.display = "block";
+                                                } else {
+                                                    alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                                    chance--;
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else if(data.msg) {
+                                    alert(data.msg);
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                        waitemail[i].style.color = "red";
+                                    }
+                                }
+                            }
+                        }
+                        xhr.send(JSON.stringify(userInfo));
+                    } else {
+                        snick.style.display = "none";
+                        scheck.style.display = "block";
+                    }
                 }
             }
         }
@@ -683,7 +714,7 @@
                 } else {
                     for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
                     idcheck = false;
-                    idoverlapcheck();
+                    idoverlapcheck('m');
                 }
             }
         }
@@ -713,52 +744,63 @@
             if(muphone.value == "") {
                 alert('이메일를 입력해주세요.');
             } else {
-                let userInfo = {
-                    uemail: uphone.value
-                }
-                for(let i=0; i<waitemail.length; i++) {
-                    waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
-                    waitemail[i].style.color = "black";
-                }
-                alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/signup/emailcheck');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if(xhr.readyState === 4 && xhr.status === 200) {
-                        let data = JSON.parse(xhr.responseText);
-                        if(data.msg) { console.log(data.msg); }
-                        if(data.result == "success") {
-                            alert("이메일로 인증번호가 발송되었습니다. 확인해주세요.");
-                            msnick.style.display = "none";
-                            mscheck.style.display = "block";
-                            msign45.onclick = () => {
-                                if(chance <= 0) {
-                                    alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                    chance = 5;
-                                    mscheck.style.display = "none";
-                                    msphone.style.display ="block";
-                                } else {
-                                    if(uemailcheck.value == data.code) {
+                if(!sendemail) {
+                    let userInfo = {
+                        uemail: muphone.value
+                    }
+                    for(let i=0; i<waitemail.length; i++) {
+                        waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
+                        waitemail[i].style.color = "black";
+                    }
+                    alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                    echeck = true;
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/account/signup/emailcheck');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function () {
+                        if(xhr.readyState === 4 && xhr.status === 200) {
+                            let data = JSON.parse(xhr.responseText);
+                            if(data.msg) { console.log(data.msg); }
+                            if(data.result == "success") {
+                                alert("이메일로 인증번호가 발송되었습니다. 확인해주세요.");
+                                for(let i=0; i<waitemail.length; i++) {
+                                    waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
+                                    waitemail[i].style.color = "green";
+                                }
+                                sendemail = true;
+                                msnick.style.display = "none";
+                                mscheck.style.display = "block";
+                                msign45.onclick = () => {
+                                    if(chance <= 0) {
+                                        alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
                                         chance = 5;
                                         mscheck.style.display = "none";
-                                        msINB.style.display = "block";
+                                        msphone.style.display ="block";
                                     } else {
-                                        alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                        chance--;
+                                        if(muemailcheck.value == data.code) {
+                                            chance = 5;
+                                            mscheck.style.display = "none";
+                                            msINB.style.display = "block";
+                                        } else {
+                                            alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
+                                            chance--;
+                                        }
                                     }
                                 }
-                            }
-                        } else if(data.msg) {
-                            console.log(data.msg);
-                            for(let i=0; i<waitemail.length; i++) {
-                                waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
-                                waitemail[i].style.color = "red";
+                            } else if(data.msg) {
+                                console.log(data.msg);
+                                for(let i=0; i<waitemail.length; i++) {
+                                    waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                    waitemail[i].style.color = "red";
+                                }
                             }
                         }
                     }
+                    xhr.send(JSON.stringify(userInfo));
+                } else {
+                    msnick.style.display = "none";
+                    mscheck.style.display = "block";
                 }
-                xhr.send(JSON.stringify(userInfo));
             }
         }
 
@@ -777,7 +819,7 @@
         }
         mback45.onclick = () => {
             mscheck.style.display = "none";
-            msnick.style.display = "none";
+            msnick.style.display = "block";
         }
         mback5.onclick = () => {
             msINB.style.display = "none";

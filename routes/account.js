@@ -233,7 +233,7 @@ router
             res.status(400).json({ msg: '조회도중 에러가 발생했습니다.' });
         } else {
             let user = data[0];
-            if(user == undefined || user == null) {
+            if(!user) {
                 res.status(200).json({ msg: '가입되어 있지 않은 아이디 또는 이메일 입니다.' });
             } else {
                 let transporter = nodemailer.createTransport({
@@ -267,6 +267,38 @@ router
             }
         }
     });
+})
+
+.post('/numcheck/', (req, res) => {
+    if(req.body.result == 'true') {
+        let sql = 'SELECT * FROM account WHERE userid=? and email=?';
+        conn.query(sql, [req.body.uid, req.body.email], (err, data) => {
+            if(err) { res.status(400).json({ msg: '데이터를 확인하는 도중에서 에러가 발생했습니다.' }); }
+            let user = data[0];
+            if(user) {
+                let sq = 'UPDATE account SET newpass=? WHERE userid=? and email=?';
+                conn.query(sq, ['true', req.body.uid, req.body.email], (err, rows, fields) => {
+                    if(err) { res.status(400).json({ msg: '데이터를 저장과정에서 에러가 발생했습니다.' }); }
+                    res.status(200).json({ msg: 'success' });
+                });
+            } else { res.status(200).json({ msg: '가입되어 있지 않은 아이디 또는 이메일 입니다.' }); }
+        });
+    }
+})
+
+.post('/newpass/', (req, res) => {
+    let sql = 'SELECT * FROM account WHERE userid=? and email=?';
+    conn.query(sql, [req.body.uid, req.body.email], (err, data) => {
+        if(err) { res.status(400).json({ msg: '데이터를 읽는 과정에서 에러가 발생했습니다.' }); }
+        let user = data[0];
+        if(user.newpass == 'true') {
+            let sq = 'UPDATE account SET userpass=?, newpass=? WHERE userid=? and email=?';
+            conn.query(sq, [req.body.newpass, 'false', req.body.uid, req.body.email], (err, rows, fields) => {
+                if(err) { res.status(400).json({ msg: '데이터를 저장과정에서 에러가 발생했습니다.' }); }
+                res.status(200).json({ msg: '새로운 비밀번호를 저장했습니다. 로그인화면으로 갈까요?' });
+            })
+        } else { res.status(400).json({ msg: '인증번호를 입력해 주세요!!' }); }
+    })
 })
 
 module.exports = router;

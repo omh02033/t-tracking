@@ -447,8 +447,8 @@
                                 <th>비밀번호</th>
                             </tr>
                             <tr>
-                                <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
-                                <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
+                                <td><input type="text" name="userid" id="uid" placeholder="ID" required></td>
+                                <td><input type="password" name="userpass" id="upass" placeholder="Password" required></td>
                                 <td><input type="submit" value="로그인" id="userloginsubmit"></td>
                             </tr>
                             <tr>
@@ -697,7 +697,8 @@
         let loadingScreen = document.querySelector(".loading");
         let loadingif = document.querySelector(".loadingif");
 
-        if(document.getElementById("delichoose")) { let deliselect = document.getElementById("delichoose"); }
+        if(!document.getElementById("delichoose")) { let deliselect = false; }
+        else { let deliselet = document.getElementById("delichoose"); }
 
 
         // LOGIN
@@ -737,7 +738,7 @@
             mjcodesubmit.disabled = true;
             loadingScreen.style.display = "inline-block";
             loadingScreen.classList.add('emphasized');
-            let info = {};
+            let info;
             if(device == 'c') {
                 if(deliselect) {
                     info = {

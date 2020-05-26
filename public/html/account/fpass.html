@@ -205,7 +205,7 @@
                                     </tr>
                                     <tr class="emailinput">
                                         <td>이메일</td>
-                                        <td><input type="email" name="uemail" id="userpass" placeholder="EMAIL" required></td>
+                                        <td><input type="email" name="uemail" id="useremail" placeholder="EMAIL" required></td>
                                     </tr>
                                     <tr class="emailinput">
                                         <td></td>
@@ -222,14 +222,20 @@
                                     <td></td>
                                     <td><button class="btn waves-effect waves-light deep-purple lighten-4" id="codesub">확인</button></td>
                                 </tr>
-                                <tr class="showid" style="display: none;">
-                                    <td>당신의 비밀번호 : </td>
-                                    <td><h5 id="showbtn" style="cursor: pointer;"><u>비밀번호 보기</u></h5><span sytle="display:none; font-weight: bold !important; color: #333;" class="sid"></span></td>
-                                </tr>
-                                <tr class="showid" style="display: none;">
-                                    <td></td>
-                                    <td><button class="btn waves-effect waves-light deep-purple lighten-3" id="idcheck">확인</button></td>
-                                </tr>
+                                <form action="/account/newpass" method="POST" onsubmit="userUpdate(event, this, 'c')">
+                                    <tr class="showid" style="display: none;">
+                                        <td>새로운 비밀번호</td>
+                                        <td><input type="password" name="newpass" id="userid" placeholder="NEW PASSWORD" required></td>
+                                    </tr>
+                                    <tr class="showid" style="display: none;">
+                                        <td>비밀번호 확인</td>
+                                        <td><input type="password" name="confirmpass" id="userpass" placeholder="confirm Password" required></td>
+                                    </tr>
+                                    <tr class="showid" style="display: none;">
+                                        <td></td>
+                                        <td><button type="submit" class="btn waves-effect waves-light deep-purple lighten-3" id="passcheck">확인</button></td>
+                                    </tr>
+                                </form>
                             </tbody>
                         </table>
                     </div>
@@ -238,13 +244,17 @@
 
             <div class="mloginmain">
                 <div class="mloginp">
-                    <h2>로그인</h2>
+                    <h2>비밀번호<br>찾기</h2>
                     <table>
                         <tbody>
                             <form action="/account/fid" method="POST" onsubmit="userCheck(event, this)">
                                 <tr class="emailinput">
+                                    <td style="width: 50px;">아이디</td>
+                                    <td><input type="text" name="uid" id="muserid" placeholder="ID" required></td>
+                                </tr>
+                                <tr class="emailinput">
                                     <td>이메일</td>
-                                    <td><input type="email" name="uemail" id="muserpass" placeholder="EMAIL" required></td>
+                                    <td><input type="email" name="uemail" id="museremail" placeholder="EMAIL" required></td>
                                 </tr>
                                 <tr class="emailinput">
                                     <td></td>
@@ -261,14 +271,20 @@
                                 <td></td>
                                 <td><button class="btn waves-effect waves-light deep-purple lighten-4" id="mcodesub">확인</button></td>
                             </tr>
-                            <tr class="showid" style="display: none;">
-                                <td>당신의 비밀번호 : </td>
-                                <td><h3 id="mshowbtn" style="cursor: pointer;"><u>비밀번호 보기</u></h3><span style="display: none; font-weight: bold !important; color: #333;" class="sid"></span></td>
-                            </tr>
-                            <tr class="showid" style="display: none;">
-                                <td></td>
-                                <td><button class="btn waves-effect waves-light deep-purple lighten-3" id="midcheck">확인</button></td>
-                            </tr>
+                            <form action="/account/newpass" method="POST" onsubmit="userUpdate(event, this, 'm')">
+                                <tr class="showid" style="display: none;">
+                                    <td>새로운 비밀번호</td>
+                                    <td><input type="password" name="newpass" id="muserid" placeholder="NEW PASSWORD" required></td>
+                                </tr>
+                                <tr class="showid" style="display: none;">
+                                    <td>비밀번호 확인</td>
+                                    <td><input type="password" name="confirmpass" id="muserpass" placeholder="confirm Password" required></td>
+                                </tr>
+                                <tr class="showid" style="display: none;">
+                                    <td></td>
+                                    <td><button type="submit" class="btn waves-effect waves-light deep-purple lighten-3" id="mpasscheck">확인</button></td>
+                                </tr>
+                            </form>
                         </tbody>
                     </table>
                 </div>
@@ -285,24 +301,42 @@
         let ucode = document.getElementById("ucode");
         let mucode = document.getElementById("mucode");
 
-        let sid = document.querySelectorAll(".sid");
-
         let codeinput = document.querySelectorAll(".codeinput");
         let showid = document.querySelectorAll(".showid");
-        let showbtn = document.getElementById("showbtn");
-        let mshowbtn = document.getElementById("mshowbtn");
+        let passcheck = document.getElementById("passcheck");
+
+        let userid = document.getElementById("userid");
+        let muserid = document.getElementById("muserid");
+        let useremail = document.getElementById("useremail");
+        let museremail = document.getElementById("museremail");
         
         let emailinput = document.querySelectorAll(".emailinput");
 
-        let idcheck = document.getElementById("idcheck");
-        let midcheck = document.getElementById("midcheck");
-        idcheck.onclick = () => { location.replace('/account/login'); }
-        midcheck.onclick = () => { location.replace('/account/login'); }
-
         let chance = 5;
 
-
         function userCheck(e, form) {
+            function numbercheck(id, email) {
+                let Info = {
+                    result: 'true',
+                    email: email,
+                    uid: id
+                }
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/account/numcheck/');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.status === 200 && xhr.readyState === 4) {
+                        let data = JSON.parse(xhr.responseText);
+                        for(let j=0; j<codeinput.length; j++) { codeinput[j].style.display = "none"; }
+                        for(let j=0; j<showid.length; j++) { showid[j].style.display = "block"; }
+                    } else if(xhr.status === 400) {
+                        let data = JSON.parse(xhr.responseText);
+                        alert(msg);
+                    }
+                }
+                xhr.send(JSON.stringify(Info));
+            }
+
             e.preventDefault();
 
             let userInfo = {
@@ -326,15 +360,7 @@
                                 location.href = location.href;
                             } else {
                                 if(ucode.value == data.code) {
-                                    for(let j=0; j<codeinput.length; j++) { codeinput[j].style.display = "none"; }
-                                    for(let j=0; j<showid.length; j++) { showid[j].style.display = "block"; }
-                                    showbtn.onclick = () => {
-                                        showbtn.style.display = "none";
-                                        for(let j=0; j<sid.length; j++) {
-                                            sid[j].style.display = "inline-block";
-                                            sid[j].innerHTML = data.upass;
-                                        }
-                                    }
+                                    numbercheck(userInfo.uid, userInfo.email);
                                 } else {
                                     alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
                                     chance--;
@@ -377,6 +403,54 @@
                 }
             }
             xhr.send(JSON.stringify(userInfo));
+        }
+
+        function userUpdate(e, form, device) {
+            e.preventDefault();
+            console.log(device);
+            let userInfo
+            if(device == 'c') {
+                userInfo = {
+                    newpass: form.newpass.value,
+                    confirmpass: form.confirmpass.value,
+                    uid: userid.value,
+                    email: useremail.value
+                }
+            } else if(device == 'm') {
+                userInfo = {
+                    newpass: form.newpass.value,
+                    confirmpass: form.confirmpass.value,
+                    uid: muserid.value,
+                    email: museremail.value
+                }
+            }
+
+            console.log(userInfo.newpass);
+            console.log(userInfo.confirmpass);
+
+            if(userInfo.newpass == userInfo.confirmpass) {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/account/newpass/');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.status === 200 && xhr.readyState === 4) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.msg) {
+                            let suc = confirm(data.msg);
+                            if(suc) { location.replace('/account/login/'); }
+                            else { location.replace('/'); }
+                        }
+                    } else if(xhr.status === 400) {
+                        let data = JSON.parse(xhr.responseText);
+                        alert(msg);
+                        for(let j=0; j<showid.length; j++) { showid[j].style.display = "none"; }
+                        for(let j=0; j<codeinput.length; j++) { codeinput[j].style.display = "block"; }
+                    }
+                }
+                xhr.send(JSON.stringify(userInfo));
+            } else {
+                alert('비밀번호가 다릅니다 !');
+            }
         }
     </script>
 </body>
