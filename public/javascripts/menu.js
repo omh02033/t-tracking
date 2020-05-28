@@ -2,6 +2,7 @@ let menuBar = document.getElementById("menubar");
 let menu = document.querySelector(".menu");
 let menutap = document.querySelector(".menutap");
 let main1 = document.querySelector(".main1");
+let mtop = document.querySelector(".top");
 
 let mmenuBar = document.getElementById("mmenubar");
 let mmenu = document.querySelector(".mmenu");
@@ -74,6 +75,22 @@ menuBar.onclick = () => {
 }
 
 main1.onmouseup = () => {
+    if(mtoggle) {
+        mtoggle = false;
+        let width = setInterval(() => {
+            if(i <= 0) {
+                mmenu.style.display = "none";
+                menutap.style.display = "none";
+                clearInterval(width);
+            } else {
+                mmenu.style.width = `${i}px`;
+                i -= 10;
+            }
+        }, 1);
+    }
+}
+
+mtop.onmouseup = () => {
     if(mtoggle) {
         mtoggle = false;
         let width = setInterval(() => {

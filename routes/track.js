@@ -162,6 +162,7 @@ router
             .then(function (response) {
                 console.log(promises.length);
                 for(let i=0; i<response.length; i++) {
+                    console.log(i);
                     if(response[i].data.result == 'Y') {
                         let today = new Date();   
 
@@ -245,6 +246,7 @@ router
                     }
                 }
             }).catch(err => {
+                res.status(400).json({ msg: '유효하지 않은 운송장 번호 혹은 택배사 코드를 입력하셨습니다. 다시 시도해주세요.' });
                 console.log('catch');
             })
         } else if(req.body.select == 'international') {

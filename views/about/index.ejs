@@ -13,6 +13,19 @@
     <style>
         body {
             margin: 0;
+            overflow: auto;
+        }
+        body::-webkit-scrollbar {
+            width: 10px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background-color: #f57003;
+            border-radius: 10px;
+        }
+        body::-webkit-scrollbar-track {
+            background-color: rgb(114, 70, 19);
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
         }
         .mlogin {
             position: absolute;
@@ -433,7 +446,7 @@
                         <h5 style="font-weight: normal;">국제 택배 조회</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
                         <label style="margin-bottom: 30px;">해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
-                        <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                        <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
                     </div>
                     <span>+</span>
                     <div class="service2">
@@ -456,7 +469,7 @@
                         <h5 style="font-weight: normal;">국제 택배 조회</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
                         <label style="margin-bottom: 30px; display: block;">해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
-                        <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                        <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
                     </div>
                     <div class="service2">
                         <h5 style="font-weight: normal;">계정 연동</h5>
@@ -649,6 +662,7 @@
             ser3pay.style.display = "none";
             ser1pay.classList.remove('emphasized');
             window.scroll({top: 1500, left: 0, behavior: 'smooth'});
+            tser1 = false;
         }
         ser2cancel.onclick = () => {
             ser1pay.style.display = "none";
@@ -656,6 +670,7 @@
             ser3pay.style.display = "none";
             ser2pay.classList.remove('emphasized');
             window.scroll({top: 1700, left: 0, behavior: 'smooth'});
+            tser2 = false;
         }
         ser3cancel.onclick = () => {
             ser1pay.style.display = "none";
@@ -663,6 +678,7 @@
             ser3pay.style.display = "none";
             ser3pay.classList.remove('emphasized');
             window.scroll({top: 2000, left: 0, behavior: 'smooth'});
+            tser3 = false;
         }
 
         // LOGIN
