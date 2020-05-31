@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/../stylesheets/manu.css">
     <link rel="stylesheet" href="/../stylesheets/top.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/../images/favicon.ico">
     <title>통합 택배 조회 서비스</title>
     <style>
         body {
@@ -99,7 +100,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 80px;
+            width: 160px;
             height: 80px;
             transform: translate(-50%, -50%);
         }
@@ -228,6 +229,9 @@
             }
         }
         @media only screen and (min-width: 1201px) {
+            .mmlogin {
+                display: none;
+            }
             #mmenubar {
                 display: none;
             }
@@ -354,6 +358,9 @@
             }
         }
         @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            .mmlogin {
+                display: none;
+            }
             #mmenubar {
                 display: none;
             }
@@ -474,6 +481,9 @@
             }
         }
         @media only screen and (min-width: 601px) and (max-width: 992px) {
+            .mmlogin {
+                display: none;
+            }
             #mmenubar {
                 display: none;
             }
@@ -651,16 +661,22 @@
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
-            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기(국내, 국제 택배사)</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
             <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
             <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+            <% if(decoded) { %>
+                <span class="mmlogin" style="position: absolute; top: 20px; right: 10px;"><%=decoded.uname%> : <%=decoded.uid%></span><br>
+                <a class="mmlogin" href="/account/logout" style="color: gray; position:absolute; right: 10px; top: 40px;">로그아웃</a>
+            <% } else {%>
+                <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
+            <% } %>
             <div class="tcode" style="position: relative;">
                 <label style="font-size: 15px;">택배 조회 코드</label>
                 <% if(decoded) { %>
                     <% if(payo) { %>
-                        <select name="delichoose" id="delichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: fit-content; height: 25px; padding: 0;">
+                        <select name="delichoose" id="delichoose" onchange="gcolor('c');" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: fit-content; height: 25px; padding: 0;">
                             <option value="domestic">국내택배 (Korean delivery)</option>
                             <option value="international">국제택배 (International delivery)</option>
                         </select>
@@ -691,7 +707,7 @@
                 <label style="font-size: 15px;">택배 조회 코드</label>
                 <% if(decoded) { %>
                     <% if(payo) { %>
-                        <select name="delichoose" id="delichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: 90px; height: 25px; padding: 0;">
+                        <select name="delichoose" onchange="gcolor('m');" id="mdelichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: 90px; height: 25px; padding: 0;">
                             <option value="domestic">국내택배 (Korean delivery)</option>
                             <option value="international">국제택배 (International delivery)</option>
                         </select>
@@ -781,15 +797,11 @@
             </div>
 
             <div class="mlookuptable">
-                <table border="1" class="striped">
-                    <colgroup>
-                        <col style="width: 33.33333%">
-                        <col style="width: 66.66667%">
-                    </colgroup>
+                <table border="1" class="striped" style="table-layout: fixed;">
                     <tbody>
                         <tr>
-                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">물표 번호</td>
-                            <td><div class="ctnum elli" style="margin: 0;"></div></td>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12); width: 33.333333%;">물표 번호</td>
+                            <td><div class="ctnum elli" style="margin: 0; width: 66.666667%;"></div></td>
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid rgba(0,0,0,0.12);">받는 사람</td>
@@ -865,7 +877,7 @@
             </div>
         </div>
     </div>
-    <div class="loading emphasized"><div class="loadingif"><img src="../images/loading.gif" alt="" style="max-width: 100%; height:100%; box-shadow: none !important;"></div></div>
+    <div class="loading emphasized"><div class="loadingif"><img src="../images/loading.gif" alt="" style="position: absolute; transform: translate(-50%, -50%); left: 50%; max-width: 80px; height:80px; box-shadow: none !important;"></div><span style="position:absolute; bottom:0; color: white; width: 100%; text-align: center;">잠시만 기다려주세요..</span></div>
     <script src="/../javascripts/menu.js"></script>
     <script>
         let jcodesubmit = document.getElementById("jcodesubmit");
@@ -908,8 +920,34 @@
         let l6 = document.querySelector(".l6");
 
         let deliselect;
+        let mdeliselect;
         if(!document.getElementById("delichoose")) { deliselect = false; }
         else { deliselet = document.getElementById("delichoose"); }
+        if(!document.getElementById("mdelichoose")) { mdeliselect = false; }
+        else { mdeliselect = document.getElementById("mdelichoose"); }
+
+        function gcolor(device) {
+            let ttop = document.querySelector(".top");
+            if(device == 'c') {
+                let tcodeinput = document.querySelector(".tcodeinput");
+                if(delichoose.value == 'domestic') {
+                    ttop.classList.remove('tgcolor');
+                    tcodeinput.classList.remove('tgcolor');
+                } else if(delichoose.value == 'international') {
+                    ttop.classList.add('tgcolor');
+                    tcodeinput.classList.add('tgcolor');
+                }
+            } else {
+                let mtcodeinput = document.querySelector(".mtcodeinput");
+                if(mdelichoose.value == 'domestic') {
+                    ttop.classList.remove('tgcolor');
+                    mtcodeinput.classList.remove('tgcolor');
+                } else if(mdelichoose.value == 'international') {
+                    ttop.classList.add('tgcolor');
+                    mtcodeinput.classList.add('tgcolor');
+                }
+            }
+        }
 
 
         // LOGIN

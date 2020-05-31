@@ -15,10 +15,10 @@ let conn = mysql.createConnection({
 conn.connect();
 
 router
-.get('/searchrecord', check, (req, res) => { res.render('/loginuser/searchrecord.ejs'); })
-.get('/setting', check, (req, res) => { res.render('/loginuser/setting.ejs'); })
-.get('/tmanage', check, (req, res) => { res.render('/loginuser/taekmanager.ejs'); })
-.get('/buyer', buyercheck, (req, res) => { res.render('/loginuser/buyer.ejs'); })
+.get('/searchrecord', check, (req, res) => { res.render('loginuser/searchrecord.ejs'); })
+.get('/setting', check, (req, res) => { res.render('loginuser/setting.ejs'); })
+.get('/tmanage', check, (req, res) => { res.render('loginuser/taekmanager.ejs'); })
+.get('/buyer', buyercheck, (req, res) => { res.render('loginuser/buyer.ejs'); })
 
 module.exports = router;
 
@@ -26,7 +26,7 @@ function check(req, res, next) {
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
-        return res.sendFile('notlogin.html', { root: path.join(__dirname, '../public/html') });
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
     }
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) {
@@ -41,7 +41,7 @@ function buyercheck(req, res, next) {
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
-        return res.sendFile('notlogin.html', { root: path.join(__dirname, '../public/html') });
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
     }
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) {

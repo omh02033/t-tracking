@@ -18,6 +18,11 @@ body {
     position: relative;
     margin: 0 !important;
 }
+.tgcolor {
+    background: linear-gradient(#45bbff, #238be0) !important;
+    background-color: #6198ca !important;
+    box-shadow: 0 1px 1px #92affd !important;
+}
 .logo {
     font-size: 50px;
     position: absolute;

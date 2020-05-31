@@ -58,14 +58,15 @@ router
         .then(function (response) {
             console.log(promises.length);
             for(let i=0; i<response.length; i++) {
-                if(response[i].data.result == 'Y') {
+                if(response[i].data.result == 'Y' && !response[i].data.receiverName == '') {
                     let today = new Date();   
 
-                    let year = today.getFullYear();
-                    let month = today.getMonth() + 1;
-                    let date = today.getDate();
+                    let year = String(today.getFullYear());
+                    let month = String(today.getMonth() + 1);
+                    let date = String(today.getDate());
 
-                    let sodate = year + '/' + month + '/' + date;
+                    let sodate = month;
+                    let pdate = year + '년 ' + month + '월 ' + date + '일';
                     let token = req.cookies.user;
                     if(!token){
                         res.status(200).json({
@@ -93,8 +94,8 @@ router
                                         t_code: code[i]
                                     });
                                 } else {
-                                    let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                    conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate], (err, rows, field) => {
+                                    let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate, pdate], (err, rows, field) => {
                                         if(err) {
                                             console.log(err);
                                             res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
@@ -163,14 +164,15 @@ router
                 console.log(promises.length);
                 for(let i=0; i<response.length; i++) {
                     console.log(i);
-                    if(response[i].data.result == 'Y') {
+                    if(response[i].data.result == 'Y' && !response[i].data.receiverName == '') {
                         let today = new Date();   
 
-                        let year = today.getFullYear();
-                        let month = today.getMonth() + 1;
-                        let date = today.getDate();
+                        let year = String(today.getFullYear());
+                        let month = String(today.getMonth() + 1);
+                        let date = String(today.getDate());
 
-                        let sodate = year + '/' + month + '/' + date;
+                        let sodate = month;
+                        let pdate = year + '년 ' + month + '월 ' + date + '일';
                         let token = req.cookies.user;
                         if(!token){
                             res.status(200).json({
@@ -198,8 +200,8 @@ router
                                             t_code: code[i]
                                         });
                                     } else {
-                                        let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                        conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate], (err, rows, field) => {
+                                        let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                        conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate, pdate], (err, rows, field) => {
                                             if(err) {
                                                 console.log(err);
                                                 res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
@@ -267,14 +269,15 @@ router
             .then(function (response) {
                 console.log(promises.length);
                 for(let i=0; i<response.length; i++) {
-                    if(response[i].data.result == 'Y') {
+                    if(response[i].data.result == 'Y' && !response[i].data.receiverName == '') {
                         let today = new Date();   
 
-                        let year = today.getFullYear();
-                        let month = today.getMonth() + 1;
-                        let date = today.getDate();
+                        let year = String(today.getFullYear());
+                        let month = String(today.getMonth() + 1);
+                        let date = String(today.getDate());
 
-                        let sodate = year + '/' + month + '/' + date;
+                        let sodate = month;
+                        let pdate = year + '년 ' + month + '월 ' + date + '일';
                         let token = req.cookies.user;
                         if(!token){
                             res.status(200).json({
@@ -302,8 +305,8 @@ router
                                             t_code: code[i]
                                         });
                                     } else {
-                                        let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                        conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate], (err, rows, field) => {
+                                        let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                        conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate, pdate], (err, rows, field) => {
                                             if(err) {
                                                 console.log(err);
                                                 res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
@@ -368,11 +371,67 @@ router
             t_invoice: req.body.t_invoice
         }
     }).then(function (response) {
-        if(!response.data.senderName == '' || !response.data.senderName == '*') {
+        if(response.data.result == 'Y') {
             res.status(200).json({ data: response.data });
         } else {
             console.log('fail');
             res.status(400).json({ msg: '조회를 하지 못하였습니다.' });
+        }
+    })
+})
+.post('/recordcheck', (req, res) => {
+    if(req.body.apploval == true) {
+        let token = req.cookies.user;
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { res.status(400).json({ msg: '쿠키를 조회하는 과정에서 에러가 발생했습니다.' }); }
+            let sql = 'SELECT * FROM delirecord WHERE id=? ORDER BY `date` DESC, `pdate` DESC LIMIT 1000';
+            conn.query(sql, [decoded.unum], (err, data) => {
+                if(err) { res.status(400).json({ msg: '데이터를 조회 과정에서 에러가 발생했습니다.' }); }
+                if(data.length <= 0) { res.status(200).json({ result: 'fail' }); }
+                else {
+                    res.status(200).json({
+                        result: 'success',
+                        data: data
+                    });
+                }
+            });
+        });
+    }
+})
+.post('/retrack', (req, res) => {
+    axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
+        params: {
+            t_key: apis[apiIndex],
+            t_code: req.body.tcode,
+            t_invoice: req.body.denum
+        }
+    }).then(function (response) {
+        if(response.data.result == 'Y') {
+            let today = new Date();
+
+            let year = String(today.getFullYear());
+            let month = String(today.getMonth() + 1);
+            let date = String(today.getDate());
+
+            let sodate = month;
+            let pdate = year + '년 ' + month + '월 ' + date + '일';
+            let token = req.cookies.user;
+
+            jwt.verify(token, config.secret, (err, decoded) => {
+                if(err) { return res.json(err); }
+                let sql = 'UPDATE delirecord SET denum = ?, tcode = ?, toolname = ?, result = ?, phonenum = ?, manname = ?, receiverName = ?, `where` = ?, `date` = ?, pdate = ? WHERE id = ?';
+                conn.query(sql, [req.body.denum, req.body.tcode, response.data.itemName, response.data.level, response.data.trackingDetails[response.data.trackingDetails.length - 1].telno2, response.data.trackingDetails[response.data.trackingDetails.length - 1].manName, response.data.receiverName, response.data.trackingDetails[response.data.trackingDetails.length - 1].where, sodate, pdate, decoded.unum], (err, rows, field) => {
+                    if(err) {
+                        console.log(err);
+                        res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
+                    } else {
+                        res.status(200).json({ data: response.data, result: 'success' });
+                    }
+                })
+            })
+        } else {
+            console.log('fail');
+            res.status(400).json({ msg: '조회를 하지 못하였습니다.', result: 'fail' });
         }
     })
 })
