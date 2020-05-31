@@ -60,14 +60,14 @@
             width: 100%;
             height: 100%;
         }
-        #ing table {
+        #show table, #ing table {
             margin-bottom: 50px;
         }
         .main1 h2 { font-size: 35px; }
         .main1 h3 { font-size: 28px; }
         .main1 h4 { font-size: 20px; }
-        #ing table tr:first-child td:first-child { width: 33.33333%; }
-        #ing table tr:first-child td:last-child { width: 66.66667%; }
+        #show table tr:first-child td:first-child, #ing table tr:first-child td:first-child { width: 33.33333%; }
+        #show table tr:first-child td:last-child, #ing table tr:first-child td:last-child { width: 66.66667%; }
         #chdate {
             margin-left: 50px;
             width: fit-content;
@@ -75,6 +75,17 @@
             padding: 2px;
             display: inline-block !important;
             background-color: rgba(239,150,25,0.3);
+        }
+        #si {
+            margin-left: 50px;
+            width: fit-content;
+            height: 25px;
+            padding: 2px;
+            display: inline-block !important;
+            background-color: rgba(239,150,25,0.3);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
         }
         @media only screen and (max-width: 600px) {
             .exp span {
@@ -86,8 +97,8 @@
             #semenu {
                 display: none;
             }
-            #ing { padding: 10px 30px; }
-            #ming { padding: 0 30px; }
+            #show, #ing { padding: 10px 30px; }
+            #mshow, #ming { padding: 0 30px; }
         }
         @media only screen and (min-width: 1201px) {
             .mmlogin {
@@ -96,9 +107,9 @@
             #mmenubar {
                 display: none;
             }
-            #ing { padding: 10px 80px; }
-            #ming { padding: 0 80px; }
-            #ing table { width: 70%; }
+            #show, #ing { padding: 10px 80px; }
+            #mshow, #ming { padding: 0 80px; }
+            #show table, #ing table { width: 70%; }
         }
         @media only screen and (min-width: 993px) and (max-width: 1200px) {
             .mmlogin {
@@ -110,9 +121,9 @@
             .mlogin {
                 display: none;
             }
-            #ing { padding: 10px 80px; }
-            #ming { padding: 0 80px; }
-            #ing table { width: 70%; }
+            #show, #ing { padding: 10px 80px; }
+            #mshow, #ming { padding: 0 80px; }
+            #show table, #ing table { width: 70%; }
         }
         @media only screen and (min-width: 601px) and (max-width: 992px) {
             .mmlogin {
@@ -124,9 +135,9 @@
             .mlogin {
                 display: none;
             }
-            #ing { padding: 10px 80px; }
-            #ming { padding: 0 80px; }
-            #ing table { width: 70%; }
+            #show, #ing { padding: 10px 80px; }
+            #mshow, #ming { padding: 0 80px; }
+            #show table, #ing table { width: 70%; }
         }
     </style>
 </head>
@@ -177,18 +188,57 @@
                 <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
             <% } %>
             
-            <h2 id="ming" style="font-weight: bold;">배송중인 상품</h2>
+            <select name="si" id="si" onchange="changeSi();">
+                <option value="in">배송중인 상품</option>
+                <option value="sh">배송 완료된 상품</option>
+            </select>
+            <h2 id="ming" style="font-weight: bold;">배송 중인 상품</h2>
             <div id="ing">
                 <span class="retarget">현재 배송중인 상품이 없습니다.</span>
+            </div>
+            <div id="mshow">
+                <h2 style="font-weight: bold; display: inline-block; margin-bottom: 0.83em;">배송 완료된 상품</h2>
+                <select name="chdate" id="chdate" onchange="changeDate();">
+                    <option value="all">전체 보기</option>
+                    <option value="1">1월</option>
+                    <option value="2">2월</option>
+                    <option value="3">3월</option>
+                    <option value="4">4월</option>
+                    <option value="5">5월</option>
+                    <option value="6">6월</option>
+                    <option value="7">7월</option>
+                    <option value="8">8월</option>
+                    <option value="9">9월</option>
+                    <option value="10">10월</option>
+                    <option value="11">11월</option>
+                    <option value="12">12월</option>
+                </select>
+            </div>
+            <div id="show">
+                <a href="/" class="waves-effect waves-light btn orange" style="width: 160; position: absolute; transform: translate(-50%, -50%); left: 50%;">메인 화면으로 가기</a>
             </div>
         </div>
     </div>
     <div class="loading emphasized"><div class="loadingif"><img src="../images/loading.gif" alt="" style="max-width: 100%; height:100%; box-shadow: none !important;"></div></div>
     <script src="/../javascripts/menu.js"></script>
     <script>
+        let mshow = document.getElementById("mshow");
+        let show = document.getElementById("show");
+        let ming = document.getElementById("ming");
         let ing = document.getElementById("ing");
 
+        let si = document.getElementById("si");
+        let chdate = document.getElementById("chdate");
+
         window.onload = () => {
+            if(si.value == 'in') {
+                mshow.style.display = "none";
+                show.style.display = "none";
+            } else if(si.value == 'sh') {
+                ming.style.display = "none";
+                ing.style.display ="none";
+            }
+
             let Info = { apploval: true };
 
             let xhr = new XMLHttpRequest();
@@ -200,10 +250,14 @@
                     if(data.msg) { console.log(data.msg); }
                     if(data.result == "success") {
                         for(let i=0; i<data.data.length; i++) {
-                            if(data.data[i].result != 6) {
+                            if(data.data[i].result == 6) {
+                                continue;
+                            } else if(data.data[i].result != 6) {
                                 rest(data.data[i].denum, data.data[i].tcode);
-                            } else { continue; }
+                            }
                         }
+                    } else if(data.result == 'fail') {
+                        alert("조회 기록이 남아있지 않습니다.");
                     }
                 }
             }
@@ -303,6 +357,270 @@
                 }
             }
             xhr.send(JSON.stringify(info));
+        }
+
+        function changeSi() {
+            if(si.value == 'in') {
+                mshow.style.display = "none";
+                show.style.display = "none";
+                ing.style.display = "block";
+                ming.style.display = "block";
+                let Info = { apploval: true };
+
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/tracking/recordcheck/');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.msg) { console.log(data.msg); }
+                        if(data.result == "success") {
+                            for(let i=0; i<data.data.length; i++) {
+                                if(data.data[i].result == 6) {
+                                    continue;
+                                } else if(data.data[i].result != 6) {
+                                    rest(data.data[i].denum, data.data[i].tcode);
+                                }
+                            }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(Info));
+            } else if(si.value == 'sh') {
+                mshow.style.display = "block";
+                show.style.display = "block";
+                ing.style.display = "none";
+                ming.style.display = "none";
+
+                changeDate();
+            }
+        }
+
+        function changeDate() {
+            if(chdate.value == 'all') {
+                let Info = { apploval: true };
+
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/tracking/recordcheck/');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.msg) { console.log(data.msg); }
+                        if(data.result == "success") {
+                            while ( show.hasChildNodes() ) { show.removeChild( show.firstChild ); }
+                            for(let i=0; i<data.data.length; i++) {
+                                if(data.data[i].result == 6) {
+                                    let h3 = document.createElement("h4");
+                                    h3.innerHTML = data.data[i].pdate;
+                                    show.append(h3);
+                                    let table = document.createElement("table");
+                                    let tbody = document.createElement("tbody");
+                                    table.classList.add("striped");
+                                    tbody.classList.add("t" + i);
+                                    table.style.tableLayout = "fixed";
+                                    table.append(tbody);
+                                    show.append(table);
+                                    let tabl = document.querySelector(".t" + i);
+                                    let tr1 = document.createElement("tr"); // 물품 번호
+                                    let tr2 = document.createElement("tr"); // 물품 이름
+                                    let tr3 = document.createElement("tr"); // 받는 사람
+                                    let tr4 = document.createElement("tr"); // 기사 이름
+                                    let tr5 = document.createElement("tr"); // 기사 전번
+                                    let tr6 = document.createElement("tr"); // 현재 위치
+                                    let tr7 = document.createElement("tr"); // 배송 상태
+                                    
+                                    let td11 = document.createElement("td");
+                                    td11.innerHTML = '물품 번호';
+                                    let td12 = document.createElement("td");
+                                    td12.innerHTML = data.data[i].denum;
+                                    tr1.append(td11);
+                                    tr1.append(td12);
+                                    let td21 = document.createElement("td");
+                                    td21.innerHTML = '물품 이름';
+                                    let td22 = document.createElement("td");
+                                    td22.innerHTML = data.data[i].toolname;
+                                    tr2.append(td21);
+                                    tr2.append(td22);
+                                    let td31 = document.createElement("td");
+                                    td31.innerHTML = '받는 사람';
+                                    let td32 = document.createElement("td");
+                                    td32.innerHTML = data.data[i].receiverName;
+                                    tr3.append(td31);
+                                    tr3.append(td32);
+                                    let td41 = document.createElement("td");
+                                    td41.innerHTML = '기사 이름';
+                                    let td42 = document.createElement("td");
+                                    td42.innerHTML = data.data[i].manname;
+                                    tr4.append(td41);
+                                    tr4.append(td42);
+                                    let td51 = document.createElement("td");
+                                    td51.innerHTML = '기사 전번';
+                                    let td52 = document.createElement("td");
+                                    td52.innerHTML = data.data[i].phonenum;
+                                    tr5.append(td51);
+                                    tr5.append(td52);
+                                    let td61 = document.createElement("td");
+                                    td61.innerHTML = '현재 위치';
+                                    let td62 = document.createElement("td");
+                                    td62.innerHTML = data.data[i].where;
+                                    tr6.append(td61);
+                                    tr6.append(td62);
+                                    let td71 = document.createElement("td");
+                                    td71.innerHTML = '배송 상태';
+                                    let td72 = document.createElement("td");
+                                    if(data.data[i].result != 6) {
+                                        // 비정상
+                                        td72.className = "restart";
+                                        if(data.data[i].result == 1) { td72.innerHTML = "배송준비중"; }
+                                        else if(data.data[i].result == 2) { td72.innerHTML = "상품인수"; }
+                                        else if(data.data[i].result == 3) { td72.innerHTML = "상품이동중"; }
+                                        else if(data.data[i].result == 4) { td72.innerHTML = "배송지도착"; }
+                                        else if(data.data[i].result == 5) { td72.innerHTML = "배송출발"; }
+                                    } else { td72.innerHTML = "배송완료"; } // 정상
+                                    tr7.append(td71);
+                                    tr7.append(td72);
+                                    
+                                    tabl.append(tr1);
+                                    tabl.append(tr2);
+                                    tabl.append(tr3);
+                                    tabl.append(tr4);
+                                    tabl.append(tr5);
+                                    tabl.append(tr6);
+                                    tabl.append(tr7);
+                                }
+                            }
+                        } else if(data.result == 'fail') {
+                            while ( show.hasChildNodes() ) { show.removeChild( show.firstChild ); }
+
+                            let tr = document.createElement("span");
+                            tr.innerHTML = "조회 기록이 남아있지 않습니다.";
+                            show.append(tr);
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(Info));
+            } else {
+                let Info = { apploval: true };
+
+                let toggle = false;
+
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/tracking/recordcheck/');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.msg) { console.log(data.msg); }
+                        if(data.result == "success") {
+                            while ( show.hasChildNodes() ) { show.removeChild( show.firstChild ); }
+                            for(let i=0; i<data.data.length; i++) {
+                                console.log(data.data[i].date, chdate.value);
+                                if(data.data[i].date == chdate.value) {
+                                    if(data.data[i].result == 6) {
+                                        let h3 = document.createElement("h4");
+                                        h3.innerHTML = data.data[i].pdate;
+                                        show.append(h3);
+                                        let table = document.createElement("table");
+                                        let tbody = document.createElement("tbody");
+                                        table.classList.add("striped");
+                                        tbody.classList.add("t" + i);
+                                        table.style.tableLayout = "fixed";
+                                        table.append(tbody);
+                                        show.append(table);
+                                        let tabl = document.querySelector(".t" + i);
+                                        let tr1 = document.createElement("tr"); // 물품 번호
+                                        let tr2 = document.createElement("tr"); // 물품 이름
+                                        let tr3 = document.createElement("tr"); // 받는 사람
+                                        let tr4 = document.createElement("tr"); // 기사 이름
+                                        let tr5 = document.createElement("tr"); // 기사 전번
+                                        let tr6 = document.createElement("tr"); // 현재 위치
+                                        let tr7 = document.createElement("tr"); // 배송 상태
+                                        
+                                        let td11 = document.createElement("td");
+                                        td11.innerHTML = '물품 번호';
+                                        let td12 = document.createElement("td");
+                                        td12.innerHTML = data.data[i].denum;
+                                        tr1.append(td11);
+                                        tr1.append(td12);
+                                        let td21 = document.createElement("td");
+                                        td21.innerHTML = '물품 이름';
+                                        let td22 = document.createElement("td");
+                                        td22.innerHTML = data.data[i].toolname;
+                                        tr2.append(td21);
+                                        tr2.append(td22);
+                                        let td31 = document.createElement("td");
+                                        td31.innerHTML = '받는 사람';
+                                        let td32 = document.createElement("td");
+                                        td32.innerHTML = data.data[i].receiverName;
+                                        tr3.append(td31);
+                                        tr3.append(td32);
+                                        let td41 = document.createElement("td");
+                                        td41.innerHTML = '기사 이름';
+                                        let td42 = document.createElement("td");
+                                        td42.innerHTML = data.data[i].manname;
+                                        tr4.append(td41);
+                                        tr4.append(td42);
+                                        let td51 = document.createElement("td");
+                                        td51.innerHTML = '기사 전번';
+                                        let td52 = document.createElement("td");
+                                        td52.innerHTML = data.data[i].phonenum;
+                                        tr5.append(td51);
+                                        tr5.append(td52);
+                                        let td61 = document.createElement("td");
+                                        td61.innerHTML = '현재 위치';
+                                        let td62 = document.createElement("td");
+                                        td62.innerHTML = data.data[i].where;
+                                        tr6.append(td61);
+                                        tr6.append(td62);
+                                        let td71 = document.createElement("td");
+                                        td71.innerHTML = '배송 상태';
+                                        let td72 = document.createElement("td");
+                                        if(data.data[i].result != 6) {
+                                            // 비정상
+                                            td72.className = "restart";
+                                            if(data.data[i].result == 1) { td72.innerHTML = "배송준비중"; }
+                                            else if(data.data[i].result == 2) { td72.innerHTML = "상품인수"; }
+                                            else if(data.data[i].result == 3) { td72.innerHTML = "상품이동중"; }
+                                            else if(data.data[i].result == 4) { td72.innerHTML = "배송지도착"; }
+                                            else if(data.data[i].result == 5) { td72.innerHTML = "배송출발"; }
+                                        } else { td72.innerHTML = "배송완료"; } // 정상
+                                        tr7.append(td71);
+                                        tr7.append(td72);
+                                        
+                                        tabl.append(tr1);
+                                        tabl.append(tr2);
+                                        tabl.append(tr3);
+                                        tabl.append(tr4);
+                                        tabl.append(tr5);
+                                        tabl.append(tr6);
+                                        tabl.append(tr7);
+                                    }
+                                    toggle = true;
+                                } else if(i+1 == data.data.length) {
+                                    if(toggle) {
+                                        toggle = false;
+                                        continue;
+                                    } else {
+                                        while ( show.hasChildNodes() ) { show.removeChild( show.firstChild ); }
+
+                                        let tr = document.createElement("span");
+                                        tr.innerHTML = chdate.options[chdate.selectedIndex].text + "의 조회 기록이 남아있지 않습니다.";
+                                        show.append(tr);
+                                    }
+                                }
+                            }
+                        } else if(data.result == 'fail') {
+                            while ( show.hasChildNodes() ) { show.removeChild( show.firstChild ); }
+
+                            let tr = document.createElement("span");
+                            tr.innerHTML = chdate.options[chdate.selectedIndex].text + "의 조회 기록이 남아있지 않습니다.";
+                            show.append(tr);
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(Info));
+            }
         }
     </script>
 </body>
