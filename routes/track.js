@@ -14,7 +14,8 @@ let conn = mysql.createConnection({
 });
 conn.connect();
 
-let apis = ['5yH0MNx3JNyytFrtB1D2gg', '33F145I7l05a5y9LkYKLYQ']
+let apis = ['33F145I7l05a5y9LkYKLYQ', '5yH0MNx3JNyytFrtB1D2gg'];
+//33F145I7l05a5y9LkYKLYQ
 //5yH0MNx3JNyytFrtB1D2gg
 let apiIndex = 0;
 
@@ -37,7 +38,6 @@ let code = ['18', '23', '54',     // 국내 택배
 
 router
 .post('/', (req, res) => {
-    console.log(code.length);
     let promises = [];
     let proIndex = 0;
     if(!req.body.select) {
@@ -279,7 +279,7 @@ router
                         let sodate = month;
                         let pdate = year + '년 ' + month + '월 ' + date + '일';
                         let token = req.cookies.user;
-                        if(!token){
+                        if(!token) {
                             res.status(200).json({
                                 code: response[i].data.invoiceNo,
                                 uname: response[i].data.receiverName,
@@ -425,7 +425,7 @@ router
                         console.log(err);
                         res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
                     } else {
-                        res.status(200).json({ data: response.data, result: 'success' });
+                        res.status(200).json({ data: response.data, result: 'success', code: req.body.denum, t_code: req.body.tcode });
                     }
                 })
             })
@@ -434,6 +434,24 @@ router
             res.status(400).json({ msg: '조회를 하지 못하였습니다.', result: 'fail' });
         }
     })
+})
+
+.post('/lookupcheck', (req, res) => {
+    if(req.body.app == 'apploval') {
+        let dt = [];
+        let sql = 'SELECT * FROM `delivery`.`top` ORDER BY `lookup` DESC LIMIT 1000';
+        conn.query(sql, (err, data) => {
+            if(err) { res.status(400).json({ msg: '에러가 발생했습니다(06)' }); }
+            for(let i=0; i<10; i++) {
+                dt.push({
+                    "name": data[i].name,
+                    "lookup": data[i].lookup
+                });
+            }
+            let redt = dt.reverse();
+            res.status(200).json({ result: 'success', data: redt });
+        })
+    }
 })
 
 module.exports = router;

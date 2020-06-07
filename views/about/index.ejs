@@ -46,10 +46,11 @@
             color: #fff;
             font-size: 13px !important;
             margin: 0px 10px 0px 0px !important;
+            border-bottom: 1px solid white;
         }
         #userloginsubmit {
-            width: 60px;
-            height: 20px;
+            width: 70px;
+            height: 30px;
             background-color: #d17000;
             color : white;
             border: 1px solid orange;
@@ -90,6 +91,12 @@
         }
         .taekbae .domestic table tr td, .taekbae .international table tr td {
             border-right: 1px solid darkgray;
+        }
+        #chartdiv {
+            width: 70%;
+            margin: auto;
+            height: 600px;
+            margin-bottom: 180px;
         }
         @keyframes ser1 {0%{background-color: rgba(168,255,255,0.0);} 100%{background-color: rgba(168,255,255,0.4);}}
         @keyframes ser2 {0%{background-color: rgba(255,192,203,0.0);} 100%{background-color: rgba(255,192,203,0.4);}}
@@ -316,17 +323,13 @@
                     <table>
                         <tbody>
                             <tr>
-                                <th>아이디</th>
-                                <th>비밀번호</th>
-                            </tr>
-                            <tr>
                                 <td><input type="text" class="validate" name="userid" id="uid" placeholder="ID" required></td>
                                 <td><input type="password" class="validate" name="userpass" id="upass" placeholder="Password" required></td>
                                 <td><input type="submit" value="로그인" id="userloginsubmit"></td>
                             </tr>
                             <tr>
-                                <td><a href="/account/forget">계정을 잊으셨나요?</a></td>
-                                <td><a href="/account/signup">회원가입</a></td>
+                                <td><a style="color: white;" href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a style="color: white;" href="/account/signup">회원가입</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -365,6 +368,10 @@
                 <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
             <% } %>
             
+            <h3 style="margin-top: 0px; font-weight: bold; text-align: center;">택배사 조회 기록</h3>
+            <h5 style="margin-top: 0px; margin-bottom: 70px; text-align: center;">top 10</h5>
+            <div id="chartdiv"></div>
+
             <a name="taekbae"></a>
             <h3 style="margin-top: 0px; margin-bottom: 70px; font-weight: bold; text-align: center;">조회 가능 택배사</h3>
             <div class="taekbae" id="taebae">
@@ -547,8 +554,51 @@
             </div>
         </div>
     </div>
+    <script src="//www.amcharts.com/lib/4/core.js"></script>
+    <script src="//www.amcharts.com/lib/4/charts.js"></script>
     <script src="/../javascripts/menu.js"></script>
     <script>
+        function makeChart(){
+            let chart = am4core.create("chartdiv", am4charts.XYChart);
+
+            var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "name";
+            categoryAxis.title.text = "택배사";
+
+            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.title.text = "조회수";
+            
+            var series = chart.series.push(new am4charts.ColumnSeries());
+            series.dataFields.categoryX = "lookup";
+            series.dataFields.valueY = "name";
+            series.name = "택배사 이름보기";
+            series.tooltipText = "{name}: [bold]{valueX}[/]";
+            
+            console.log(series.dataFields)
+
+            chart.legend = new am4charts.Legend();
+            chart.cursor = new am4charts.XYCursor();
+            return chart;
+        }
+
+        let info = { app: 'apploval' }
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:3000/tracking/lookupcheck');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                if(data.result == "success") {
+                    let chart = makeChart();
+                    chart.data = data.data;
+                    console.log(data.data)
+                } else {
+                    console.log('fail');
+                }
+            }
+        }
+        xhr.send(JSON.stringify(info));
+
         let ser1button = document.getElementById("ser1button");
         let ser2button = document.getElementById("ser2button");
         let ser3button = document.getElementById("ser3button");

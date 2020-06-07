@@ -164,7 +164,7 @@
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
-            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기(국내, 국제 택배사)</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
             <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
@@ -304,6 +304,8 @@
                                 tabl.append(tr5);
                                 tabl.append(tr6);
                                 tabl.append(tr7);
+                            } else if(data.data[i].result != 6) {
+                                rest(data.data[i].denum, data.data[i].tcode);
                             }
                         }
                     } else if(data.result == 'fail') {
@@ -414,7 +416,7 @@
                         else if(data.data.level == 3) { td72.innerHTML = "상품이동중"; }
                         else if(data.data.level == 4) { td72.innerHTML = "배송지도착"; }
                         else if(data.data.level == 5) { td72.innerHTML = "배송출발"; }
-                        else { td72.innerHTML = "배송완료"; }
+                        else { location.replace('/loginuser/searchrecord'); }
                         tr7.append(td71);
                         tr7.append(td72);
                         

@@ -175,7 +175,7 @@
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
-            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기(국내, 국제 택배사)</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
             <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
@@ -280,7 +280,6 @@
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
                     let data = JSON.parse(xhr.responseText);
-                    console.log(data.msg);
                     if(data.result == "success") {
                         let table = document.createElement("table");
                         let tbody = document.createElement("tbody");
@@ -297,6 +296,7 @@
                         let tr5 = document.createElement("tr"); // 기사 전번
                         let tr6 = document.createElement("tr"); // 현재 위치
                         let tr7 = document.createElement("tr"); // 배송 상태
+                        let tr8 = document.createElement("tr"); // 자세히 보기
                         
                         let td11 = document.createElement("td");
                         td11.innerHTML = '물품 번호';
@@ -342,9 +342,20 @@
                         else if(data.data.level == 3) { td72.innerHTML = "상품이동중"; }
                         else if(data.data.level == 4) { td72.innerHTML = "배송지도착"; }
                         else if(data.data.level == 5) { td72.innerHTML = "배송출발"; }
-                        else { td72.innerHTML = "배송완료"; }
+                        else { location.replace('/loginuser/tmanage'); }
                         tr7.append(td71);
                         tr7.append(td72);
+                        let td81 = document.createElement("td");
+                        td81.innerHTML = '자세히 보기';
+                        let td82 = document.createElement("td");
+                        let a811 = document.createElement("a");
+                        a811.innerHTML = '자세히 보기';
+                        a811.style.cursor = 'pointer';
+                        a811.style.fontWeight = 'bold';
+                        a811.onclick = () => { window.open(`/tracking/detail?t_invoice=${data.code}&t_code=${data.t_code}`, '', 'width=500,height=705,scrollbar=yes'); }
+                        td82.append(a811);
+                        tr8.append(td81);
+                        tr8.append(td82);
                         
                         tabl.append(tr1);
                         tabl.append(tr2);
@@ -353,6 +364,7 @@
                         tabl.append(tr5);
                         tabl.append(tr6);
                         tabl.append(tr7);
+                        tabl.append(tr8);
                     }
                 }
             }

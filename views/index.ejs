@@ -34,10 +34,11 @@
             color: #fff;
             font-size: 13px !important;
             margin: 0px 10px 0px 0px !important;
+            border-bottom: 1px solid white;
         }
         #userloginsubmit {
-            width: 60px;
-            height: 20px;
+            width: 70px;
+            height: 30px;
             background-color: #d17000;
             color : white;
             border: 1px solid orange;
@@ -256,10 +257,16 @@
                 height: 60px;
                 position: relative;
             }
+            .tcodeinput > span {
+                position: absolute;
+                left: 1%;
+                font-weight: bold;
+                color: white;
+            }
             #jcode {
                 position: absolute;
-                left: 5%;
-                width: 88%;
+                right: 6%;
+                width: 86.5%;
                 height: 30px;
                 margin: 0 !important;
                 border-radius: 15px;
@@ -314,7 +321,7 @@
                 text-align: center;
             }
             .info-img { 
-                width: 450px;
+                width: 500px;
                 margin: auto;
                 margin-top: 30px;
                 text-align: center;
@@ -338,15 +345,15 @@
                 text-align: center;
             }
             .text-center > img {
-                width: 50px;
-                height: 50px;
+                width: 60px;
+                height: 60px;
                 border-radius: 50px;
                 background-color: #EDEDED;
-                padding: 10px 10px;
+                padding: 12px 12px;
             }
             .nlevel {
-                width: 60px !important;
-                height: 60px !important;
+                width: 65px !important;
+                height: 65px !important;
                 background-color: orange !important;
             }
             .info-text {
@@ -391,10 +398,16 @@
                 height: 60px;
                 position: relative;
             }
+            .tcodeinput > span {
+                position: absolute;
+                left: 1%;
+                font-weight: bold;
+                color: white;
+            }
             #jcode {
                 position: absolute;
-                left: 5%;
-                width: 88%;
+                right: 6%;
+                width: 86.5%;
                 height: 30px;
                 margin: 0 !important;
                 border-radius: 15px;
@@ -437,7 +450,7 @@
                 padding: 30px 0;
             }
             .info-img { 
-                width: 450px;
+                width: 500px;
                 margin: auto;
                 margin-top: 30px;
                 text-align: center;
@@ -461,15 +474,15 @@
                 text-align: center;
             }
             .text-center > img {
-                width: 50px;
-                height: 50px;
+                width: 60px;
+                height: 60px;
                 border-radius: 50px;
                 background-color: #EDEDED;
-                padding: 10px 10px;
+                padding: 12px 12px;
             }
             .nlevel {
-                width: 60px !important;
-                height: 60px !important;
+                width: 65px !important;
+                height: 65px !important;
                 background-color: orange !important;
             }
             .info-text {
@@ -514,10 +527,16 @@
                 height: 60px;
                 position: relative;
             }
+            .tcodeinput > span {
+                position: absolute;
+                left: 1%;
+                font-weight: bold;
+                color: white;
+            }
             #jcode {
                 position: absolute;
-                left: 5%;
-                width: 88%;
+                right: 6%;
+                width: 86.5%;
                 height: 30px;
                 margin: 0 !important;
                 border-radius: 15px;
@@ -560,7 +579,7 @@
                 padding: 15px 0;
             }
             .info-img { 
-                width: 450px;
+                width: 500px;
                 margin: auto;
                 margin-top: 30px;
                 text-align: center;
@@ -584,15 +603,15 @@
                 text-align: center;
             }
             .text-center > img {
-                width: 50px;
-                height: 50px;
+                width: 60px;
+                height: 60px;
                 border-radius: 50px;
                 background-color: #EDEDED;
-                padding: 10px 10px;
+                padding: 12px 12px;
             }
             .nlevel {
-                width: 60px !important;
-                height: 60px !important;
+                width: 65px !important;
+                height: 65px !important;
                 background-color: orange !important;
             }
             .info-text {
@@ -617,8 +636,7 @@
             <% if(decoded) { %>
                 <table id="logined">
                     <tbody>
-                        <tr><td><%= decoded.uname %> : <%= decoded.uid %></td></tr>
-                        <tr><td style="text-align: right;"><a href="/account/logout">로그아웃</a></td></tr>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %> | </td><td style="margin-left: 10px !important;"><a href="/account/logout">로그아웃</a></td></tr>
                     </tbody>
                 </table>
             <% } else { %>
@@ -626,17 +644,13 @@
                     <table id="nlogin">
                         <tbody>
                             <tr>
-                                <th>아이디</th>
-                                <th>비밀번호</th>
-                            </tr>
-                            <tr>
                                 <td><input type="text" name="userid" id="uid" placeholder="ID" required></td>
                                 <td><input type="password" name="userpass" id="upass" placeholder="Password" required></td>
                                 <td><input type="submit" value="로그인" id="userloginsubmit"></td>
                             </tr>
                             <tr>
-                                <td><a href="/account/forget">계정을 잊으셨나요?</a></td>
-                                <td><a href="/account/signup">회원가입</a></td>
+                                <td><a style="color: white;" href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a style="color: white;" href="/account/signup">회원가입</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -673,60 +687,57 @@
                 <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
             <% } %>
             <div class="tcode" style="position: relative;">
-                <label style="font-size: 15px;">택배 조회 코드</label>
+                <label style="padding: 7px;"></label>
                 <% if(decoded) { %>
                     <% if(payo) { %>
                         <select name="delichoose" id="delichoose" onchange="gcolor('c');" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: fit-content; height: 25px; padding: 0;">
                             <option value="domestic">국내택배 (Korean delivery)</option>
                             <option value="international">국제택배 (International delivery)</option>
                         </select>
-                        <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
                         <div class="tcodeinput">
-                            <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
-                            <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
+                            <!-- <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i> -->
+                            <span>운송장 번호</span>
+                            <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
                             <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
                         </div>
                     <% } else { %>
-                        <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
                         <div class="tcodeinput">
-                            <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
-                            <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
+                            <!-- <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i> -->
+                            <span>운송장 번호</span>
+                            <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
                             <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
                         </div>
                     <% } %>
                 <% } else { %>
-                    <label style="font-size: 15px; position: absolute; right: 0;">운송장 번호</label>
                     <div class="tcodeinput">
-                        <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i>
-                        <input type="number" name="jcode" id="jcode" placeholder="택배 조회 코드">
+                        <!-- <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i> -->
+                        <span>운송장 번호</span>
+                        <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
                         <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
                     </div>
                 <% } %>
             </div>
             <div class="mtcode" style="position: relative;">
-                <label style="font-size: 15px;">택배 조회 코드</label>
+                <label style="padding: 7px;"></label>
                 <% if(decoded) { %>
                     <% if(payo) { %>
                         <select name="delichoose" onchange="gcolor('m');" id="mdelichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: 90px; height: 25px; padding: 0;">
                             <option value="domestic">국내택배 (Korean delivery)</option>
                             <option value="international">국제택배 (International delivery)</option>
                         </select>
-                        <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
                         <div class="mtcodeinput">
-                            <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                            <input type="number" name="jcode" id="mjcode" placeholder="'-' 없이 숫자만 입력하세요.">
                             <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
                         </div>
                     <% } else { %>
-                        <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
                         <div class="mtcodeinput">
-                            <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                            <input type="number" name="jcode" id="mjcode" placeholder="'-' 없이 숫자만 입력하세요.">
                             <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
                         </div>
                     <% } %>
                 <% } else { %>
-                    <label style="font-size: 15px; position:absolute; right: 0;">운송장 번호</label>
                     <div class="mtcodeinput">
-                        <input type="number" name="jcode" id="mjcode" placeholder="택배 조회 코드">
+                        <input type="number" name="jcode" id="mjcode" placeholder="'-' 없이 숫자만 입력하세요.">
                         <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
                     </div>
                 <% } %>
