@@ -102,6 +102,15 @@
         @keyframes ser2 {0%{background-color: rgba(255,192,203,0.0);} 100%{background-color: rgba(255,192,203,0.4);}}
         @keyframes ser3 {0%{background-color: rgba(250,123,220,0.0);} 100%{background-color: rgba(220,93,220,0.2);}}
         @media only screen and (max-width: 600px) {
+            #mchartdiv {
+                width: 100% !important;
+                margin: auto;
+                height: 600px;
+                margin-bottom: 180px;
+            }
+            #chartdiv {
+                display:none;
+            }
             #menubar {
                 display: none;
             }
@@ -142,6 +151,9 @@
             }
         }
         @media only screen and (min-width: 1201px) {
+            #mchartdiv {
+                display: none;
+            }
             .mmlogin {
                 display: none;
             }
@@ -200,6 +212,9 @@
             }
         }
         @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            #mchartdiv {
+                display: none;
+            }
             .mmlogin {
                 display: none;
             }
@@ -258,6 +273,9 @@
             }
         }
         @media only screen and (min-width: 601px) and (max-width: 992px) {
+            #mchartdiv {
+                display: none;
+            }
             .mmlogin {
                 display: none;
             }
@@ -314,8 +332,7 @@
             <% if(decoded) { %>
                 <table>
                     <tbody>
-                        <tr><td><%= decoded.uname %> : <%= decoded.uid %></td></tr>
-                        <tr><td style="text-align: right;"><a href="/account/logout">로그아웃</a></td></tr>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %> | </td><td style="margin-left: 10px !important;"><a href="/account/logout">로그아웃</a></td></tr>
                     </tbody>
                 </table>
             <% } else { %>
@@ -345,7 +362,7 @@
             <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
             <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
-            <div class="menutap menutap55" onclick="location.replace('/loginuser/buyer/');">유료 서비스 이용</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/chat/');">판매자와 채팅</div>
             <div class="menutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="mmenu" style="display: none; position: relative; z-index: 50;" id="semenu">
@@ -354,7 +371,7 @@
             <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
-            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer/');">유료 서비스 이용</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat/');">판매자와 채팅</div>
             <div class="mmenutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
@@ -371,6 +388,7 @@
             <h3 style="margin-top: 0px; font-weight: bold; text-align: center;">택배사 조회 기록</h3>
             <h5 style="margin-top: 0px; margin-bottom: 70px; text-align: center;">top 10</h5>
             <div id="chartdiv"></div>
+            <div id="mchartdiv"></div>
 
             <a name="taekbae"></a>
             <h3 style="margin-top: 0px; margin-bottom: 70px; font-weight: bold; text-align: center;">조회 가능 택배사</h3>
@@ -471,21 +489,45 @@
                         <h5 style="font-weight: normal;">국제 택배 조회</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
                         <label style="margin-bottom: 30px;">해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
-                        <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
+                        <% if(decoded) { %>
+                            <% if(payo) { %>
+                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                            <% } else { %>
+                                <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
+                            <% } %>
+                        <% } else { %>
+                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                        <% } %>
                     </div>
                     <span>+</span>
                     <div class="service2">
-                        <h5 style="font-weight: normal;">더 많은 조회</h5>
+                        <h5 style="font-weight: normal;">카카오톡 봇 이용</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
-                        <label style="margin-bottom: 30px;">위의 표에 적힌 택배사 표보다<br>더 많이 조회할 수 있습니다 !<br>12개 더 많은 조회를 누리세요!</label>
-                        <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                        <label style="margin-bottom: 30px;">직접 웹에 들어오지 않아도<br>배송상태 알림, 조회, 기록등을<br>카카오톡 봇으로 확인해보세요 !</label>
+                        <% if (decoded) { %>
+                            <% if(payt) { %>
+                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                            <% } else { %>
+                                <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>700</a>
+                            <% } %>
+                        <% } else { %>
+                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                        <% } %>
                     </div>
                     <span>=</span>
                     <div class="service3">
                         <h5 style="font-weight: normal;">둘다 마음껏 !</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
-                        <label style="margin-bottom: 30px;">더 많은 택배 조회를 하면서도<br>위의 표보다 더 많은 조회까지!!<br>더더욱 많은 조회를 !</label>
-                        <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                        <label style="margin-bottom: 30px;">더 많은 택배 조회를 하면서도<br>카톡으로 모든 기능 이용까지 !<br>더더욱 많고 편한 조회를 !</label>
+                        <% if(decoded) { %>
+                            <% if(payo && payt) { %>
+                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                            <% } else { %>
+                                <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                            <% } %>
+                        <% } else { %>
+                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                        <% } %>
                     </div>
                 </div>
 
@@ -494,96 +536,143 @@
                         <h5 style="font-weight: normal;">국제 택배 조회</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
                         <label style="margin-bottom: 30px; display: block;">해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
-                        <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
+                        <% if(decoded) { %>
+                            <% if(payo) { %>
+                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                            <% } else { %>
+                                <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
+                            <% } %>
+                        <% } else { %>
+                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                        <% } %>
                     </div>
                     <div class="service2">
-                        <h5 style="font-weight: normal;">더 많은 조회</h5>
+                        <h5 style="font-weight: normal;">카카오톡 봇 이용</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
-                        <label style="margin-bottom: 30px; display: block;">위의 표에 적힌 택배사 표보다<br>더 많이 조회할 수 있습니다 !<br>12개 더 많은 조회를 누리세요!</label>
-                        <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>600</a>
+                        <label style="margin-bottom: 30px; display: block;">직접 웹에 들어오지 않아도<br>배송상태 알림, 조회, 기록등을<br>카카오톡 봇으로 확인해보세요 !</label>
+                        <% if(decoded) { %>
+                            <% if(payt) { %>
+                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                            <% } else { %>
+                                <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>700</a>
+                            <% } %>
+                        <% } else { %>
+                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                        <% } %>
                     </div>
                     <div class="service3">
                         <h5 style="font-weight: normal;">둘다 마음껏 !</h5>
                         <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
-                        <label style="margin-bottom: 30px; display: block;">더 많은 택배 조회를 하면서도<br>위의 표보다 더 많은 조회까지!!<br>더더욱 많은 조회를 !</label>
-                        <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                        <label style="margin-bottom: 30px; display: block;">더 많은 택배 조회를 하면서도<br>카톡으로 모든 기능 이용까지 !<br>더더욱 많고 편한 조회를 !</label>
+                        <% if(decoded) { %>
+                            <% if(payo && payt) { %>
+                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                            <% } else { %>
+                                <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                            <% } %>
+                        <% } else { %>
+                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                        <% } %>
                     </div>
                 </div>
             </div>
+            <div class="explain" style="margin-bottom: 50px; position: absolute; transform: translate(-50%, -50%); left: 50%;">
+                <a class="waves-effect waves-light btn-small orange" id="forget"><i class="material-icons left" style="font-size: 25px;">assignment</i>자세한 설명 보기</a>
+            </div>
         </div>
-        <div id="ser1pay">
-            <div class="row">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">'국제 택배 조회' 결제</span>
-                        <p>해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를 이용 해보세요 !<br><br>가격 : 500 원</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
-                        <a id="ser1cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+        <% if(decoded) { %>
+            <div id="ser1pay">
+                <div class="row">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">'국제 택배 조회' 결제</span>
+                            <p>해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를 이용 해보세요 !<br><br>가격 : 500 원</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                            <a id="ser1cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="ser2pay">
-            <div class="row">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">'더 많은 조회' 결제</span>
-                        <p>위의 표에 나와있는 택배사들 보다 12개나 더 많이 조회할 수 있어요!<br><br>가격 : 600 원</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
-                        <a id="ser2cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="ser3pay">
-            <div class="row">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">'둘다 마음껏 !' 결제</span>
-                        <p>해외 택배사의 조회부터 표에 나오지 않은 12개의 더 많은 택배사들을 조회가능 ! 더욱 더 많은 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 1000 원</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
-                        <a id="ser3cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+            <div id="ser2pay">
+                <div class="row">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">'카카오톡 봇 이용' 결제</span>
+                            <p>카카오톡 봇으로 배송 조회, 기록, 알림까지 이용하실수 있습니다 !<br><br>가격 : 700 원</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                            <a id="ser2cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div id="ser3pay">
+                <div class="row">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">'둘다 마음껏 !' 결제</span>
+                            <p>해외 택배사의 조회부터 카톡 봇으로 이용한 국내 택배 조회, 기록, 알림까지 ! 더욱 더 많은 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 1000 원</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                            <a id="ser3cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
     </div>
-    <script src="//www.amcharts.com/lib/4/core.js"></script>
-    <script src="//www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
     <script src="/../javascripts/menu.js"></script>
     <script>
+        let explain = document.querySelector(".explain");
+        explain.onclick = () => { window.open(`/explain`, '', 'width=500,height=705,scrollbar=yes'); }
+
         function makeChart(){
             let chart = am4core.create("chartdiv", am4charts.XYChart);
 
-            var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
             categoryAxis.dataFields.category = "name";
             categoryAxis.title.text = "택배사";
 
-            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
             valueAxis.title.text = "조회수";
             
             var series = chart.series.push(new am4charts.ColumnSeries());
-            series.dataFields.categoryX = "lookup";
-            series.dataFields.valueY = "name";
-            series.name = "택배사 이름보기";
+            series.dataFields.categoryY = "name";
+            series.dataFields.valueX = "lookup";
             series.tooltipText = "{name}: [bold]{valueX}[/]";
             
-            console.log(series.dataFields)
-
-            chart.legend = new am4charts.Legend();
             chart.cursor = new am4charts.XYCursor();
             return chart;
         }
 
+        function mmakeChart() {
+            let mchart = am4core.create("mchartdiv", am4charts.XYChart);
+
+            var categoryAxis = mchart.yAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "name";
+            categoryAxis.title.text = "택배사";
+
+            var valueAxis = mchart.xAxes.push(new am4charts.ValueAxis());
+            valueAxis.title.text = "조회수";
+            
+            var series = mchart.series.push(new am4charts.ColumnSeries());
+            series.dataFields.categoryY = "name";
+            series.dataFields.valueX = "lookup";
+            series.tooltipText = "{name}: [bold]{valueX}[/]";
+            
+            mchart.cursor = new am4charts.XYCursor();
+            return mchart;
+        }
+
         let info = { app: 'apploval' }
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:3000/tracking/lookupcheck');
+        xhr.open('POST', '/tracking/lookupcheck');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function () {
             if(xhr.readyState === 4 && xhr.status === 200) {
@@ -591,7 +680,9 @@
                 if(data.result == "success") {
                     let chart = makeChart();
                     chart.data = data.data;
-                    console.log(data.data)
+                    let mchart = mmakeChart();
+                    mdata = data.data;
+                    mchart.data = data.mdata;
                 } else {
                     console.log('fail');
                 }

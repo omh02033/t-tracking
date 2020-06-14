@@ -14,9 +14,9 @@ let conn = mysql.createConnection({
 });
 conn.connect();
 
-let apis = ['33F145I7l05a5y9LkYKLYQ', '5yH0MNx3JNyytFrtB1D2gg'];
+let apis = ['33F145I7l05a5y9LkYKLYQ', 'VrSMOCx6TVQUru8Z8jrGYw'];
 //33F145I7l05a5y9LkYKLYQ
-//5yH0MNx3JNyytFrtB1D2gg
+//VrSMOCx6TVQUru8Z8jrGYw
 let apiIndex = 0;
 
 let gcode = ['99', '37', '29',     // 국제 택배
@@ -56,7 +56,6 @@ router
         })
         Promise.all(promises)
         .then(function (response) {
-            console.log(promises.length);
             for(let i=0; i<response.length; i++) {
                 if(response[i].data.result == 'Y' && !response[i].data.receiverName == '') {
                     let today = new Date();   
@@ -80,8 +79,8 @@ router
                     } else {
                         jwt.verify(token, config.secret, (err, decoded) => {
                             if(err) { return res.json(err); }
-                            let sql = 'SELECT * FROM delirecord WHERE denum=?';
-                            conn.query(sql, [req.body.num], (err, data) => {
+                            let sql = 'SELECT * FROM delirecord WHERE id=? and denum=?';
+                            conn.query(sql, [decoded.unum, req.body.num], (err, data) => {
                                 if(err) { res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' }); }
                                 let dat = data[0];
                                 if(dat) {
@@ -94,22 +93,33 @@ router
                                         t_code: code[i]
                                     });
                                 } else {
-                                    let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                    conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate, pdate], (err, rows, field) => {
-                                        if(err) {
-                                            console.log(err);
-                                            res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
-                                        } else {
-                                            res.status(200).json({
-                                                code: response[i].data.invoiceNo,
-                                                uname: response[i].data.receiverName,
-                                                itemName: response[i].data.itemName,
-                                                where: response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where,
-                                                level: response[i].data.level,
-                                                t_code: code[i]
-                                            });
-                                        }
-                                    })
+                                    if(req.body.sec == false) {
+                                        let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                        conn.query(sq, [decoded.unum, req.body.num, code[i], response[i].data.itemName, response[i].data.level, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].telno2, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].manName, response[i].data.receiverName, response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where, sodate, pdate], (err, rows, field) => {
+                                            if(err) {
+                                                console.log(err);
+                                                res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
+                                            } else {
+                                                res.status(200).json({
+                                                    code: response[i].data.invoiceNo,
+                                                    uname: response[i].data.receiverName,
+                                                    itemName: response[i].data.itemName,
+                                                    where: response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where,
+                                                    level: response[i].data.level,
+                                                    t_code: code[i]
+                                                });
+                                            }
+                                        });
+                                    } else {
+                                        res.status(200).json({
+                                            code: response[i].data.invoiceNo,
+                                            uname: response[i].data.receiverName,
+                                            itemName: response[i].data.itemName,
+                                            where: response[i].data.trackingDetails[response[i].data.trackingDetails.length - 1].where,
+                                            level: response[i].data.level,
+                                            t_code: code[i]
+                                        });
+                                    }
                                 }
                             })
                         });
@@ -186,8 +196,8 @@ router
                         } else {
                             jwt.verify(token, config.secret, (err, decoded) => {
                                 if(err) { return res.json(err); }
-                                let sql = 'SELECT * FROM delirecord WHERE denum=?';
-                                conn.query(sql, [req.body.num], (err, data) => {
+                                let sql = 'SELECT * FROM delirecord WHERE id=? and denum=?';
+                                conn.query(sql, [decoded.unum, req.body.num], (err, data) => {
                                     if(err) { res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' }); }
                                     let dat = data[0];
                                     if(dat) {
@@ -291,8 +301,8 @@ router
                         } else {
                             jwt.verify(token, config.secret, (err, decoded) => {
                                 if(err) { return res.json(err); }
-                                let sql = 'SELECT * FROM delirecord WHERE denum=?';
-                                conn.query(sql, [req.body.num], (err, data) => {
+                                let sql = 'SELECT * FROM delirecord WHERE id=? and denum=?';
+                                conn.query(sql, [decoded.unum, req.body.num], (err, data) => {
                                     if(err) { res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' }); }
                                     let dat = data[0];
                                     if(dat) {
@@ -398,6 +408,14 @@ router
         });
     }
 })
+.post('/recordcheck/del/', (req, res) => {
+    let sql = 'DELETE FROM delirecord WHERE id=? and denum=?';
+    conn.query(sql, [req.body.id, req.body.denum], (err, data) => {
+        if(err) { res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+        res.status(200).json({ result: 'success' });
+    })
+})
+
 .post('/retrack', (req, res) => {
     axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
         params: {
@@ -439,6 +457,7 @@ router
 .post('/lookupcheck', (req, res) => {
     if(req.body.app == 'apploval') {
         let dt = [];
+        let mdt = [];
         let sql = 'SELECT * FROM `delivery`.`top` ORDER BY `lookup` DESC LIMIT 1000';
         conn.query(sql, (err, data) => {
             if(err) { res.status(400).json({ msg: '에러가 발생했습니다(06)' }); }
@@ -447,9 +466,14 @@ router
                     "name": data[i].name,
                     "lookup": data[i].lookup
                 });
+                mdt.push({
+                    "name": data[i].name.substring(0, 3),
+                    "lookup": data[i].lookup
+                });
             }
             let redt = dt.reverse();
-            res.status(200).json({ result: 'success', data: redt });
+            let mredt = mdt.reverse();
+            res.status(200).json({ result: 'success', data: redt, mdata: mredt });
         })
     }
 })

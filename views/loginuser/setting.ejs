@@ -2,7 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -10,10 +9,17 @@
     <link rel="stylesheet" href="/../stylesheets/top.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="shortcut icon" href="/../images/favicon.ico">
-    <title>통합 택배 조회 서비스</title>
+    <title>택배 조회 기록</title>
     <style>
         body {
             margin: 0;
+            min-height: 850px;
+        }
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
         }
         .mlogin {
             position: absolute;
@@ -26,28 +32,6 @@
         .mlogin table td, .mlogin table th {
             padding: 2px !important;
         }
-        #uid, #upass {
-            width: 140px;
-            height: 15px;
-            padding-bottom: 2px;
-            color: #fff;
-            font-size: 13px !important;
-            margin: 0px 10px 0px 0px !important;
-        }
-        #userloginsubmit {
-            width: 60px;
-            height: 20px;
-            background-color: #d17000;
-            color : white;
-            border: 1px solid orange;
-            font-weight: bold;
-        }
-        .mlogin table a {
-            color: #8b4a00;
-            font-size: 12px;
-            font-weight: normal;
-            text-decoration: none;
-        }
         .main {
             width: 100%;
             height: fit-content;
@@ -58,54 +42,22 @@
             top: 90px;
             right: 0;
         }
-        .lookuptable {
-            width: 80%;
-            margin: auto;
-            margin-top: 100px;
-            border-collapse: collapse;
-            justify-content: center;
-            box-sizing: border-box;
+        #show table {
+            margin-bottom: 50px;
+            table-layout: fixed;
         }
-        .trfirst td {
-            text-align: center !important;
-            box-sizing: border-box;
-        }
-        .trsecond td {
-            border-right: 1px solid rgba(0,0,0,0.12);
-            padding: 3px !important;
-            box-sizing: border-box;
-        }
-        .elli {
-            white-space:nowrap;
-            text-overflow:ellipsis;
-            -o-text-overflow:ellipsis;
-            overflow: hidden;
-            -moz-binding: url('ellipsis.xml#ellipsis');
-        }
-        .mlookuptable {
-            width: 80%;
-            margin: auto;
-            margin-top: 20px;
-            border-collapse: collapse;
-            justify-content: center;
-        }
-        .emphasized {
-            z-index: 500;
-            box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px;
-        }
-        .loading {
-            background-color: rgba(0,0,0,0.5);
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80px;
-            height: 80px;
-            transform: translate(-50%, -50%);
-        }
-        .loadingif {
-            width: 100%;
-            height: 100%;
+        .main1 h2 { font-size: 35px; }
+        .main1 h3 { font-size: 28px; }
+        .main1 h4 { font-size: 20px; }
+        #show table tr:first-child td:first-child { width: 33.33333%; }
+        #show table tr:first-child td:last-child { width: 66.66667%; }
+        #chdate {
+            margin-left: 50px;
+            width: fit-content;
+            height: 25px;
+            padding: 2px;
+            display: inline-block !important;
+            background-color: rgba(239,150,25,0.3);
         }
         @media only screen and (max-width: 600px) {
             .exp span {
@@ -114,312 +66,62 @@
             #menubar {
                 display: none;
             }
-            .lookuptable {
-                display: none;
-            }
             #semenu {
                 display: none;
             }
-            .tcode {
+            #show {
                 display: none;
             }
-            .explain {
-                display: none;
-            }
-            .mtcode {
-                margin: auto;
-                width: 80%;
-                text-align: left;
-            }
-            .mtcodeinput {
-                display: flex;
-                align-items: center !important;
-                margin-top: 12px;
-                background-color: orange;
-                border-radius: 25px;
-                width:100%;
-                height: 60px;
-                position: relative;
-            }
-            #mjcode {
-                position: absolute;
-                left: 2%;
-                width: 80%;
-                height: 30px;
-                margin: 0 !important;
-                border-radius: 15px;
-                padding-left: 10px;
-                background-color: #fff;
-            }
-            #mjcodesubmit {
-                position: absolute;
-                right: 3px;
-                width: 45px;
-                height: 45px;
-                padding: 5px;
-                box-sizing: border-box;
-                background-color: rgba(0,0,0,0);
-                display: flex;
-                text-align: center;
-                justify-content: center;
-                border: none;
-            }
-            #mjcodesubmit i {
-                margin: 0;
-                font-size: 30px;
-            }
-            .mexplain {
-                position: absolute;
-                bottom: -150px;
-                width: 100%;
-                height: 100px;
-                border-top: 2px solid #e9ebee;
-                background-color: rgba(233,235,238,0.3);
-            }
-            .mexplain1 {
-                height: 100%;
-                width: 85%;
-                margin: auto;
-                text-align: center;
-                padding: 15px 0;
-            }
+            #show { padding: 10px 30px; }
+            #mshow { padding: 0 30px; }
         }
         @media only screen and (min-width: 1201px) {
+            .mmlogin {
+                display: none;
+            }
             #mmenubar {
                 display: none;
             }
-            .mlookuptable {
+            #mshow {
                 display: none;
             }
-            .tcode {
-                margin: auto;
-                width: 80%;
-                text-align: left;
-            }
-            .mexplain {
-                display: none;
-            }
-            .tcodeinput {
-                display: flex;
-                align-items: center !important;
-                margin-top: 12px;
-                background-color: orange;
-                border-radius: 25px;
-                width: 100%;
-                height: 60px;
-                position: relative;
-            }
-            #jcode {
-                position: absolute;
-                left: 5%;
-                width: 88%;
-                height: 30px;
-                margin: 0 !important;
-                border-radius: 15px;
-                padding-left: 10px;
-                background-color: #fff;
-            }
-            #jcodesubmit {
-                position: absolute;
-                right: 30px;
-                width: 45px;
-                height: 45px;
-                padding: 5px;
-                box-sizing: border-box;
-                background-color: rgba(0,0,0,0);
-                display: flex;
-                text-align: center;
-                justify-content: center;
-                border: none;
-            }
-            #jcodesubmit i {
-                margin: 0;
-                font-size: 30px;
-            }
-            .mtcode {
-                display: none;
-            }
-            .explain {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: 200px;
-                border-top: 2px solid #e9ebee;
-                background-color: rgba(233,235,238,0.3);
-            }
-            .explain1 {
-                height: 100%;
-                width: 50%;
-                margin: auto;
-                text-align: center;
-                padding: 30px 0;
-            }
-            .explain a {
-                font-size: .8rem;
-            }
-            .explain table tr {
-                border-bottom: none !important;
-            }
-            .explain table tr td {
-                border-right: 1px solid darkgray;
-                padding:0;
-                margin: 0;
-                text-align: center;
-            }
+            #show { padding: 10px 80px; }
+            #mshow { padding: 0 80px; }
+            #show table { width: 70%; }
         }
         @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            .mmlogin {
+                display: none;
+            }
             #mmenubar {
                 display: none;
-            }
-            .mlookuptable {
-                display: none;
-            }
-            .tcode {
-                margin: auto;
-                width: 80%;
-                text-align: left;
             }
             .mlogin {
                 display: none;
             }
-            .tcodeinput .fa {
+            #mshow {
                 display: none;
             }
-            .mexplain {
-                display: none;
-            }
-            .tcodeinput {
-                display: flex;
-                align-items: center !important;
-                margin-top: 12px;
-                background-color: orange;
-                border-radius: 25px;
-                width: 100%;
-                height: 60px;
-                position: relative;
-            }
-            #jcode {
-                position: absolute;
-                left: 5%;
-                width: 88%;
-                height: 30px;
-                margin: 0 !important;
-                border-radius: 15px;
-                padding-left: 10px;
-                background-color: #fff;
-            }
-            #jcodesubmit {
-                position: absolute;
-                right: 10px;
-                width: 45px;
-                height: 45px;
-                padding: 5px;
-                box-sizing: border-box;
-                background-color: rgba(0,0,0,0);
-                display: flex;
-                text-align: center;
-                justify-content: center;
-                border: none;
-            }
-            #jcodesubmit i {
-                margin: 0;
-                font-size: 30px;
-            }
-            .mtcode {
-                display: none;
-            }
-            .explain {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: 200px;
-                border-top: 2px solid #e9ebee;
-                background-color: rgba(233,235,238,0.3);
-            }
-            .explain1 {
-                height: 100%;
-                width: 50%;
-                margin: auto;
-                text-align: center;
-                padding: 30px 0;
-            }
+            #show { padding: 10px 80px; }
+            #mshow { padding: 0 80px; }
+            #show table { width: 70%; }
         }
         @media only screen and (min-width: 601px) and (max-width: 992px) {
-            #mmenubar {
+            .mmlogin {
                 display: none;
             }
-            .lookuptable {
+            #mmenubar {
                 display: none;
             }
             .mlogin {
                 display: none;
             }
-            .tcodeinput .fa {
+            #mshow {
                 display: none;
             }
-            .explain {
-                display: none;
-            }
-            .tcode {
-                margin: auto;
-                width: 80%;
-                text-align: left;
-            }
-            .tcodeinput {
-                display: flex;
-                align-items: center !important;
-                margin-top: 12px;
-                background-color: orange;
-                border-radius: 25px;
-                width: 100%;
-                height: 60px;
-                position: relative;
-            }
-            #jcode {
-                position: absolute;
-                left: 5%;
-                width: 88%;
-                height: 30px;
-                margin: 0 !important;
-                border-radius: 15px;
-                padding-left: 10px;
-                background-color: #fff;
-            }
-            #jcodesubmit {
-                position: absolute;
-                right: 30px;
-                width: 45px;
-                height: 45px;
-                padding: 5px;
-                box-sizing: border-box;
-                background-color: rgba(0,0,0,0);
-                display: flex;
-                text-align: center;
-                justify-content: center;
-                border: none;
-            }
-            #jcodesubmit i {
-                margin: 0;
-                font-size: 30px;
-            }
-            .mtcode {
-                display: none;
-            }
-            .mexplain {
-                position: absolute;
-                bottom: -100px;
-                width: 100%;
-                height: 100px;
-                border-top: 2px solid #e9ebee;
-                background-color: rgba(233,235,238,0.3);
-            }
-            .mexplain1 {
-                height: 100%;
-                width: 85%;
-                margin: auto;
-                text-align: center;
-                padding: 15px 0;
-            }
+            #show { padding: 10px 80px; }
+            #mshow { padding: 0 80px; }
+            #show table { width: 70%; }
         }
     </style>
 </head>
@@ -429,7 +131,7 @@
             <i class="fa fa-truck" style="cursor:pointer;"></i>
         </div>
         <div class="exp">
-            <span>통합 택배 조회 서비스</span>
+            <span><%= decoded.uname %> 님의 조회 기록</span>
         </div>
         <div class="mlogin hide-on-med-and-down">
             <table id="logined">
@@ -442,29 +144,120 @@
     </div>
     <div class="main">
         <div class="menu" style="display: none;">
-            <div class="menutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
             <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
-            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap3 sel" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
-            <div class="menutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
-            <div class="mmenutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
             <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
-            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="mmenutap menutap3 sel" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
-            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
             <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
             <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+
+            <% if(decoded) { %>
+                <span class="mmlogin" style="position: absolute; top: 20px; right: 10px;"><%=decoded.uname%> : <%=decoded.uid%></span><br>
+                <a class="mmlogin" href="/account/logout" style="color: gray; position:absolute; right: 10px; top: 40px;">로그아웃</a>
+            <% } else {%>
+                <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
+            <% } %>
+            
+            <div id="mshow">
+                <table class="striped">
+                    <tbody>
+                        <tr>
+                            <td>이름</td>
+                            <td><%= decoded.uname %></td>
+                        </tr>
+                        <tr>
+                            <td>아이디</td>
+                            <td><%= decoded.uid %></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호</td>
+                            <td class="pass"></td>
+                        </tr>
+                        <tr>
+                            <td>전화번호</td>
+                            <td class="phone"></td>
+                        </tr>
+                        <tr>
+                            <td>이메일</td>
+                            <td class="email"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="show">
+                <table class="striped">
+                    <tbody>
+                        <tr>
+                            <td>이름</td>
+                            <td><%= decoded.uname %></td>
+                        </tr>
+                        <tr>
+                            <td>아이디</td>
+                            <td><%= decoded.uid %></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호</td>
+                            <td class="pass"></td>
+                        </tr>
+                        <tr>
+                            <td>전화번호</td>
+                            <td class="phone"></td>
+                        </tr>
+                        <tr>
+                            <td>이메일</td>
+                            <td class="email"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <script src="/../javascripts/menu.js"></script>
     <script>
+        let show = document.getElementById("show");
+        let ing = document.getElementById("ing");
+
+        let chdate = document.getElementById("chdate");
+
+        window.onload = () => {
+            let Info = { apploval: true };
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/set/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.msg) { console.log(data.msg); }
+                    let pass = document.querySelectorAll(".pass");
+                    let phone = document.querySelectorAll(".phone");
+                    let email = document.querySelectorAll(".email");
+
+                    let starpass = "";
+
+                    for(let i=0; i<data.userpass.length; i++) { starpass += "*"; }
+
+                    for(let i=0; i<pass.length; i++) { pass.innerHTML = starpass; }
+                    for(let i=0; i<phone.length; i++) { phone.innerHTML = data.userphone; }
+                    for(let i=0; i<email.length; i++) { email.innerHTML = data.useremail; }
+                }
+            }
+            xhr.send(JSON.stringify(Info));
+        }
     </script>
 </body>
 </html>

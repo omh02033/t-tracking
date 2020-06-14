@@ -91,7 +91,6 @@ router
             let user = data[0];
             if(user.userpass == upass) {
                 let token = jwt.sign({ unum: user.id, uid: user.userid, uname: user.name }, config.secret );
-                console.log(token)
                 res.cookie("user", token);
                 res.status(200).json({
                     msg: '로그인에 성공하였습니다.',
@@ -111,10 +110,12 @@ router
 .post('/signup/', (req, res) => {
     let uid = req.body.id;
     let upass = req.body.password;
+    let uphone = req.body.phone;
     let uemail = req.body.email;
     let uname = req.body.nick;
-    let sql = 'INSERT INTO account (userid, userpass, email, name) VALUES(?, ?, ?, ?)';
-    conn.query(sql, [uid, upass, uemail, uname], (err, rows, fields) => {
+    let seller = req.body.seller;
+    let sql = 'INSERT INTO account (userid, userpass, phone, email, name, seller) VALUES(?, ?, ?, ?, ?, ?)';
+    conn.query(sql, [uid, upass, uphone, uemail, uname, String(seller)], (err, rows, fields) => {
         if(err) {
             console.log(err + "(01)");
             res.status(400).json({
@@ -130,7 +131,7 @@ router
         }
     });
 })
-.post('/signup/emailcheck/', (req, res) => {
+.post('/signup/overlap/email/', (req, res) => {
     let email = req.body.uemail;
     let sql = 'SELECT * FROM account WHERE email=?';
     conn.query(sql, [email], (err, data) => {
@@ -144,7 +145,7 @@ router
     })
 })
 
-.post('/overlap/', (req, res) => {
+.post('/overlap/id/', (req, res) => {
     let uid = req.body.id;
     let sql = 'SELECT * FROM account WHERE userid=?';
     conn.query(sql, [uid], (err, rows, fields) => {
@@ -167,6 +168,28 @@ router
             }
         }
     });
+})
+
+.post('/overlap/phone/', (req, res) => {
+    let uphone = req.body.phone;
+    let sql = 'SELECT * FROM account WHERE phone=?';
+    conn.query(sql, [uphone], (err, data) => {
+        if(err) {
+            console.log(err + "(03)");
+            res.status(400).json({ msg: '중복 확인도중 에러가 발생했습니다 !' });
+        }
+        if(data.length < 1) {
+            res.status(200).json({
+                msg: '중복확인 된것이 없습니다.',
+                result: 'success'
+            });
+        } else {
+            res.status(200).json({
+                msg: '중복 번호가 존재 합니다.',
+                result: 'fail'
+            });
+        }
+    })
 })
 
 .post('/fid/', (req, res) => {
@@ -299,6 +322,26 @@ router
             })
         } else { res.status(400).json({ msg: '인증번호를 입력해 주세요!!' }); }
     })
+})
+
+.post('/set/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) {
+        res.json(err);
+    } else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            let sql = 'SELECT * FROM account WHERE userid=? and id=?';
+            conn.query(sql, [decoded.uid, decoded.unum], (err, data) => {
+                if(err) { res.status(400).json({ msg: '조회 과정에서 에러가 발생했습니다.' }); }
+                let user = data[0];
+                res.status(200).json({
+                    userpass: user.userpass,
+                    userphone: user.phone,
+                    useremail: user.email
+                });
+            })
+        })
+    }
 })
 
 module.exports = router;

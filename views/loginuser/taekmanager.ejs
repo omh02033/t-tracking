@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/../stylesheets/top.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="shortcut icon" href="/../images/favicon.ico">
-    <title>택배 조회 기록</title>
+    <title>택배 조회 관리</title>
     <style>
         body {
             margin: 0;
@@ -77,7 +77,6 @@
             background-color: rgba(239,150,25,0.3);
         }
         #si {
-            margin-left: 50px;
             width: fit-content;
             height: 25px;
             padding: 2px;
@@ -165,7 +164,7 @@
             <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
-            <div class="menutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
@@ -174,7 +173,7 @@
             <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
-            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
@@ -441,6 +440,7 @@
                                     let tr5 = document.createElement("tr"); // 기사 전번
                                     let tr6 = document.createElement("tr"); // 현재 위치
                                     let tr7 = document.createElement("tr"); // 배송 상태
+                                    let tr8 = document.createElement("tr"); // 기록 삭제
                                     
                                     let td11 = document.createElement("td");
                                     td11.innerHTML = '물품 번호';
@@ -492,6 +492,31 @@
                                     } else { td72.innerHTML = "배송완료"; } // 정상
                                     tr7.append(td71);
                                     tr7.append(td72);
+                                    let td81 = document.createElement("td");
+                                    td81.innerHTML = "기록 삭제";
+                                    let td82 = document.createElement("td");
+                                    let td82a = document.createElement("a");
+                                    td82a.innerHTML = "삭제하기";
+                                    td82a.style.cursor = "pointer";
+                                    td82a.onclick = () => {
+                                        let Info = {
+                                            id: data.data[i].id,
+                                            denum: data.data[i].denum
+                                        };
+
+                                        let xhr = new XMLHttpRequest();
+                                        xhr.open('POST', '/tracking/recordcheck/del/');
+                                        xhr.setRequestHeader('Content-Type', 'application/json');
+                                        xhr.onreadystatechange = function () {
+                                            if(xhr.readyState === 4 && xhr.status === 200) {
+                                                location.replace(location.href);
+                                            }
+                                        }
+                                        xhr.send(JSON.stringify(Info));
+                                    }
+                                    td82.append(td82a);
+                                    tr8.append(td81);
+                                    tr8.append(td82);
                                     
                                     tabl.append(tr1);
                                     tabl.append(tr2);
@@ -500,6 +525,7 @@
                                     tabl.append(tr5);
                                     tabl.append(tr6);
                                     tabl.append(tr7);
+                                    tabl.append(tr8);
                                 }
                             }
                         } else if(data.result == 'fail') {

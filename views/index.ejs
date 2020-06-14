@@ -109,6 +109,39 @@
             width: 100%;
             height: 100%;
         }
+
+        @keyframes blackbar {
+            0% {
+                background: #FFFFFF;
+                color: black;
+            }
+            100% {
+                background: #303133;
+                color: white;
+            }
+        }
+
+        @keyframes whitebar {
+            0% {
+                background: #303133;
+                color: white;
+            }
+            100% {
+                background: #FFFFFF;
+                color: black;
+            }
+        }
+
+        .bbar {
+            animation-name: blackbar;
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+        .wbar {
+            animation-name: whitebar;
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
         @media only screen and (max-width: 600px) {
             .exp span {
                 font-size: 35px;
@@ -494,58 +527,52 @@
             }
         }
         @media only screen and (min-width: 601px) and (max-width: 992px) {
-            .mmlogin {
-                display: none;
+            .exp span {
+                font-size: 35px;
             }
-            #mmenubar {
+            #menubar {
                 display: none;
             }
             .lookuptable {
                 display: none;
             }
-            .mlogin {
+            #semenu {
                 display: none;
             }
-            .tcodeinput .fa {
+            .tcode {
                 display: none;
             }
             .explain {
                 display: none;
             }
-            .tcode {
+            .mtcode {
                 margin: auto;
                 width: 80%;
                 text-align: left;
             }
-            .tcodeinput {
+            .mtcodeinput {
                 display: flex;
                 align-items: center !important;
                 margin-top: 12px;
                 background-color: orange;
                 border-radius: 25px;
-                width: 100%;
+                width:100%;
                 height: 60px;
                 position: relative;
             }
-            .tcodeinput > span {
+            #mjcode {
                 position: absolute;
-                left: 1%;
-                font-weight: bold;
-                color: white;
-            }
-            #jcode {
-                position: absolute;
-                right: 6%;
-                width: 86.5%;
+                left: 2%;
+                width: 80%;
                 height: 30px;
                 margin: 0 !important;
                 border-radius: 15px;
                 padding-left: 10px;
                 background-color: #fff;
             }
-            #jcodesubmit {
+            #mjcodesubmit {
                 position: absolute;
-                right: 30px;
+                right: 3px;
                 width: 45px;
                 height: 45px;
                 padding: 5px;
@@ -556,16 +583,13 @@
                 justify-content: center;
                 border: none;
             }
-            #jcodesubmit i {
+            #mjcodesubmit i {
                 margin: 0;
                 font-size: 30px;
             }
-            .mtcode {
-                display: none;
-            }
             .mexplain {
                 position: absolute;
-                bottom: -100px;
+                bottom: -150px;
                 width: 100%;
                 height: 100px;
                 border-top: 2px solid #e9ebee;
@@ -579,7 +603,7 @@
                 padding: 15px 0;
             }
             .info-img { 
-                width: 500px;
+                width: 300px;
                 margin: auto;
                 margin-top: 30px;
                 text-align: center;
@@ -603,15 +627,15 @@
                 text-align: center;
             }
             .text-center > img {
-                width: 60px;
-                height: 60px;
+                width: 40px;
+                height: 40px;
                 border-radius: 50px;
                 background-color: #EDEDED;
-                padding: 12px 12px;
+                padding: 8px 8px;
             }
             .nlevel {
-                width: 65px !important;
-                height: 65px !important;
+                width: 45px !important;
+                height: 45px !important;
                 background-color: orange !important;
             }
             .info-text {
@@ -665,7 +689,7 @@
             <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
-            <div class="menutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
@@ -674,7 +698,7 @@
             <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
             <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
-            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/buyer');">유료 서비스 이용</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
@@ -689,20 +713,27 @@
             <div class="tcode" style="position: relative;">
                 <label style="padding: 7px;"></label>
                 <% if(decoded) { %>
+                    <div class="switch" style="position:absolute; right: 0; top:-20px;">
+                        <label><a onclick="window.open(`/explain#secret`, '', 'width=500,height=705,scrollbar=yes');">시크릿 모드</a><br></label>
+                        <label>
+                            Off
+                            <input type="checkbox" id="secret" onchange="bbar();">
+                            <span class="lever"></span>
+                            On
+                        </label>
+                      </div>
                     <% if(payo) { %>
                         <select name="delichoose" id="delichoose" onchange="gcolor('c');" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: fit-content; height: 25px; padding: 0;">
                             <option value="domestic">국내택배 (Korean delivery)</option>
                             <option value="international">국제택배 (International delivery)</option>
                         </select>
                         <div class="tcodeinput">
-                            <!-- <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i> -->
                             <span>운송장 번호</span>
                             <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
                             <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
                         </div>
                     <% } else { %>
                         <div class="tcodeinput">
-                            <!-- <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i> -->
                             <span>운송장 번호</span>
                             <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
                             <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
@@ -710,7 +741,6 @@
                     <% } %>
                 <% } else { %>
                     <div class="tcodeinput">
-                        <!-- <i class="fa fa-box-open hide-on-med-and-down" style="color: white; font-size: 40px; position: absolute; left: 1%;"></i> -->
                         <span>운송장 번호</span>
                         <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
                         <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
@@ -718,8 +748,17 @@
                 <% } %>
             </div>
             <div class="mtcode" style="position: relative;">
-                <label style="padding: 7px;"></label>
+                <label style="font-size: 15px;">운송장 번호</label>
                 <% if(decoded) { %>
+                    <div class="switch" style="position:absolute; right: 0; top:-20px;">
+                        <label>
+                            <a onclick="window.open(`/explain#secret`, '', 'width=500,height=705,scrollbar=yes');">시크릿 모드</a><br>
+                            Off
+                            <input type="checkbox" id="msecret" onchange="bbar();">
+                            <span class="lever" style="margin:0 !important;"></span>
+                            On
+                        </label>
+                      </div>
                     <% if(payo) { %>
                         <select name="delichoose" onchange="gcolor('m');" id="mdelichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: 90px; height: 25px; padding: 0;">
                             <option value="domestic">국내택배 (Korean delivery)</option>
@@ -930,12 +969,29 @@
         let l5 = document.querySelector(".l5");
         let l6 = document.querySelector(".l6");
 
+        let se = document.getElementById("secret");
+        let mse = document.getElementById("msecret");
+
         let deliselect;
         let mdeliselect;
         if(!document.getElementById("delichoose")) { deliselect = false; }
         else { deliselet = document.getElementById("delichoose"); }
         if(!document.getElementById("mdelichoose")) { mdeliselect = false; }
         else { mdeliselect = document.getElementById("mdelichoose"); }
+
+        function bbar() {
+            if(se.checked || mse.checked) {
+                jcode.classList.remove("wbar");
+                jcode.classList.add("bbar");
+                mjcode.classList.remove("wbar");
+                mjcode.classList.add("bbar");
+            } else {
+                jcode.classList.remove("bbar");
+                jcode.classList.add("wbar");
+                mjcode.classList.remove("bbar");
+                mjcode.classList.add("wbar");
+            }
+        }
 
         function gcolor(device) {
             let ttop = document.querySelector(".top");
@@ -1003,17 +1059,35 @@
                 if(deliselect) {
                     info = {
                         select: deliselect.value,
-                        num: jcode.value
+                        num: jcode.value,
+                        sec: se.checked
                     }
-                } else { info = { num: jcode.value } }
+                } else {
+                    if(document.cookie) {
+                        info = {
+                            num: jcode.value,
+                            sec: se.checked
+                        } 
+                    } else {
+                        info = { num: jcode.value }
+                    }
+                }
             }
             else if(device == 'm') {
                 if(deliselect) {
                     info = {
                         select: deliselect.value,
-                        num: mjcode.value
+                        num: mjcode.value,
+                        sec: mse.checked
                     }
-                } else { info = { num: mjcode.value } }
+                } else {
+                    if(document.cookie) {
+                        info = {
+                            num: mjcode.value,
+                            sec: mse.checked
+                        }
+                    } else { info = { num: mjcode.value } }
+                }
             }
             else { alert('갑작스러운 에러가 발생했습니다. 관리자에게 문의해주세요.'); }
             console.log(info.num);
