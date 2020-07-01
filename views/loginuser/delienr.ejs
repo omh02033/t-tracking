@@ -3,19 +3,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="/../stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/manu.css">
-    <link rel="stylesheet" href="/stylesheets/top.css">
+    <link rel="stylesheet" href="/../stylesheets/manu.css">
+    <link rel="stylesheet" href="/../stylesheets/top.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+    <link rel="shortcut icon" href="/../images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="shortcut icon" href="/images/favicon.ico">
-    <title>택배 조회 기록</title>
+    <title>운송장 등록</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         body {
             margin: 0;
-            height: fit-content;
             min-height: 850px;
+            height: 100vh;
         }
         .mlogin table a {
             color: #8b4a00;
@@ -44,33 +45,19 @@
             top: 90px;
             right: 0;
         }
-        #show table {
-            margin-bottom: 50px;
-            table-layout: fixed;
-        }
         .main1 h2 { font-size: 35px; }
         .main1 h3 { font-size: 28px; }
         .main1 h4 { font-size: 20px; }
-        #show table tr:first-child td:first-child { width: 33.33333%; }
-        #show table tr:first-child td:last-child { width: 66.66667%; }
-        #chdate {
-            margin-left: 50px;
-            width: fit-content;
-            height: 25px;
-            padding: 2px;
-            display: inline-block !important;
-            background-color: rgba(239,150,25,0.3);
-        }
-        .profile {
-            width: fit-content;
-            height: 100px;
-            margin: auto;
-            display: flex;
-            align-items: center;
+        .formdown {
+            transform: translate(-50%, 0%);
+            position: absolute;
+            left: 50%;
+            top: 35px;
         }
         .filebox {
             width: fit-content;
             margin: auto;
+            margin-bottom: 50px;
         }
         .filebox input[type="file"] {
             position: absolute;
@@ -114,19 +101,23 @@
             width: fit-content;
             margin: 0;
         }
-        #userprofile {
-            height: 62%;
-            width: 65px;
-            border-radius: 50px;
-            padding: 5px;
-            color: white;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 8px;
-            cursor: pointer;
+        #displayExcelHtml {
+            border-radius: 15px;
+            border: 1px solid darkgray;
+            width: fit-content;
+            margin: auto;
+            padding: 8px;
         }
+        .explain {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            border-top: 2px solid #e9ebee;
+            background-color: rgba(233,235,238,0.3);
+            z-index: -100;
+        }
+
         @media only screen and (max-width: 600px) {
             .changepass, .changepassh {
                 margin: 100%;
@@ -137,10 +128,8 @@
             #menubar {
                 display: none;
             }
-            #show { padding: 0 40px; }
-            #show table { width: 100%; }
         }
-        @media only screen and (min-width: 1200.01px) {
+        @media only screen and (min-width: 1200.01px) { 
             .changepass, .changepassh {
                 width: 60%;
                 margin: auto;
@@ -151,8 +140,6 @@
             #mmenubar {
                 display: none;
             }
-            #show { padding: 10px 80px; }
-            #show table { width: 70%; }
         }
         @media only screen and (min-width: 993px) and (max-width: 1200px) {
             .changepass, .changepassh {
@@ -168,8 +155,6 @@
             .mlogin {
                 display: none;
             }
-            #show { padding: 10px 80px; }
-            #show table { width: 70%; }
         }
         @media only screen and (min-width: 601px) and (max-width: 992px) {
             .changepass, .changepassh {
@@ -184,8 +169,6 @@
             .mlogin {
                 display: none;
             }
-            #show { padding: 10px 80px; }
-            #show table { width: 70%; }
         }
     </style>
     <script src="/../javascripts/IProfile.js"></script>
@@ -196,7 +179,7 @@
             <i class="fa fa-truck" style="cursor:pointer;"></i>
         </div>
         <div class="exp">
-            <span>계정 설정</span>
+            <span>운송장 등록</span>
         </div>
         <div class="mlogin hide-on-med-and-down">
             <table id="logined">
@@ -212,7 +195,7 @@
                 <div class="wel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="profileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -229,11 +212,11 @@
             </div>
             <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
             <% if(seller) { %>
-                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+                <div class="menutap menutap15 sel" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
             <% } %>
             <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
-            <div class="menutap menutap5 sel" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="menutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
@@ -242,7 +225,7 @@
                 <div class="mwel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="mprofileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -259,11 +242,11 @@
             </div>
             <div class="mmenutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
             <% if(seller) { %>
-                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+                <div class="mmenutap menutap15 sel" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
             <% } %>
             <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
-            <div class="mmenutap menutap5 sel" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
@@ -277,59 +260,24 @@
             <% } else {%>
                 <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
             <% } %>
-            
-            <div class="profile">
-                <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" id="userprofile">
-                <div class="filebox">
-                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data">
-                        <input class="upload-name" value="이미지 파일선택" disabled="disabled">
-                        <label for="ex_filename">선택</label>
-                        <input type="file" name="proImage" id="ex_filename" class="upload-hidden" accept="image/png, image/jpg, image/jpeg" onchange="excelExport(event); filecheck(this);">
-                        <input type="submit" id="imgsub" style="display: none;">
-                    </form>
-                </div>
-            </div>
 
-            <div id="show">
-                <table class="striped">
-                    <tbody>
-                        <tr>
-                            <td>이름</td>
-                            <td><%= decoded.uname %></td>
-                        </tr>
-                        <tr>
-                            <td>아이디</td>
-                            <td><%= decoded.uid %></td>
-                        </tr>
-                        <tr>
-                            <td>비밀번호</td>
-                            <td class="pass"></td>
-                        </tr>
-                        <tr>
-                            <td>전화번호</td>
-                            <td class="phone"></td>
-                        </tr>
-                        <tr>
-                            <td>이메일</td>
-                            <td class="email"></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <form action="/form/" method="GET" onsubmit="formdownload(event, this);">
+                <input type="submit" value="폼 다운로드" class="formdown">
+            </form>
+            
+            <div style="text-align: center; margin-bottom: 20px; margin-top: 50px;">
+                <span>xlsx 파일만 선택 가능합니다.</span>
             </div>
-            <div class="changepass" style="display: none; margin: 0 !important;">
-                <h3>비밀번호 변경</h3>
-                <form action="/account/numcheck/" method="POST" onsubmit="checkpass(event, this);">
-                    <input type="password" name="passcheck" id="passcheck" placeholder="현재 비밀번호">
-                    <input type="submit" value="확인" id="passchsubmit">
-                </form>
+            <div class="filebox">
+                <input class="upload-name" value="파일선택 (.xlsx)" disabled="disabled">
+                <label for="ex_filename">업로드</label>
+                <input type="file" id="ex_filename" class="upload-hidden" accept=".xlsx" onchange="excelExport(event)">
             </div>
-            <div class="changepassh" style="display: none; margin: 0 !important;">
-                <h3>비밀번호 변경</h3>
-                <form action="/account/newpass/" method="POST" onsubmit="changenewpass(event, this);">
-                    <input type="password" name="newpass" id="newpass" placeholder="새로운 비밀번호"><br>
-                    <input type="password" name="passcon" id="passcon" placeholder="비밀번호 확인"><br>
-                    <input type="submit" value="확인">
-                </form>
+            <div id="displayExcelHtml"></div>
+        </div>
+        <div class="explain">
+            <div class="explain1">
+                <label></label>
             </div>
         </div>
     </div>
@@ -357,160 +305,19 @@
             <div id="closeselect"><span>닫기</span></div>
         </div>
     </div>
-    <script src="/javascripts/menu.js"></script>
+    <script src="/../javascripts/menu.js"></script>
     <script>
-        let chdate = document.getElementById("chdate");
-
-        let changepass = document.querySelector(".changepass");
-        let changepassh = document.querySelector(".changepassh");
-
-        let newpass = document.getElementById("newpass");
-        let passcon = document.getElementById("passcon");
-
-        let userprofile = document.getElementById("userprofile");
-        let ex_filename = document.getElementById("ex_filename");
-
-        let nowid = "";
-        let nowpass = "";
-        let nowemail = "";
-
-        let pathpoint = location.href.lastIndexOf('#');
-        let path = location.href.substring(pathpoint+1, location.href.length);
-        let type = path.toLowerCase();
-
-        userprofile.onclick = () => {
-            if(!setoggle) {
-                setoggle = true;
-                let w = 10;
-                let h = 10;
-                proselectd.style.display = "flex";
-                proselectd.style.justifyContent = "center";
-                proselectd.style.alignItems = "center";
-                let width = setInterval(() => {
-                    if(w > 100 && h > 100) {
-                        clearInterval(width);
-                    } else {
-                        proselect.style.width = `${w}%`;
-                        proselect.style.height = `${h}%`;
-                        w += 5;
-                        h += 5;
-                    }
-                }, 1);
-            }
-        }
-
-        function filecheck(file) {
-            let pathpoint = file.value.lastIndexOf('.');
-            let filepoint = file.value.substring(pathpoint+1, file.length);
-            let filetype = filepoint.toLowerCase();
-            if(filetype == 'png' || filetype == 'jpg' || filetype == 'jpeg') {
-                let imgsub = document.getElementById("imgsub");
-                imgsub.click();
-            } else {
-                alert("이미지 파일만 선택 하실수 있습니다.");
-                let parentObj = file.parentNode;
-                parentObj.replaceChild(file.cloneNode(true),file);
-            }
-        }
-
-        window.onload = () => {
-            let Info = { apploval: true };
-
+        function formdownload(e, form) {
+            let userInfo = { down: true }
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', '/account/set/');
+            xhr.open('GET', '/form/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
-                    let data = JSON.parse(xhr.responseText);
-                    if(data.msg) { console.log(data.msg); }
-
-                    nowid = data.userid;
-                    nowpass = data.userpass;
-                    nowemail = data.useremail;
-                    
-                    let pass = document.querySelectorAll(".pass");
-                    let phone = document.querySelectorAll(".phone");
-                    let email = document.querySelectorAll(".email");
-
-                    let starpass = "";
-
-                    for(let i=0; i<data.userpass.length; i++) { starpass += "*"; }
-                    let ing = document.getElementById("ing");
-
-                    let  passa = document.createElement("a");
-                    passa.innerHTML = "변경";
-                    passa.style.marginLeft = "20px";
-                    passa.style.cursor = "pointer";
-                    passa.onclick = () => { changepass.style.display = "block"; }
-
-                    for(let i=0; i<pass.length; i++) {
-                        pass[i].innerHTML = starpass;
-                        pass[i].append(passa);
-                    }
-                    for(let i=0; i<phone.length; i++) { phone[i].innerHTML = data.userphone; }
-                    for(let i=0; i<email.length; i++) { email[i].innerHTML = data.useremail; }
+                    console.log("폼을 다운받았습니다.");
                 }
             }
-            xhr.send(JSON.stringify(Info));
-        }
-
-        function checkpass(e, form) {
-            e.preventDefault();
-            let passcheck = document.getElementById("passcheck");
-            let passchsubmit = document.getElementById("passchsubmit");
-
-            if(passcheck.value == nowpass) {
-                let userInfo = {
-                    result: 'true',
-                    uid: nowid,
-                    email: nowemail
-                }
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/numcheck/');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if(xhr.readyState === 4 && xhr.status === 200) {
-                        let data = JSON.parse(xhr.responseText);
-                        if(data.msg = 'success') {
-                            changepass.style.display = "none";
-                            changepassh.style.display = "block";
-                        }
-                    }
-                }
-                xhr.send(JSON.stringify(userInfo));
-            } else {
-                passcheck.style.borderBottomColor = "red";
-                alert("비밀번호가 일치하지 않습니다.");
-            }
-        }
-
-        function changenewpass(e, form) {
-            e.preventDefault();
-
-            if(newpass.value == passcon.value) {
-                let userInfo = {
-                    result: 'true',
-                    uid: nowid,
-                    email: nowemail,
-                    newpass: newpass.value
-                }
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/newpass/');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if(xhr.readyState === 4 && xhr.status === 200) {
-                        let data = JSON.parse(xhr.responseText);
-                        if(data.result == 'success') {
-                            alert("비밀번호가 변경되었습니다.");
-                            location.replace(location.href);
-                        }
-                    }
-                }
-                xhr.send(JSON.stringify(userInfo));
-            } else {
-                alert("비밀번호를 확인해 주세요.");
-                return;
-            }
+            xhr.send(JSON.stringify(userInfo));
         }
     </script>
     <script>

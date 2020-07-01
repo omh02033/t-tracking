@@ -83,9 +83,6 @@
             #menubar {
                 display: none;
             }
-            #semenu {
-                display: none;
-            }
             #show, #ing { padding: 10px 30px; }
             #mshow, #ming { padding: 0 30px; }
         }
@@ -129,6 +126,7 @@
             #show table, #ing table { width: 70%; }
         }
     </style>
+    <script src="/../javascripts/IProfile.js"></script>
 </head>
 <body>
     <div class="top row">
@@ -141,27 +139,68 @@
         <div class="mlogin hide-on-med-and-down">
             <table id="logined">
                 <tbody>
-                    <tr><td><%= decoded.uname %> : <%= decoded.uid %></td></tr>
-                    <tr><td style="text-align: right;"><a href="/account/logout">로그아웃</a></td></tr>
+                    <tr><td><%= decoded.uname %> : <%= decoded.uid %> | </td><td style="margin-left: 10px !important;"><a href="/account/logout">로그아웃</a></td></tr>
                 </tbody>
             </table>
         </div>
     </div>
     <div class="main">
-        <div class="menu" style="display: none;">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="profileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/');">메인 화면으로 가기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
             <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
             <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="menutap menutap3 sel" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
-            <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="menutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
-        <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="mprofileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/');">메인 화면으로 가기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
             <div class="mmenutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
             <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="mmenutap menutap3 sel" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
-            <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
@@ -204,6 +243,30 @@
             </div>
         </div>
     </div>
+    <div id="proselectd">
+        <div id="proselect">
+            <div id="toppro">
+                <% if(decoded) { %>
+                    <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
+                <% } else { %>
+                    <i class="far fa-user" style="font-size: 35px;"></i>
+                    <div id="deimg" style="display: none !important;"></div>
+                <% } %>
+                <h4 id="delh4">프로필</h4>
+            </div>
+            <div id="psoption">
+                <div id="originalPro"><span>기본 프로필</span></div>
+                <div id="profilechange">
+                    <label for="chpro" id="al">프로필 변경</label>
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
+                        <input type="file" name="proImage" id="chpro" style="display: none !important;" accept="image/png, image/jpg, image/jpeg" onchange="prochfilecheck(this);">
+                        <input type="submit" style="display: none !important;" id="psub">
+                    </form>
+                </div>
+            </div>
+            <div id="closeselect"><span>닫기</span></div>
+        </div>
+    </div>
     <div class="loading emphasized"><div class="loadingif"><img src="../images/loading.gif" alt="" style="max-width: 100%; height:100%; box-shadow: none !important;"></div></div>
     <script src="/../javascripts/menu.js"></script>
     <script>
@@ -226,7 +289,6 @@
                         while ( show.hasChildNodes() ) { show.removeChild( show.firstChild ); }
                         for(let i=0; i<data.data.length; i++) {
                             if(data.data[i].result == 6) {
-
                                 let h3 = document.createElement("h4");
                                 h3.innerHTML = data.data[i].pdate;
                                 show.append(h3);
@@ -238,72 +300,52 @@
                                 table.append(tbody);
                                 show.append(table);
                                 let tabl = document.querySelector(".t" + i);
-                                let tr1 = document.createElement("tr"); // 물품 번호
-                                let tr2 = document.createElement("tr"); // 물품 이름
-                                let tr3 = document.createElement("tr"); // 받는 사람
-                                let tr4 = document.createElement("tr"); // 기사 이름
-                                let tr5 = document.createElement("tr"); // 기사 전번
-                                let tr6 = document.createElement("tr"); // 현재 위치
-                                let tr7 = document.createElement("tr"); // 배송 상태
-                                
-                                let td11 = document.createElement("td");
-                                td11.innerHTML = '물품 번호';
-                                let td12 = document.createElement("td");
-                                td12.innerHTML = data.data[i].denum;
-                                tr1.append(td11);
-                                tr1.append(td12);
-                                let td21 = document.createElement("td");
-                                td21.innerHTML = '물품 이름';
-                                let td22 = document.createElement("td");
-                                td22.innerHTML = data.data[i].toolname;
-                                tr2.append(td21);
-                                tr2.append(td22);
-                                let td31 = document.createElement("td");
-                                td31.innerHTML = '받는 사람';
-                                let td32 = document.createElement("td");
-                                td32.innerHTML = data.data[i].receiverName;
-                                tr3.append(td31);
-                                tr3.append(td32);
-                                let td41 = document.createElement("td");
-                                td41.innerHTML = '기사 이름';
-                                let td42 = document.createElement("td");
-                                td42.innerHTML = data.data[i].manname;
-                                tr4.append(td41);
-                                tr4.append(td42);
-                                let td51 = document.createElement("td");
-                                td51.innerHTML = '기사 전번';
-                                let td52 = document.createElement("td");
-                                td52.innerHTML = data.data[i].phonenum;
-                                tr5.append(td51);
-                                tr5.append(td52);
-                                let td61 = document.createElement("td");
-                                td61.innerHTML = '현재 위치';
-                                let td62 = document.createElement("td");
-                                td62.innerHTML = data.data[i].where;
-                                tr6.append(td61);
-                                tr6.append(td62);
-                                let td71 = document.createElement("td");
-                                td71.innerHTML = '배송 상태';
-                                let td72 = document.createElement("td");
-                                if(data.data[i].result != 6) {
-                                    // 비정상
-                                    td72.className = "restart";
-                                    if(data.data[i].result == 1) { td72.innerHTML = "배송준비중"; }
-                                    else if(data.data[i].result == 2) { td72.innerHTML = "상품인수"; }
-                                    else if(data.data[i].result == 3) { td72.innerHTML = "상품이동중"; }
-                                    else if(data.data[i].result == 4) { td72.innerHTML = "배송지도착"; }
-                                    else if(data.data[i].result == 5) { td72.innerHTML = "배송출발"; }
-                                } else { td72.innerHTML = "배송완료"; } // 정상
-                                tr7.append(td71);
-                                tr7.append(td72);
-                                
-                                tabl.append(tr1);
-                                tabl.append(tr2);
-                                tabl.append(tr3);
-                                tabl.append(tr4);
-                                tabl.append(tr5);
-                                tabl.append(tr6);
-                                tabl.append(tr7);
+
+                                let statusMap = {
+                                    1: "배송준비중",
+                                    2: "상품인수",
+                                    3: "상품이동중",
+                                    4: "배송지도착",
+                                    5: "배송출발",
+                                    6: "배송완료"
+                                }
+
+                                let list = [{
+                                    title: "물품 번호",
+                                    property: "denum"
+                                },{
+                                    title: "물품 이름",
+                                    property: "toolname"
+                                },{
+                                    title: "받는 사람",
+                                    property: "receiverName"
+                                },{
+                                    title: "기사 이름",
+                                    property: "manname"
+                                },{
+                                    title: "기사 전번",
+                                    property: "phonenum"
+                                },{
+                                    title: "현재 위치",
+                                    property: "where"
+                                },{
+                                    title: "배송 상태",
+                                    value: statusMap[data.data[i].result],
+                                    className: data.data[i].result != 6 ? "restart" : ""
+                                }];
+
+                                for(let item of list){
+                                    let tr = document.createElement("tr");
+
+                                    let td1 = document.createElement("td");
+                                    td1.innerHTML = item.title;
+                                    let td2 = document.createElement("td");
+                                    td2.innerHTML = item.property ? data.data[i][item.property] : item.value;
+                                    td2.className = item.className;
+
+                                    tr.append(td1, td2);
+                                    tabl.append(tr);
+                                }
                             } else if(data.data[i].result != 6) {
                                 rest(data.data[i].denum, data.data[i].tcode);
                             }
@@ -321,10 +363,7 @@
                         show.append(br1);
                         show.append(br2);
                         let btn = document.createElement("a");
-                        btn.classList.add('waves-effect');
-                        btn.classList.add('waves-light');
-                        btn.classList.add('btn');
-                        btn.classList.add('orange');
+                        btn.classList.add('waves-effect', 'waves-light', 'btn', 'orange');
                         btn.style.width = "160px";
                         btn.style.position = "absolute";
                         btn.style.transform = "translate(-50%, -50%)";

@@ -5,6 +5,8 @@ const mysql = require('mysql');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const config = require('../config/jwt');
+const fs = require('fs');
+const BootpayRest = require('bootpay-rest-client');
 
 let conn = mysql.createConnection({
     host : 'localhost',
@@ -318,7 +320,7 @@ router
             let sq = 'UPDATE account SET userpass=?, newpass=? WHERE userid=? and email=?';
             conn.query(sq, [req.body.newpass, 'false', req.body.uid, req.body.email], (err, rows, fields) => {
                 if(err) { res.status(400).json({ msg: '데이터를 저장과정에서 에러가 발생했습니다.' }); }
-                res.status(200).json({ msg: '새로운 비밀번호를 저장했습니다. 로그인화면으로 갈까요?' });
+                res.status(200).json({ msg: '새로운 비밀번호를 저장했습니다. 로그인화면으로 갈까요?', result: 'success' });
             })
         } else { res.status(400).json({ msg: '인증번호를 입력해 주세요!!' }); }
     })
@@ -335,6 +337,7 @@ router
                 if(err) { res.status(400).json({ msg: '조회 과정에서 에러가 발생했습니다.' }); }
                 let user = data[0];
                 res.status(200).json({
+                    userid: decoded.uid,
                     userpass: user.userpass,
                     userphone: user.phone,
                     useremail: user.email
@@ -342,6 +345,86 @@ router
             })
         })
     }
+})
+
+.post('/delPro/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/account/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { res.json(err); }
+            fs.unlink(path.join(__dirname, '../public/images/userProfile/')+decoded.unum, (err) => {
+                res.status(200).json({ result: 'success' });
+            });
+        });
+    }
+})
+
+.post('/checkacc/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/account/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { res.json(err); }
+            let sql = "SELECT * FROM account WHERE userid=? AND id=?";
+            conn.query(sql, [decoded.uid, decoded.unum], (err, data) => {
+                if(err) { res.status(400).json({ msg: 'err' }); }
+                let user = data[0];
+                if(user) {
+                    res.status(200).json({
+                        result: 'success',
+                        uphone: user.phone,
+                        uemail: user.email,
+                        uname: decoded.uname
+                    });
+                } else { res.status(400).json({ msg: 'error' }); }
+            });
+        });
+    }
+})
+
+.post('/buycheck/:code', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/account/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { res.json({ err: err }); }
+            BootpayRest.setConfig(
+                "5ef815974f74b40021f2b98c",
+                "9VV9mQE4zOv+NdtKirEDIDFqAqY9ZZXcpES9UCBRWxE="
+            );
+
+            BootpayRest.getAccessToken().then(function (response) {
+                if(response.status === 200 && response.data.token !== undefined) {
+                    BootpayRest.verify(req.body.receipt_id).then(function (_response) {
+                        if(_response.status === 200) {
+                            if(_response.data.receipt_id == req.body.receipt_id && _response.data.price == req.body.price) {
+                                if(req.params.code == "pay1") {
+                                    let sql = "UPDATE account SET pay1=? WHERE userid=? and id=?";
+                                    conn.query(sql, ['true', decoded.uid, decoded.unum], (err, rows, fields) => {
+                                        if(err) { res.status(400).json({ buySu: false }); }
+                                        res.status(200).json({ buySu: true });
+                                    });
+                                } else if(req.params.code == "pay2") {
+                                    let sql = "UPDATE account SET pay2=? WHERE userid=? and id=?";
+                                    conn.query(sql, ['true', decoded.uid, decoded.unum], (err, rows, fields) => {
+                                        if(err) { res.status(400).json({ buySu: false }); }
+                                        res.status(200).json({ buySu: true });
+                                    });
+                                } else if(req.params.code == "pay3") {
+                                    let sql = "UPDATE account SET pay1=?, pay2=? WHERE userid=? and id=?";
+                                    conn.query(sql, ['true', 'true', decoded.uid, decoded.unum], (err, rows, fields) => {
+                                        if(err) { res.status(400).json({ buySu: false }); }
+                                        res.status(200).json({ buySu: true });
+                                    });
+                                }
+                            } else { res.status(400).json({ buySu: false, msg: '변조가 감지되었습니다.' }); }
+                        }
+                    });
+                }
+            });
+        });
+    } 
 })
 
 module.exports = router;
@@ -353,9 +436,7 @@ function check(req, res, next){
         return next();
     }
     jwt.verify(token, config.secret, (err, decoded) => {
-        if(err) {
-            return res.json(err)
-        }
+        if(err) { return res.json(err); }
         return res.sendFile('comeback.html', { root: path.join(__dirname, '../public/html') });
     });
 }

@@ -98,6 +98,7 @@
             height: 600px;
             margin-bottom: 180px;
         }
+        a { cursor: pointer; }
         @keyframes ser1 {0%{background-color: rgba(168,255,255,0.0);} 100%{background-color: rgba(168,255,255,0.4);}}
         @keyframes ser2 {0%{background-color: rgba(255,192,203,0.0);} 100%{background-color: rgba(255,192,203,0.4);}}
         @keyframes ser3 {0%{background-color: rgba(250,123,220,0.0);} 100%{background-color: rgba(220,93,220,0.2);}}
@@ -112,9 +113,6 @@
                 display:none;
             }
             #menubar {
-                display: none;
-            }
-            #semenu {
                 display: none;
             }
             .payservice {
@@ -282,9 +280,6 @@
             #menubar {
                 display: none;
             }
-            #semenu {
-                display: none;
-            }
             .payservice {
                 display: none;
             }
@@ -319,6 +314,7 @@
             }
         }
     </style>
+    <script src="/../javascripts/IProfile.js"></script>
 </head>
 <body>
     <div class="top row">
@@ -356,22 +352,64 @@
     </div>
 
     <div class="main">
-        <div class="menu" style="display: none;">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
             <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
-            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
-            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
-            <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
-            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
-            <div class="menutap menutap55" onclick="location.replace('/loginuser/chat/');">판매자와 채팅</div>
+            <% if(seller) { %>
+                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="menutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
         </div>
-        <div class="mmenu" style="display: none; position: relative; z-index: 50;" id="semenu">
-            <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
-            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
-            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
-            <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
-            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
-            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat/');">판매자와 채팅</div>
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="mprofileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="mmenutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="mmenutap menutap6 sel" onclick="location.replace('/about/');">더보기</div>
         </div>
         <div class="main1">
@@ -385,6 +423,7 @@
                 <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
             <% } %>
             
+            <a name="top10"></a>
             <h3 style="margin-top: 0px; font-weight: bold; text-align: center;">택배사 조회 기록</h3>
             <h5 style="margin-top: 0px; margin-bottom: 70px; text-align: center;">top 10</h5>
             <div id="chartdiv"></div>
@@ -492,8 +531,9 @@
                         <% if(decoded) { %>
                             <% if(payo) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <div id="ser1button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
+                                <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
                             <% } %>
                         <% } else { %>
                             <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
@@ -507,11 +547,12 @@
                         <% if (decoded) { %>
                             <% if(payt) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <div id="ser2button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>700</a>
+                                <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
                             <% } %>
                         <% } else { %>
-                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                            <a class="waves-effect waves-light grey btn" id="ser2button" href="/account/login/">로그인</a>
                         <% } %>
                     </div>
                     <span>=</span>
@@ -522,11 +563,12 @@
                         <% if(decoded) { %>
                             <% if(payo && payt) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <div id="ser3button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                                <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2000</a>
                             <% } %>
                         <% } else { %>
-                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                            <a class="waves-effect waves-light grey btn" id="ser3button" href="/account/login/">로그인</a>
                         <% } %>
                     </div>
                 </div>
@@ -539,11 +581,12 @@
                         <% if(decoded) { %>
                             <% if(payo) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <div id="mser1button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>500</a>
+                                <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
                             <% } %>
                         <% } else { %>
-                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                            <a class="waves-effect waves-light grey btn" id="mser1button" href="/account/login/">로그인</a>
                         <% } %>
                     </div>
                     <div class="service2">
@@ -553,11 +596,12 @@
                         <% if(decoded) { %>
                             <% if(payt) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <div id="mser2button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>700</a>
+                                <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
                             <% } %>
                         <% } else { %>
-                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                            <a class="waves-effect waves-light grey btn" id="mser2button" href="/account/login/">로그인</a>
                         <% } %>
                     </div>
                     <div class="service3">
@@ -567,11 +611,12 @@
                         <% if(decoded) { %>
                             <% if(payo && payt) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
-                            <% } else { %>
-                                <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                                <div id="mser3button" style="display: none;"></div>
+                                <% } else { %>
+                                <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2000</a>
                             <% } %>
                         <% } else { %>
-                            <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
+                            <a class="waves-effect waves-light grey btn" id="mser3button" href="/account/login/">로그인</a>
                         <% } %>
                     </div>
                 </div>
@@ -586,10 +631,10 @@
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">'국제 택배 조회' 결제</span>
-                            <p>해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를 이용 해보세요 !<br><br>가격 : 500 원</p>
+                            <p>해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를 이용 해보세요 !<br><br>가격 : 1000 원</p>
                         </div>
                         <div class="card-action">
-                            <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                            <a id="ser1g" style="font-weight: bold !important;">결제 할께요!</a>
                             <a id="ser1cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
                         </div>
                     </div>
@@ -600,10 +645,10 @@
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">'카카오톡 봇 이용' 결제</span>
-                            <p>카카오톡 봇으로 배송 조회, 기록, 알림까지 이용하실수 있습니다 !<br><br>가격 : 700 원</p>
+                            <p>카카오톡 봇으로 배송 조회, 기록, 알림까지 이용하실수 있습니다 !<br><br>가격 : 1200 원</p>
                         </div>
                         <div class="card-action">
-                            <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                            <a id="ser2g" style="font-weight: bold !important;">결제 할께요!</a>
                             <a id="ser2cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
                         </div>
                     </div>
@@ -614,20 +659,47 @@
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">'둘다 마음껏 !' 결제</span>
-                            <p>해외 택배사의 조회부터 카톡 봇으로 이용한 국내 택배 조회, 기록, 알림까지 ! 더욱 더 많은 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 1000 원</p>
+                            <p>해외 택배사의 조회부터 카톡 봇으로 이용한 국내 택배 조회, 기록, 알림까지 ! 더욱 더 많은 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 2000 원</p>
                         </div>
                         <div class="card-action">
-                            <a href="#" style="font-weight: bold !important;">결제 할께요!</a>
+                            <a id="ser3g" style="font-weight: bold !important;">결제 할께요!</a>
                             <a id="ser3cancel" style="color: darkgray; position: absolute; right: 0; cursor: pointer;">취소</a>
                         </div>
                     </div>
                 </div>
             </div>
+        <% } else { %>
+            <div id="ser1pay" style="display: none;"><div id="ser1g" style="display: none;"><div id="ser2g" style="display: none;"><div id="ser3g" style="display: none;"></div></div></div></div>
         <% } %>
+    </div>
+    <div id="proselectd">
+        <div id="proselect">
+            <div id="toppro">
+                <% if(decoded) { %>
+                    <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
+                <% } else { %>
+                    <i class="far fa-user" style="font-size: 35px;"></i>
+                    <div id="deimg" style="display: none !important;"></div>
+                <% } %>
+                <h4 id="delh4">프로필</h4>
+            </div>
+            <div id="psoption">
+                <div id="originalPro"><span>기본 프로필</span></div>
+                <div id="profilechange">
+                    <label for="chpro" id="al">프로필 변경</label>
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
+                        <input type="file" name="proImage" id="chpro" style="display: none !important;" accept="image/png, image/jpg, image/jpeg" onchange="prochfilecheck(this);">
+                        <input type="submit" style="display: none !important;" id="psub">
+                    </form>
+                </div>
+            </div>
+            <div id="closeselect"><span>닫기</span></div>
+        </div>
     </div>
     <script src="https://www.amcharts.com/lib/4/core.js"></script>
     <script src="https://www.amcharts.com/lib/4/charts.js"></script>
     <script src="/../javascripts/menu.js"></script>
+    <script src="https://cdn.bootpay.co.kr/js/bootpay-3.0.2.min.js" type="application/javascript"></script>
     <script>
         let explain = document.querySelector(".explain");
         explain.onclick = () => { window.open(`/explain`, '', 'width=500,height=705,scrollbar=yes'); }
@@ -820,7 +892,7 @@
             ser2pay.style.display = "none";
             ser3pay.style.display = "none";
             ser1pay.classList.remove('emphasized');
-            window.scroll({top: 1500, left: 0, behavior: 'smooth'});
+            window.scroll({top: 2500, left: 0, behavior: 'smooth'});
             tser1 = false;
         }
         ser2cancel.onclick = () => {
@@ -828,7 +900,7 @@
             ser2pay.style.display = "none";
             ser3pay.style.display = "none";
             ser2pay.classList.remove('emphasized');
-            window.scroll({top: 1700, left: 0, behavior: 'smooth'});
+            window.scroll({top: 2700, left: 0, behavior: 'smooth'});
             tser2 = false;
         }
         ser3cancel.onclick = () => {
@@ -836,7 +908,7 @@
             ser2pay.style.display = "none";
             ser3pay.style.display = "none";
             ser3pay.classList.remove('emphasized');
-            window.scroll({top: 2000, left: 0, behavior: 'smooth'});
+            window.scroll({top: 3000, left: 0, behavior: 'smooth'});
             tser3 = false;
         }
 
@@ -869,6 +941,374 @@
                 }
             }
             xhr.send(JSON.stringify(userInfo));
+        }
+    </script>
+
+
+
+    <script>
+        let ser1g = document.getElementById("ser1g");
+        let ser2g = document.getElementById("ser2g");
+        let ser3g = document.getElementById("ser3g");
+        let data = {
+            // action: "BootpayDone"
+            // card_code: "0200"
+            // card_name: "BC카드"
+            // card_no: "9200420000000613"
+            // card_quota: "00"
+            // item_name: "국제 택배 조회"
+            // method: "card"
+            // method_name: "ISP / 앱카드 결제"
+            // order_id: "741e0ce325bdba0bf62a4756375a5678d7c87fc5ac8ea7740928e602ef05a67c"
+            // payment_group: "card"
+            // payment_group_name: "신용카드"
+            // payment_name: "ISP / 앱카드 결제"
+            // pg: "danal"
+            // pg_name: "다날"
+            // price: 1000
+            // purchased_at: "2020-06-28 15:22:14"
+            // receipt_id: "5ef836b42fa5c200489759ce"
+            // receipt_url: "https://www.danalpay.com/receipt/creditcard/view.aspx?datatype=receipt&cpid=9810030929&data=DS1FBLU2jVz1gwSuLi5KlWzOK0R0fmN0E8MaIHE4ydZkbC%2BJdLtmjliv0l7A%0AgXDv%0A"
+            // requested_at: "2020-06-28 15:20:36"
+            // status: 1
+            // tax_free: 0
+            // url: "http://localhost:3000"
+        }
+
+        ser1g.onclick = () => {
+            let userPhone = "";
+            let userEmail = "";
+            let userName = "";
+
+            let userInfo = { id: 'halo' };
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/account/checkacc/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.result == "success") {
+                        userPhone = data.uphone;
+                        userEmail = data.uemail;
+                        userName = data.uname;
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+
+            userPhone = userPhone.slice(0, 3) + '-' + userPhone.slice(3, 7) + '-' + userPhone.slice(7, 11);
+
+            let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+            let string_length = 15;
+            let randomstring = '';
+            for(let i=0; i<string_length; i++) {
+                let rnum = Math.floor(Math.random() * chars.length);
+                randomstring += chars.substring(rnum,rnum+1);
+            }
+            
+            BootPay.request({
+                price: '1000',
+                application_id: "5ef815974f74b40021f2b989",
+                name: '국제 택배 조회',
+                show_agree_window: 1,
+                items: [
+                    {
+                        item_name: '국제 택배 조회',
+                        qty: 1,
+                        unique: '1',
+                        price: 1000,
+                        cat1: '국제 택배 조회',
+                        cat2: '해외에서도 가능한!',
+                        cat3: '더 많은 배송 조회!',
+                    }
+                ],
+                user_info: {
+                    username: userName,
+                    email: userEmail,
+                    phone: userPhone
+                },
+                order_id: randomstring //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
+            }).error(function (data) {
+                //결제 진행시 에러가 발생하면 수행됩니다.
+                alert("결제 진행도중 에러가 발생했습니다! 다시 시도해주세요!");
+                console.log(data);
+            }).cancel(function (data) {
+                //결제가 취소되면 수행됩니다.
+                ser1pay.style.display = "none";
+                ser2pay.style.display = "none";
+                ser3pay.style.display = "none";
+                ser1pay.classList.remove('emphasized');
+                window.scroll({top: 2700, left: 0, behavior: 'smooth'});
+                tser1 = false;
+                console.log(data);
+            }).ready(function (data) {
+                // 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
+                console.log(data);
+            }).confirm(function (data) {
+                //결제가 실행되기 전에 수행되며, 주로 재고를 확인하는 로직이 들어갑니다.
+                //주의 - 카드 수기결제일 경우 이 부분이 실행되지 않습니다.
+                console.log(data);
+                var enable = true; // 재고 수량 관리 로직 혹은 다른 처리
+                if (enable) {
+                    BootPay.transactionConfirm(data); // 조건이 맞으면 승인 처리를 한다.
+                } else {
+                    BootPay.removePaymentWindow(); // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
+                }
+            }).close(function (data) {
+                // 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
+                ser1pay.style.display = "none";
+                ser2pay.style.display = "none";
+                ser3pay.style.display = "none";
+                ser1pay.classList.remove('emphasized');
+                window.scroll({top: 2700, left: 0, behavior: 'smooth'});
+                tser1 = false;
+                console.log(data);
+            }).done(function (data) {
+                //결제가 정상적으로 완료되면 수행됩니다
+                //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
+                let doneData = { data: data };
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:3000/account/buycheck/pay1');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.buySu) {
+                            alert("결제에 성공하였습니다.");
+                            location.replace(location.href);
+                        } else {
+                            if(data.msg) { alert(data.msg); }
+                            else { alert("결제 처리과정에서 에러가 발생했습니다."); }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(doneData));
+                console.log(data);
+            });
+        }
+
+        ser2g.onclick = () => {
+            let userPhone = "";
+            let userEmail = "";
+            let userName = "";
+
+            let userInfo = { id: 'halo' };
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/account/checkacc/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.result == "success") {
+                        userPhone = data.uphone;
+                        userEmail = data.uemail;
+                        userName = data.uname;
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+
+            userPhone = userPhone.slice(0, 3) + '-' + userPhone.slice(3, 7) + '-' + userPhone.slice(7, 11);
+
+            let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+            let string_length = 15;
+            let randomstring = '';
+            for(let i=0; i<string_length; i++) {
+                let rnum = Math.floor(Math.random() * chars.length);
+                randomstring += chars.substring(rnum,rnum+1);
+            }
+            
+            BootPay.request({
+                price: '1200',
+                application_id: "5ef815974f74b40021f2b989",
+                name: '카카오톡 봇 이용',
+                show_agree_window: 1,
+                items: [
+                    {
+                        item_name: '카카오톡 봇 이용',
+                        qty: 1,
+                        unique: '2',
+                        price: 1200,
+                        cat1: '카카오톡 봇 이용',
+                        cat2: '봇으로 조회 및 알림까지!',
+                        cat3: '웹 들어갈 필요 없이!',
+                    }
+                ],
+                user_info: {
+                    username: userName,
+                    email: userEmail,
+                    phone: userPhone
+                },
+                order_id: randomstring //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
+            }).error(function (data) {
+                //결제 진행시 에러가 발생하면 수행됩니다.
+                alert("결제 진행도중 에러가 발생했습니다! 다시 시도해주세요!");
+                console.log(data);
+            }).cancel(function (data) {
+                //결제가 취소되면 수행됩니다.
+                ser1pay.style.display = "none";
+                ser2pay.style.display = "none";
+                ser3pay.style.display = "none";
+                ser1pay.classList.remove('emphasized');
+                window.scroll({top: 2700, left: 0, behavior: 'smooth'});
+                tser1 = false;
+                console.log(data);
+            }).ready(function (data) {
+                // 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
+                console.log(data);
+            }).confirm(function (data) {
+                //결제가 실행되기 전에 수행되며, 주로 재고를 확인하는 로직이 들어갑니다.
+                //주의 - 카드 수기결제일 경우 이 부분이 실행되지 않습니다.
+                console.log(data);
+                var enable = true; // 재고 수량 관리 로직 혹은 다른 처리
+                if (enable) {
+                    BootPay.transactionConfirm(data); // 조건이 맞으면 승인 처리를 한다.
+                } else {
+                    BootPay.removePaymentWindow(); // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
+                }
+            }).close(function (data) {
+                // 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
+                ser1pay.style.display = "none";
+                ser2pay.style.display = "none";
+                ser3pay.style.display = "none";
+                ser1pay.classList.remove('emphasized');
+                window.scroll({top: 2700, left: 0, behavior: 'smooth'});
+                tser1 = false;
+                console.log(data);
+            }).done(function (data) {
+                //결제가 정상적으로 완료되면 수행됩니다
+                //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
+                let doneData = { data: data };
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:3000/account/buycheck/pay2');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.buySu) {
+                            alert("결제에 성공하였습니다.");
+                            location.replace(location.href);
+                        } else {
+                            if(data.msg) { alert(data.msg); }
+                            else { alert("결제 처리과정에서 에러가 발생했습니다."); }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(doneData));
+                console.log(data);
+            });
+        }
+
+        ser3g.onclick = () => {
+            let userPhone = "";
+            let userEmail = "";
+            let userName = "";
+
+            let userInfo = { id: 'halo' };
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/account/checkacc/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.result == "success") {
+                        userPhone = data.uphone;
+                        userEmail = data.uemail;
+                        userName = data.uname;
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+
+            userPhone = userPhone.slice(0, 3) + '-' + userPhone.slice(3, 7) + '-' + userPhone.slice(7, 11);
+
+            let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+            let string_length = 15;
+            let randomstring = '';
+            for(let i=0; i<string_length; i++) {
+                let rnum = Math.floor(Math.random() * chars.length);
+                randomstring += chars.substring(rnum,rnum+1);
+            }
+            
+            BootPay.request({
+                price: '2000',
+                application_id: "5ef815974f74b40021f2b989",
+                name: '둘다 마음껏',
+                show_agree_window: 1,
+                items: [
+                    {
+                        item_name: '둘다 마음껏',
+                        qty: 1,
+                        unique: '3',
+                        price: 2000,
+                        cat1: '둘다 마음껏',
+                        cat2: '더 간편하고 많은 조회!',
+                        cat3: '국제 택배 조회 + 카카오톡 봇',
+                    }
+                ],
+                user_info: {
+                    username: userName,
+                    email: userEmail,
+                    phone: userPhone
+                },
+                order_id: randomstring //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
+            }).error(function (data) {
+                //결제 진행시 에러가 발생하면 수행됩니다.
+                alert("결제 진행도중 에러가 발생했습니다! 다시 시도해주세요!");
+                console.log(data);
+            }).cancel(function (data) {
+                //결제가 취소되면 수행됩니다.
+                ser1pay.style.display = "none";
+                ser2pay.style.display = "none";
+                ser3pay.style.display = "none";
+                ser1pay.classList.remove('emphasized');
+                window.scroll({top: 2700, left: 0, behavior: 'smooth'});
+                tser1 = false;
+                console.log(data);
+            }).ready(function (data) {
+                // 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
+                console.log(data);
+            }).confirm(function (data) {
+                //결제가 실행되기 전에 수행되며, 주로 재고를 확인하는 로직이 들어갑니다.
+                //주의 - 카드 수기결제일 경우 이 부분이 실행되지 않습니다.
+                console.log(data);
+                var enable = true; // 재고 수량 관리 로직 혹은 다른 처리
+                if (enable) {
+                    BootPay.transactionConfirm(data); // 조건이 맞으면 승인 처리를 한다.
+                } else {
+                    BootPay.removePaymentWindow(); // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
+                }
+            }).close(function (data) {
+                // 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
+                ser1pay.style.display = "none";
+                ser2pay.style.display = "none";
+                ser3pay.style.display = "none";
+                ser1pay.classList.remove('emphasized');
+                window.scroll({top: 2700, left: 0, behavior: 'smooth'});
+                tser1 = false;
+                console.log(data);
+            }).done(function (data) {
+                //결제가 정상적으로 완료되면 수행됩니다
+                //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
+                let doneData = { data: data };
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:3000/account/buycheck/pay3');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.buySu) {
+                            alert("결제에 성공하였습니다.");
+                            location.replace(location.href);
+                        } else {
+                            if(data.msg) { alert(data.msg); }
+                            else { alert("결제 처리과정에서 에러가 발생했습니다."); }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(doneData));
+                console.log(data);
+            });
         }
     </script>
 </body>

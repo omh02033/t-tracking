@@ -4,6 +4,14 @@ const config = require('../config/jwt');
 const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
 const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
+
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) { cb(null, path.join(__dirname, '../public/images/userProfile/')); },
+    filename: function (req, file, cb) { cb(null, String(req.decoded.unum) ); }
+});
+const upload = multer({storage: storage});
 
 let conn = mysql.createConnection({
     host : 'localhost',
@@ -14,22 +22,65 @@ let conn = mysql.createConnection({
 conn.connect();
 
 router
-.get('/', check, (req, res) => {
-    res.render('index');
-})
-.get('/about/', checkabout, (req, res) => {
-    res.render('about/index');
-})
-.get('/explain/', (req, res) => {
-    res.sendFile('explain.html', { root: path.join(__dirname, '../public/html') });
+.get('/', check, (req, res) => { res.render('index'); })
+.get('/about/', checkabout, (req, res) => { res.render('about/index'); })
+.get('/explain/', (req, res) => { res.sendFile('explain.html', { root: path.join(__dirname, '../public/html') }); })
+.get('/form/', youSeller, (req, res) => { res.download(__dirname + "/../public/xlsxForm/deliverySeller.xlsx"); })
+
+.post('/profileUpload/', fcheck, upload.single('proImage'), (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.json({err: 'NO Token'}); }
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if(err) { res.json(err); }
+        res.status(200).json({ result: 'success' });
+    });
 })
 
 module.exports = router;
+
+function sellercheck(uid) {
+    let sql = 'SELECT * FROM account WHERE userid=?';
+    return new Promise((resolve, reject)=>{
+        conn.query(sql, [uid], (err, data) => {
+            if(err) { resolve(null); }
+            else {
+                let user = data[0];
+                if(user.seller == 'true') { resolve(true) }
+                else { resolve(null); }
+            }
+        });
+    })
+}
+
+function fcheck(req, res, next) {
+    let token = req.cookies.user;
+    if(!token){
+        res.locals.decoded = null;
+        res.locals.seller = null;
+        return next();
+    }
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if(err) { return res.json(err); }
+
+        let sql = 'SELECT * FROM account WHERE id=? and userid=?';
+        conn.query(sql, [decoded.unum, decoded.uid], async (err, data) => {
+            if(err) { res.send('예상치 못한 에러가 발생했습니다.'); }
+            let user = data[0];
+            if(user.pay1 == 'false') { res.locals.payo = false; }
+            else if(user.pay1 == 'true') { res.locals.payo = true; }
+            req.decoded = decoded;
+            res.locals.decoded = decoded;
+            res.locals.seller = await sellercheck(decoded.uid);
+            next();
+        });
+    });
+}
 
 function check(req, res, next){
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
+        res.locals.seller = null;
         return next();
     }
     jwt.verify(token, config.secret, (err, decoded) => {
@@ -37,12 +88,14 @@ function check(req, res, next){
             return res.json(err);
         }
         let sql = 'SELECT * FROM account WHERE id=? and userid=?';
-        conn.query(sql, [decoded.unum, decoded.uid], (err, data) => {
+        conn.query(sql, [decoded.unum, decoded.uid], async (err, data) => {
             if(err) { res.send('예상치 못한 에러가 발생했습니다.'); }
             let user = data[0];
             if(user.pay1 == 'false') { res.locals.payo = false; }
             else if(user.pay1 == 'true') { res.locals.payo = true; }
+            req.decoded = decoded;
             res.locals.decoded = decoded;
+            res.locals.seller = await sellercheck(decoded.uid);
             next();
         })
     });
@@ -52,6 +105,7 @@ function checkabout(req, res, next){
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
+        res.locals.seller = null;
         res.locals.payo = null;
         res.locals.payt = null;
         return next();
@@ -69,7 +123,24 @@ function checkabout(req, res, next){
             if(user.pay2 == 'false') { res.locals.payt = false; }
             else if(user.pay2 == 'true') { res.locals.payt = true; }
             res.locals.decoded = decoded;
+            res.locals.seller = sellercheck(decoded.uid);
             next();
         })
     });
+}
+
+function youSeller(req, res, next) {
+    let token = req.cookies.user;
+    if(!token) {
+        res.locals.decoded = null;
+        res.locals.seller = null;
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
+    }
+    jwt.verify(token, config.secret, async (err, decoded) => {
+        if(err) { return res.json(err); }
+        res.locals.decoded = decoded;
+        let seller = await sellercheck(decoded.uid);
+        if(seller) { return next(); }
+        else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html') }); }
+    })
 }

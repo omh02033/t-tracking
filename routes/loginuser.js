@@ -20,6 +20,7 @@ router
 .get('/tmanage/', check, (req, res) => { res.render('loginuser/taekmanager.ejs'); })
 .get('/chat/', check, (req, res) => { res.render('loginuser/chat.ejs'); })
 .get('/chat/:cid/:denum/:sid', chatcheck, (req, res) => { res.render('loginuser/chatsystem.ejs'); })
+.get('/delienr/', youSeller, (req, res) => { res.render('loginuser/delienr.ejs'); })
 
 module.exports = router;
 
@@ -27,11 +28,13 @@ function chatcheck(req, res, next) {
     let token = req.cookies.user;
     if(!token) {
         res.locals.decoded = null;
+        res.locals.seller = null;
         return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html' ) });
     }
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
         res.locals.decoded = decoded;
+        res.locals.seller = await sellercheck(decoded.uid);
         next();
     })
 }
@@ -40,13 +43,46 @@ function check(req, res, next) {
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
+        res.locals.seller = null;
         return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
     }
-    jwt.verify(token, config.secret, (err, decoded) => {
-        if(err) {
-            return res.json(err);
-        }
+    jwt.verify(token, config.secret, async (err, decoded) => {
+        if(err) { return res.json(err); }
         res.locals.decoded = decoded;
+        res.locals.seller = await sellercheck(decoded.uid);
         next();
     });
+}
+
+function youSeller(req, res, next) {
+    let token = req.cookies.user;
+    if(!token) {
+        res.locals.decoded = null;
+        res.locals.seller = null;
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
+    }
+    jwt.verify(token, config.secret, async (err, decoded) => {
+        if(err) { return res.json(err); }
+        res.locals.decoded = decoded;
+        let seller = await sellercheck(decoded.uid);
+        if(seller) {
+            res.locals.seller = seller;
+            return next();
+        }
+        else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html') }); }
+    })
+}
+
+function sellercheck(uid) {
+    let sql = 'SELECT * FROM account WHERE userid=?';
+    return new Promise((resolve, reject)=>{
+        conn.query(sql, [uid], (err, data) => {
+            if(err) { resolve(null); }
+            else {
+                let user = data[0];
+                if(user.seller == 'true') { resolve(true) }
+                else { resolve(null); }
+            }
+        });
+    })
 }

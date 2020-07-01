@@ -20,7 +20,7 @@
         .main1 {
             width: 100%;
             position: absolute;
-            top: 90px;
+            top: 0;
             right: 0;
         }
         .login:hover, .signup:hover {
@@ -37,6 +37,7 @@
             color: #fff;
             font-weight: bold;
         }
+        .mmenu { top: 0 !important; }
 
         @media only screen and (max-width: 600px) {
             #menubar {
@@ -201,20 +202,38 @@
     </div>
 
     <div class="main">
-        <div class="menu" style="display: none;">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <label class="weltext">처음 오셨나요?</label>
+                    <i class="fa fa-boxes"></i>
+                    <div class="lbtn">
+                        <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                        <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                    </div>
+                </div>
+            </div>
             <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
             <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
             <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
-            <div class="menutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
             <div class="menutap menutap55" onclick="location.replace('/loginuser/chat/');">판매자와 채팅</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
-        <div class="mmenu" style="display: none; z-index: 50;" id="semenu">
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <label class="weltext">처음 오셨나요?</label>
+                    <i class="fa fa-boxes"></i>
+                    <div class="lbtn">
+                        <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                        <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                    </div>
+                </div>
+            </div>
             <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
             <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
             <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
-            <div class="mmenutap menutap4 sel" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat/');">판매자와 채팅</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
@@ -247,6 +266,14 @@
             </a>
         </div>
     </div>
+    <div id="proselectd" style="display: none;"></div>
+    <div id="proselect" style="display: none;"></div>
+    <div id="originalPro" style="display: none;"></div>
+    <div id="profilechange" style="display: none;"></div>
+    <div id="closeselect" style="display: none;"></div>
+    <div class="profileImg" style="display: none;"></div>
+    <div class="mprofileImg" style="display:none;"></div>
+    <div id="al" style="display: none;"></div>
     <script src="/../javascripts/menu.js"></script>
     <script>
         let limgi = document.querySelector(".fa-boxes");

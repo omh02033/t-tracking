@@ -15,6 +15,7 @@
         body {
             margin: 0;
             min-height: 850px;
+            height: 100vh;
         }
         .mlogin {
             position: absolute;
@@ -112,23 +113,19 @@
 
         @keyframes blackbar {
             0% {
-                background: #FFFFFF;
-                color: black;
+                background: orange;
             }
             100% {
-                background: #303133;
-                color: white;
+                background: #292a2d;
             }
         }
 
         @keyframes whitebar {
             0% {
-                background: #303133;
-                color: white;
+                background: #292a2d;
             }
             100% {
-                background: #FFFFFF;
-                color: black;
+                background: orange;
             }
         }
 
@@ -150,9 +147,6 @@
                 display: none;
             }
             .lookuptable {
-                display: none;
-            }
-            #semenu {
                 display: none;
             }
             .tcode {
@@ -210,6 +204,7 @@
                 height: 100px;
                 border-top: 2px solid #e9ebee;
                 background-color: rgba(233,235,238,0.3);
+                z-index: -100;
             }
             .mexplain1 {
                 height: 100%;
@@ -333,6 +328,7 @@
                 height: 200px;
                 border-top: 2px solid #e9ebee;
                 background-color: rgba(233,235,238,0.3);
+                z-index: -100;
             }
             .explain1 {
                 height: 100%;
@@ -474,6 +470,7 @@
                 height: 200px;
                 border-top: 2px solid #e9ebee;
                 background-color: rgba(233,235,238,0.3);
+                z-index: -100;
             }
             .explain1 {
                 height: 100%;
@@ -536,9 +533,6 @@
             .lookuptable {
                 display: none;
             }
-            #semenu {
-                display: none;
-            }
             .tcode {
                 display: none;
             }
@@ -594,6 +588,7 @@
                 height: 100px;
                 border-top: 2px solid #e9ebee;
                 background-color: rgba(233,235,238,0.3);
+                z-index: -100;
             }
             .mexplain1 {
                 height: 100%;
@@ -647,6 +642,7 @@
             }
         }
     </style>
+    <script src="/../javascripts/IProfile.js"></script>
 </head>
 <body>
     <div class="top row">
@@ -683,20 +679,67 @@
         </div>
     </div>
     <div class="main">
-        <div class="menu" style="display: none;">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <div style="width: 47px; position: relative; padding-top: 100%;" class="profilesh">
+                            <div style="position: absolute; top:0; bottom:0; right:0; left:0; transform: translate(50%, 50%);" class="profilesh1">
+                                <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="profileImg">
+                            </div>
+
+                        </div>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
             <div class="menutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
             <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
-            <div class="menutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="menutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
         </div>
-        <div class="mmenu" style="display: none; position: relative; float: left; z-index: 50;" id="semenu">
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="mprofileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="mprofileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="location.replace('/account/signup/');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
             <div class="mmenutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
             <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
             <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
-            <div class="mmenutap menutap4" onclick="location.replace('/account/');">로그인 / 회원가입</div>
             <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
             <div class="mmenutap menutap55" onclick="location.replace('/loginuser/chat');">판매자와 채팅</div>
             <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
@@ -920,13 +963,38 @@
                         <td><a href="http://kglnetworks.com/">KGL네트웍스</a></td>
                         <td><a href="http://www.slx.co.kr/">SLX</a></td>
                         <td><a href="https://play.google.com/store/apps/details?id=com.bandsoft.hilogis&hl=ko">하이택배</a></td>
-                        <td><a href="http://www.foreverps.co.kr/theme/business02/html/delivery/transportation.php">FLF퍼레버택배</a></td>
+                        <td style="border-right: none !important;"><a href="http://www.foreverps.co.kr/theme/business02/html/delivery/transportation.php">FLF퍼레버택배</a></td>
                     </tr>
                 </table>
                 <label><a href="/about/#taekbae">자세히 보기</a></label>
             </div>
         </div>
     </div>
+    <div id="proselectd">
+        <div id="proselect">
+            <div id="toppro">
+                <% if(decoded) { %>
+                    <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
+                <% } else { %>
+                    <i class="far fa-user" style="font-size: 35px;"></i>
+                    <div id="deimg" style="display: none !important;"></div>
+                <% } %>
+                <h4 id="delh4">프로필</h4>
+            </div>
+            <div id="psoption">
+                <div id="originalPro"><span>기본 프로필</span></div>
+                <div id="profilechange">
+                    <label for="chpro" id="al">프로필 변경</label>
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
+                        <input type="file" name="proImage" id="chpro" style="display: none !important;" accept="image/png, image/jpg, image/jpeg" onchange="prochfilecheck(this);">
+                        <input type="submit" style="display: none !important;" id="psub">
+                    </form>
+                </div>
+            </div>
+            <div id="closeselect"><span>닫기</span></div>
+        </div>
+    </div>
+    <div id="mproselectd"></div>
     <div class="loading emphasized"><div class="loadingif"><img src="../images/loading.gif" alt="" style="position: absolute; transform: translate(-50%, -50%); left: 50%; max-width: 80px; height:80px; box-shadow: none !important;"></div><span style="position:absolute; bottom:0; color: white; width: 100%; text-align: center;">잠시만 기다려주세요..</span></div>
     <script src="/../javascripts/menu.js"></script>
     <script>
@@ -972,6 +1040,9 @@
         let se = document.getElementById("secret");
         let mse = document.getElementById("msecret");
 
+        let tcodeinput = document.querySelector(".tcodeinput");
+        let mtcodeinput = document.querySelector(".mtcodeinput");
+
         let deliselect;
         let mdeliselect;
         if(!document.getElementById("delichoose")) { deliselect = false; }
@@ -981,15 +1052,19 @@
 
         function bbar() {
             if(se.checked || mse.checked) {
-                jcode.classList.remove("wbar");
-                jcode.classList.add("bbar");
-                mjcode.classList.remove("wbar");
-                mjcode.classList.add("bbar");
+                tcodeinput.classList.remove("wbar");
+                tcodeinput.classList.add("bbar");
+                mtcodeinput.classList.remove("wbar");
+                mtcodeinput.classList.add("bbar");
+                jcodesubmit.style.color = "white";
+                mjcodesubmit.style.color = "white";
             } else {
-                jcode.classList.remove("bbar");
-                jcode.classList.add("wbar");
-                mjcode.classList.remove("bbar");
-                mjcode.classList.add("wbar");
+                tcodeinput.classList.remove("bbar");
+                tcodeinput.classList.add("wbar");
+                mtcodeinput.classList.remove("bbar");
+                mtcodeinput.classList.add("wbar");
+                jcodesubmit.style.color = "black";
+                mjcodesubmit.style.color = "black";
             }
         }
 
