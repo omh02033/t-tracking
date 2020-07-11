@@ -14,9 +14,9 @@ let conn = mysql.createConnection({
 });
 conn.connect();
 
-let apis = ['33F145I7l05a5y9LkYKLYQ', 'VrSMOCx6TVQUru8Z8jrGYw'];
-//33F145I7l05a5y9LkYKLYQ
-//VrSMOCx6TVQUru8Z8jrGYw
+let apis = ['8UPsZK2GvDM4ET2IFMjh1Q', 'XKacA2p9rhnlMEWqXLcWZg'];
+//XKacA2p9rhnlMEWqXLcWZg
+//8UPsZK2GvDM4ET2IFMjh1Q
 let apiIndex = 0;
 
 let gcode = ['99', '37', '29',     // 국제 택배
@@ -51,9 +51,9 @@ router
                             t_invoice: req.body.num
                         }
                     })
-                )
+                );
             }
-        })
+        });
         Promise.all(promises)
         .then(function (response) {
             for(let i=0; i<response.length; i++) {
@@ -152,7 +152,7 @@ router
                 }
             }
         }).catch(err => {
-            console.log('catch');
+            console.log('catch', err);
         })
     } else if(req.body.select) {
         if(req.body.select == 'domestic') {
@@ -259,7 +259,7 @@ router
                 }
             }).catch(err => {
                 res.status(400).json({ msg: '유효하지 않은 운송장 번호 혹은 택배사 코드를 입력하셨습니다. 다시 시도해주세요.' });
-                console.log('catch');
+                console.log('catch', err);
             })
         } else if(req.body.select == 'international') {
             const p = new Promise((resolve, reject) => {
@@ -363,7 +363,7 @@ router
                     }
                 }
             }).catch(err => {
-                console.log('catch');
+                console.log('catch', err);
             })
         }
     }

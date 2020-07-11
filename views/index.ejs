@@ -328,7 +328,6 @@
                 height: 200px;
                 border-top: 2px solid #e9ebee;
                 background-color: rgba(233,235,238,0.3);
-                z-index: -100;
             }
             .explain1 {
                 height: 100%;
@@ -684,12 +683,7 @@
                 <div class="wel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <div style="width: 47px; position: relative; padding-top: 100%;" class="profilesh">
-                            <div style="position: absolute; top:0; bottom:0; right:0; left:0; transform: translate(50%, 50%);" class="profilesh1">
-                                <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="profileImg">
-                            </div>
-
-                        </div>
+                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="profileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -932,7 +926,7 @@
                 <label>무료로 조회할 수 있는 국내 택배사 (국내택배 26개사)</label><br>
                 <table>
                     <tr>
-                        <td><a href="https://www.kunyoung.com/">건영택배</a></td>
+                        <td><a href="https://www.kunyoung.com/" onclick="console.log('ddd')">건영택배</a></td>
                         <td><a href="https://kdexp.com/main.kd">경동택배</a></td>
                         <td><a href="https://www.homepick.com/">홈픽택배</a></td>
                         <td><a href="http://www.goodstoluck.co.kr/">굿투럭</a></td>

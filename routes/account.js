@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/jwt');
 const fs = require('fs');
 const BootpayRest = require('bootpay-rest-client');
+const moment = require('moment');
 
 let conn = mysql.createConnection({
     host : 'localhost',
@@ -237,10 +238,10 @@ router
                             uid : user.userid
                         });
                     }
-                })
+                });
             }
         }
-    })
+    });
 })
 
 .post('/fpass/', (req, res) => {
@@ -286,9 +287,9 @@ router
                             result: 'success',
                             code: code,
                             upass : user.userpass
-                        })
+                        });
                     }
-                })
+                });
             }
         }
     });
@@ -383,7 +384,7 @@ router
     }
 })
 
-.post('/buycheck/:code', (req, res) => {
+.post('/buycheck/', (req, res) => {
     let token = req.cookies.user;
     if(!token) { res.redirect('/account/login/'); }
     else {
@@ -396,24 +397,34 @@ router
 
             BootpayRest.getAccessToken().then(function (response) {
                 if(response.status === 200 && response.data.token !== undefined) {
-                    BootpayRest.verify(req.body.receipt_id).then(function (_response) {
+                    BootpayRest.verify(req.body.data.receipt_id).then(function (_response) {
+                        _response = JSON.parse(_response);
                         if(_response.status === 200) {
-                            if(_response.data.receipt_id == req.body.receipt_id && _response.data.price == req.body.price) {
-                                if(req.params.code == "pay1") {
-                                    let sql = "UPDATE account SET pay1=? WHERE userid=? and id=?";
-                                    conn.query(sql, ['true', decoded.uid, decoded.unum], (err, rows, fields) => {
+                            if(_response.data.receipt_id == req.body.data.receipt_id && _response.data.price == req.body.data.price) {
+                                let sq = 'INSERT INTO payment (`id`, `toolname`, `pay`, `card_name`, `card_no`, `n`, `receipt_id`, `purchased_at`, `status`, `pg`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                conn.query(sq, [decoded.unum, _response.data.name, _response.data.price, _response.data.payment_data.card_name, _response.data.payment_data.card_no, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
+                                
+                                let date = moment();
+                                let now = date.format("YYYYMMDD");
+
+                                date.add(30, "d");
+                                let end = date.format("YYYYMMDD");
+
+                                if(_response.data.name == "국제 택배 조회" && _response.data.price == 1200) {
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
-                                } else if(req.params.code == "pay2") {
-                                    let sql = "UPDATE account SET pay2=? WHERE userid=? and id=?";
-                                    conn.query(sql, ['true', decoded.uid, decoded.unum], (err, rows, fields) => {
+                                } else if(_response.data.name == "카카오톡 봇 이용" && _response.data.price == 1500) {
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
-                                } else if(req.params.code == "pay3") {
-                                    let sql = "UPDATE account SET pay1=?, pay2=? WHERE userid=? and id=?";
-                                    conn.query(sql, ['true', 'true', decoded.uid, decoded.unum], (err, rows, fields) => {
+                                } else if(_response.data.name == "둘다 마음껏" && _response.data.price == 2500) {
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });

@@ -168,7 +168,13 @@
                 text-align: center;
                 border: 1px solid darkgray;
                 border-radius: 15px;
-                margin-bottom: 250px;
+                margin-bottom: 5px;
+            }
+            #reff {
+                margin-bottom: 245px;
+                font-weight: bold;
+                display: flex;
+                justify-content: center;
             }
             .payservice {
                 width: 100%;
@@ -526,14 +532,14 @@
                 <div class="payservice">
                     <div class="service1">
                         <h5 style="font-weight: normal;">국제 택배 조회</h5>
-                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
-                        <label style="margin-bottom: 30px;">해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">한 달</h6>
+                        <label style="margin-bottom: 30px;">해외에 있을때는<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
                         <% if(decoded) { %>
-                            <% if(payo) { %>
+                            <% if(payment.pay1 || payment.pay3) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="ser1button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                                <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
                             <% } %>
                         <% } else { %>
                             <a class="waves-effect waves-light grey btn" id="ser1button" href="/account/login/">로그인</a>
@@ -542,14 +548,14 @@
                     <span>+</span>
                     <div class="service2">
                         <h5 style="font-weight: normal;">카카오톡 봇 이용</h5>
-                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
-                        <label style="margin-bottom: 30px;">직접 웹에 들어오지 않아도<br>배송상태 알림, 조회, 기록등을<br>카카오톡 봇으로 확인해보세요 !</label>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">한 달</h6>
+                        <label style="margin-bottom: 30px;">직접 웹에 들어오지 않아도<br>배송완료 알림, 조회, 기록등을<br>카톡 봇으로 조회해보세요!</label>
                         <% if (decoded) { %>
-                            <% if(payt) { %>
+                            <% if(payment.pay2 || payment.pay3) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="ser2button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
+                                <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1500</a>
                             <% } %>
                         <% } else { %>
                             <a class="waves-effect waves-light grey btn" id="ser2button" href="/account/login/">로그인</a>
@@ -558,14 +564,14 @@
                     <span>=</span>
                     <div class="service3">
                         <h5 style="font-weight: normal;">둘다 마음껏 !</h5>
-                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">한 달</h6>
                         <label style="margin-bottom: 30px;">더 많은 택배 조회를 하면서도<br>카톡으로 모든 기능 이용까지 !<br>더더욱 많고 편한 조회를 !</label>
                         <% if(decoded) { %>
-                            <% if(payo && payt) { %>
+                            <% if(payment.pay3 || (payment.pay1 && payment.pay2)) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="ser3button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2000</a>
+                                <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2500</a>
                             <% } %>
                         <% } else { %>
                             <a class="waves-effect waves-light grey btn" id="ser3button" href="/account/login/">로그인</a>
@@ -576,14 +582,14 @@
                 <div class="mpayservice">
                     <div class="service1">
                         <h5 style="font-weight: normal;">국제 택배 조회</h5>
-                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">한 달</h6>
                         <label style="margin-bottom: 30px; display: block;">해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
                         <% if(decoded) { %>
-                            <% if(payo) { %>
+                            <% if(payment.pay1 || payment.pay3) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="mser1button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1000</a>
+                                <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
                             <% } %>
                         <% } else { %>
                             <a class="waves-effect waves-light grey btn" id="mser1button" href="/account/login/">로그인</a>
@@ -591,14 +597,14 @@
                     </div>
                     <div class="service2">
                         <h5 style="font-weight: normal;">카카오톡 봇 이용</h5>
-                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">한 달</h6>
                         <label style="margin-bottom: 30px; display: block;">직접 웹에 들어오지 않아도<br>배송상태 알림, 조회, 기록등을<br>카카오톡 봇으로 확인해보세요 !</label>
                         <% if(decoded) { %>
-                            <% if(payt) { %>
+                            <% if(payment.pay2 || payment.pay3) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="mser2button" style="display: none;"></div>
                             <% } else { %>
-                                <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
+                                <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1500</a>
                             <% } %>
                         <% } else { %>
                             <a class="waves-effect waves-light grey btn" id="mser2button" href="/account/login/">로그인</a>
@@ -606,20 +612,32 @@
                     </div>
                     <div class="service3">
                         <h5 style="font-weight: normal;">둘다 마음껏 !</h5>
-                        <h6 style="font-weight: bold; margin-bottom: 30px;">무제한</h6>
+                        <h6 style="font-weight: bold; margin-bottom: 30px;">한 달</h6>
                         <label style="margin-bottom: 30px; display: block;">더 많은 택배 조회를 하면서도<br>카톡으로 모든 기능 이용까지 !<br>더더욱 많고 편한 조회를 !</label>
                         <% if(decoded) { %>
-                            <% if(payo && payt) { %>
+                            <% if(payment.pay3 || (payment.pay1 && payment.pay2)) { %>
                                 <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="mser3button" style="display: none;"></div>
                                 <% } else { %>
-                                <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2000</a>
+                                <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2500</a>
                             <% } %>
                         <% } else { %>
                             <a class="waves-effect waves-light grey btn" id="mser3button" href="/account/login/">로그인</a>
                         <% } %>
                     </div>
                 </div>
+            </div>
+            <div id="reff">
+                <% if(decoded) { %>
+                    <% if(payment.pay1 || payment.pay2 || payment.pay3) { %>
+                        <a class="waves-effect waves-light btn purple lighten-3" id="refund" style="margin-right: 20px;">환불</a>
+                        <a class="waves-effect waves-light btn indigo lighten-4" id="backh">환불 규정</a>
+                    <% } else { %>
+                        <a id="backh" style="display: none;"></a><a id="refund" style="display: none;"></a>
+                    <% } %>
+                <% } else { %>
+                    <a id="backh" style="display: none;"></a><a id="refund" style="display: none;"></a>
+                <% } %>
             </div>
             <div class="explain" style="margin-bottom: 50px; position: absolute; transform: translate(-50%, -50%); left: 50%;">
                 <a class="waves-effect waves-light btn-small orange" id="forget"><i class="material-icons left" style="font-size: 25px;">assignment</i>자세한 설명 보기</a>
@@ -631,7 +649,7 @@
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">'국제 택배 조회' 결제</span>
-                            <p>해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를 이용 해보세요 !<br><br>가격 : 1000 원</p>
+                            <p>해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를 이용 해보세요 !<br><br>가격 : 1200 원</p>
                         </div>
                         <div class="card-action">
                             <a id="ser1g" style="font-weight: bold !important;">결제 할께요!</a>
@@ -645,7 +663,7 @@
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">'카카오톡 봇 이용' 결제</span>
-                            <p>카카오톡 봇으로 배송 조회, 기록, 알림까지 이용하실수 있습니다 !<br><br>가격 : 1200 원</p>
+                            <p>카카오톡 봇으로 배송 조회, 기록, 알림까지 이용하실수 있습니다 !<br><br>가격 : 1500 원</p>
                         </div>
                         <div class="card-action">
                             <a id="ser2g" style="font-weight: bold !important;">결제 할께요!</a>
@@ -659,7 +677,7 @@
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">'둘다 마음껏 !' 결제</span>
-                            <p>해외 택배사의 조회부터 카톡 봇으로 이용한 국내 택배 조회, 기록, 알림까지 ! 더욱 더 많은 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 2000 원</p>
+                            <p>해외 택배사의 조회부터 카톡 봇으로 이용한 국내 택배 조회, 기록, 알림까지 ! 더욱 더 많은 주문하신 상품을 조회할 수 있어요 !<br><br>가격 : 2500 원</p>
                         </div>
                         <div class="card-action">
                             <a id="ser3g" style="font-weight: bold !important;">결제 할께요!</a>
@@ -701,6 +719,12 @@
     <script src="/../javascripts/menu.js"></script>
     <script src="https://cdn.bootpay.co.kr/js/bootpay-3.0.2.min.js" type="application/javascript"></script>
     <script>
+        let refund = document.getElementById("refund");
+        refund.onclick = () => { window.open(`/refund`, '', 'width=650,height=400,scrollbar=yes,top=150,left=150'); }
+
+        let backh = document.getElementById("backh");
+        backh.onclick = () => { window.open(`/explain#refundRule`, '', 'width=500,height=705,scrollbar=yes'); }
+
         let explain = document.querySelector(".explain");
         explain.onclick = () => { window.open(`/explain`, '', 'width=500,height=705,scrollbar=yes'); }
 
@@ -921,7 +945,7 @@
                 password: form.userpass.value
             }
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/account/login/');
+            xhr.open('POST', '/account/login/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -982,7 +1006,7 @@
 
             let userInfo = { id: 'halo' };
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/account/checkacc/');
+            xhr.open('POST', '/account/checkacc/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -1007,7 +1031,7 @@
             }
             
             BootPay.request({
-                price: '1000',
+                price: '1200',
                 application_id: "5ef815974f74b40021f2b989",
                 name: '국제 택배 조회',
                 show_agree_window: 1,
@@ -1016,7 +1040,7 @@
                         item_name: '국제 택배 조회',
                         qty: 1,
                         unique: '1',
-                        price: 1000,
+                        price: 1200,
                         cat1: '국제 택배 조회',
                         cat2: '해외에서도 가능한!',
                         cat3: '더 많은 배송 조회!',
@@ -1068,13 +1092,13 @@
                 //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
                 let doneData = { data: data };
                 let xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://localhost:3000/account/buycheck/pay1');
+                xhr.open('POST', '/account/buycheck/');
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.onreadystatechange = function () {
                     if(xhr.readyState === 4 && xhr.status === 200) {
                         let data = JSON.parse(xhr.responseText);
                         if(data.buySu) {
-                            alert("결제에 성공하였습니다.");
+                            alert("결제가 성공적으로 처리되었습니다.");
                             location.replace(location.href);
                         } else {
                             if(data.msg) { alert(data.msg); }
@@ -1083,7 +1107,6 @@
                     }
                 }
                 xhr.send(JSON.stringify(doneData));
-                console.log(data);
             });
         }
 
@@ -1094,7 +1117,7 @@
 
             let userInfo = { id: 'halo' };
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/account/checkacc/');
+            xhr.open('POST', '/account/checkacc/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -1119,7 +1142,7 @@
             }
             
             BootPay.request({
-                price: '1200',
+                price: '1500',
                 application_id: "5ef815974f74b40021f2b989",
                 name: '카카오톡 봇 이용',
                 show_agree_window: 1,
@@ -1128,7 +1151,7 @@
                         item_name: '카카오톡 봇 이용',
                         qty: 1,
                         unique: '2',
-                        price: 1200,
+                        price: 1500,
                         cat1: '카카오톡 봇 이용',
                         cat2: '봇으로 조회 및 알림까지!',
                         cat3: '웹 들어갈 필요 없이!',
@@ -1180,13 +1203,13 @@
                 //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
                 let doneData = { data: data };
                 let xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://localhost:3000/account/buycheck/pay2');
+                xhr.open('POST', '/account/buycheck/');
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.onreadystatechange = function () {
                     if(xhr.readyState === 4 && xhr.status === 200) {
                         let data = JSON.parse(xhr.responseText);
                         if(data.buySu) {
-                            alert("결제에 성공하였습니다.");
+                            alert("결제가 성공적으로 처리되었습니다.");
                             location.replace(location.href);
                         } else {
                             if(data.msg) { alert(data.msg); }
@@ -1206,7 +1229,7 @@
 
             let userInfo = { id: 'halo' };
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/account/checkacc/');
+            xhr.open('POST', '/account/checkacc/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -1231,7 +1254,7 @@
             }
             
             BootPay.request({
-                price: '2000',
+                price: '2500',
                 application_id: "5ef815974f74b40021f2b989",
                 name: '둘다 마음껏',
                 show_agree_window: 1,
@@ -1240,7 +1263,7 @@
                         item_name: '둘다 마음껏',
                         qty: 1,
                         unique: '3',
-                        price: 2000,
+                        price: 2500,
                         cat1: '둘다 마음껏',
                         cat2: '더 간편하고 많은 조회!',
                         cat3: '국제 택배 조회 + 카카오톡 봇',
@@ -1292,13 +1315,13 @@
                 //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
                 let doneData = { data: data };
                 let xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://localhost:3000/account/buycheck/pay3');
+                xhr.open('POST', '/account/buycheck/');
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.onreadystatechange = function () {
                     if(xhr.readyState === 4 && xhr.status === 200) {
                         let data = JSON.parse(xhr.responseText);
                         if(data.buySu) {
-                            alert("결제에 성공하였습니다.");
+                            alert("결제가 성공적으로 처리되었습니다.");
                             location.replace(location.href);
                         } else {
                             if(data.msg) { alert(data.msg); }

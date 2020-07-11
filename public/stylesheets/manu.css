@@ -34,7 +34,9 @@
     float: left;
     border-right: 1px solid darkgray;
     box-sizing: border-box;
-    z-index: 999;
+    position: relative;
+    z-index: 1;
+    background-color: white;
 }
 .menutap {
     width: 100%;
@@ -372,15 +374,21 @@
     justify-content: center;
     align-items: center;
 }
-#toppro > img {
-    width: 100%;
-    position: relative;
-}
 #toppro > h4 {
     cursor: default;
     position: absolute;
     bottom: 8px;
     margin: 0;
+}
+#toppro > img {
+    width: 47px;
+    height: 47px;
+    border-radius: 25px;
+    position: absolute;
+    top: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #closeselect {
     border-bottom: 0px !important;

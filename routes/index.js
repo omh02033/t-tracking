@@ -26,6 +26,7 @@ router
 .get('/about/', checkabout, (req, res) => { res.render('about/index'); })
 .get('/explain/', (req, res) => { res.sendFile('explain.html', { root: path.join(__dirname, '../public/html') }); })
 .get('/form/', youSeller, (req, res) => { res.download(__dirname + "/../public/xlsxForm/deliverySeller.xlsx"); })
+.get('/refund/', bcheck, (req, res) => { res.sendFile('refund.html', { root: path.join(__dirname, '../public/html') }); })
 
 .post('/profileUpload/', fcheck, upload.single('proImage'), (req, res) => {
     let token = req.cookies.user;
@@ -35,8 +36,42 @@ router
         res.status(200).json({ result: 'success' });
     });
 })
+.post('/paycheck/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.json({err: 'NO Token'}); }
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if(err) throw err;
+        let sql = 'SELECT * FROM subsc WHERE id=? and userid=?';
+        conn.query(sql, [decoded.unum, decoded.uid], (err, data) => {
+            if(err) { res.status(400).json({ err: '예상치 못한 에러가 발생했습니다.' }); }
+            if(data.length == 0) { res.send("유료서비스를 먼저 구매해주세요!"); }
+            res.status(200).json(data);
+        });
+    });
+})
 
 module.exports = router;
+
+function isRegistered(subscribes, payType) {
+    for(let subscribe of subscribes) {
+        if(subscribe.kinds == payType) return true;
+    }
+    return false;
+}
+
+function bcheck(req, res, next) {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/account/login'); }
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if(err) throw err;
+        let sql = 'SELECT * FROM subsc WHERE id=? and userid=?';
+        conn.query(sql, [decoded.unum, decoded.uid], (err, data) => {
+            if(err) { return res.send('예상치 못한 에러가 발생했습니다.'); }
+            if(data.length == 0) { res.send('유료서비스를 먼저 구매해주세요!'); }
+            next();
+        });
+    });
+}
 
 function sellercheck(uid) {
     let sql = 'SELECT * FROM account WHERE userid=?';
@@ -84,9 +119,7 @@ function check(req, res, next){
         return next();
     }
     jwt.verify(token, config.secret, (err, decoded) => {
-        if(err) {
-            return res.json(err);
-        }
+        if(err) { return res.json(err); }
         let sql = 'SELECT * FROM account WHERE id=? and userid=?';
         conn.query(sql, [decoded.unum, decoded.uid], async (err, data) => {
             if(err) { res.send('예상치 못한 에러가 발생했습니다.'); }
@@ -114,14 +147,15 @@ function checkabout(req, res, next){
         if(err) {
             return res.json(err);
         }
-        let sql = 'SELECT * FROM account WHERE id=? and userid=?';
+        let sql = 'SELECT * FROM subsc WHERE id=? and userid=?';
         conn.query(sql, [decoded.unum, decoded.uid], (err, data) => {
             if(err) { res.send('예상치 못한 에러가 발생했습니다.'); }
-            let user = data[0];
-            if(user.pay1 == 'false') { res.locals.payo = false; }
-            else if(user.pay1 == 'true') { res.locals.payo = true; }
-            if(user.pay2 == 'false') { res.locals.payt = false; }
-            else if(user.pay2 == 'true') { res.locals.payt = true; }
+
+            res.locals.payment = {};
+            let paymentTypes = ["국제 택배 조회", "카카오톡 봇 이용", "둘다 마음껏"];
+            for(let type of paymentTypes) {
+                res.locals.payment[type] = isRegistered(data, type);
+            }
             res.locals.decoded = decoded;
             res.locals.seller = sellercheck(decoded.uid);
             next();
