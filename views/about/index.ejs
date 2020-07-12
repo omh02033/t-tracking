@@ -147,6 +147,18 @@
             .mpayservice label {
                 font-size: 15px;
             }
+            #reff {
+                position: relative;
+                margin-bottom: 245px;
+                font-weight: bold;
+                display: flex;
+                justify-content: center;
+            }
+            #reff1 {
+                position: absolute;
+                transform: translate(-50%, 0);
+                left: 50%;
+            }
         }
         @media only screen and (min-width: 1201px) {
             #mchartdiv {
@@ -275,6 +287,12 @@
             .main .card {
                 width: 472.94px;
             }
+            #reff {
+                margin-bottom: 245px;
+                font-weight: bold;
+                display: flex;
+                justify-content: center;
+            }
         }
         @media only screen and (min-width: 601px) and (max-width: 992px) {
             #mchartdiv {
@@ -317,6 +335,18 @@
             }
             .mpayservice label {
                 font-size: 15px;
+            }
+            #reff {
+                position: relative;
+                margin-bottom: 245px;
+                font-weight: bold;
+                display: flex;
+                justify-content: center;
+            }
+            #reff1 {
+                position: absolute;
+                transform: translate(-50%, 0);
+                left: 50%;
             }
         }
     </style>
@@ -630,8 +660,10 @@
             <div id="reff">
                 <% if(decoded) { %>
                     <% if(payment.pay1 || payment.pay2 || payment.pay3) { %>
-                        <a class="waves-effect waves-light btn purple lighten-3" id="refund" style="margin-right: 20px;">환불</a>
-                        <a class="waves-effect waves-light btn indigo lighten-4" id="backh">환불 규정</a>
+                        <div id="reff1">
+                            <a class="waves-effect waves-light btn purple lighten-3" id="refund" style="margin-right: 20px;">환불</a>
+                            <a class="waves-effect waves-light btn indigo lighten-4" id="backh">환불 규정</a>
+                        </div>
                     <% } else { %>
                         <a id="backh" style="display: none;"></a><a id="refund" style="display: none;"></a>
                     <% } %>

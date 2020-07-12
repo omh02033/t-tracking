@@ -6,10 +6,15 @@
     <title>환불</title>
     <style>
         body{ margin: 0; }
+        tbody { display:grid; }
+        thead {
+            border-bottom: 2px solid darkgray;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <table class="highlight">
+    <table class="striped">
         <thead>
             <tr>
                 <td>고객 이름</td>
@@ -30,20 +35,39 @@
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
                     let data = JSON.parse(xhr.responseText);
-                    for(let i=0; i>data.length; i++) {
+
+                    for(let i=0; i<data.length; i++) {
                         let tr = document.createElement("tr");
 
                         let user_name = document.createElement("td");
                         user_name.innerHTML = data[i].username;
                         
-                        let tool_name = docuoment.createElement("td");
+                        let tool_name = document.createElement("td");
                         tool_name.innerHTML = data[i].kinds;
 
                         let price = document.createElement("td");
-                        price.innerHTML = data[i].price;
+                        price.innerHTML = data[i].price + " 원";
 
                         let refund_pay = document.createElement("td");
-                        refund_pay.innerHTML = data[i].price * (10 / 100);
+                        refund_pay.innerHTML = data[i].price * (90 / 100) + " 원";
+
+                        let rebtn = document.createElement("td");
+                        rebtn.style.width = "100%";
+                        rebtn.style.height = "100%";
+                        let btn = document.createElement("a");
+                        btn.classList.add("waves-effect", "waves-light", "btn");
+                        btn.innerHTML = "환불 하기";
+                        btn.style.width = "100%";
+                        btn.style.height = "100%";
+                        rebtn.append(btn);
+
+                        tr.append(user_name);
+                        tr.append(tool_name);
+                        tr.append(price);
+                        tr.append(refund_pay);
+                        tr.append(rebtn);
+
+                        shpa.append(tr);
                     }
                 }
             }

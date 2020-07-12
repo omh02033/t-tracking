@@ -48,6 +48,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     background-color: white;
+    cursor: pointer;
 }
 .menutap:hover {
     background: linear-gradient(#ff951c, #ea7d00);

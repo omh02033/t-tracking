@@ -52,13 +52,6 @@ router
 
 module.exports = router;
 
-function isRegistered(subscribes, payType) {
-    for(let subscribe of subscribes) {
-        if(subscribe.kinds == payType) return true;
-    }
-    return false;
-}
-
 function bcheck(req, res, next) {
     let token = req.cookies.user;
     if(!token) { res.redirect('/account/login'); }
@@ -111,6 +104,13 @@ function fcheck(req, res, next) {
     });
 }
 
+function isRegistered(subscribes, payType) {
+    for(let subscribe of subscribes) {
+        if(subscribe.toolname == payType) return true;
+    }
+    return false;
+}
+
 function check(req, res, next){
     let token = req.cookies.user;
     if(!token){
@@ -120,12 +120,16 @@ function check(req, res, next){
     }
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) { return res.json(err); }
-        let sql = 'SELECT * FROM account WHERE id=? and userid=?';
+        let sql = 'SELECT * FROM subsc WHERE id=? and userid=?';
         conn.query(sql, [decoded.unum, decoded.uid], async (err, data) => {
             if(err) { res.send('예상치 못한 에러가 발생했습니다.'); }
-            let user = data[0];
-            if(user.pay1 == 'false') { res.locals.payo = false; }
-            else if(user.pay1 == 'true') { res.locals.payo = true; }
+            
+            res.locals.payment = {};
+            let paymentTypes = ["pay1", "pay2", "pay3"];
+            for(let type of paymentTypes) {
+                res.locals.payment[type] = isRegistered(data, type);
+            }
+
             req.decoded = decoded;
             res.locals.decoded = decoded;
             res.locals.seller = await sellercheck(decoded.uid);
@@ -152,7 +156,7 @@ function checkabout(req, res, next){
             if(err) { res.send('예상치 못한 에러가 발생했습니다.'); }
 
             res.locals.payment = {};
-            let paymentTypes = ["국제 택배 조회", "카카오톡 봇 이용", "둘다 마음껏"];
+            let paymentTypes = ["pay1", "pay2", "pay3"];
             for(let type of paymentTypes) {
                 res.locals.payment[type] = isRegistered(data, type);
             }

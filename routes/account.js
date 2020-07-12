@@ -411,20 +411,21 @@ router
                                 let end = date.format("YYYYMMDD");
 
                                 if(_response.data.name == "국제 택배 조회" && _response.data.price == 1200) {
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, _response.data.price, now, end, now], (err, rows, fields) => {
+                                    console.log(_response.data.name);
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
                                 } else if(_response.data.name == "카카오톡 봇 이용" && _response.data.price == 1500) {
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, _response.data.price, now, end, now], (err, rows, fields) => {
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay2', _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
                                 } else if(_response.data.name == "둘다 마음껏" && _response.data.price == 2500) {
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, _response.data.price, now, end, now], (err, rows, fields) => {
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay3', _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
