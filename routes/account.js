@@ -10,9 +10,9 @@ const BootpayRest = require('bootpay-rest-client');
 const moment = require('moment');
 
 let conn = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '',
+    host : process.DATABASE_HOST,
+    user : process.DATABASE_USER,
+    password : process.DATABASE_PASSWORD,
     database : 'delivery'
 });
 conn.connect();

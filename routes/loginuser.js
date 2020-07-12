@@ -7,9 +7,9 @@ const config = require('../config/jwt');
 
 
 let conn = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '',
+    host : process.DATABASE_HOST,
+    user : process.DATABASE_USER,
+    password : process.DATABASE_PASSWORD,
     database : 'delivery'
 });
 conn.connect();
