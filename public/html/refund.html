@@ -6,7 +6,6 @@
     <title>환불</title>
     <style>
         body{ margin: 0; }
-        tbody { display:grid; }
         thead {
             border-bottom: 2px solid darkgray;
             font-weight: bold;
@@ -17,11 +16,11 @@
     <table class="striped">
         <thead>
             <tr>
-                <td>고객 이름</td>
-                <td>상품 이름</td>
-                <td>전액</td>
-                <td>환불금액</td>
-                <td>환불</td>
+                <th>고객 이름</th>
+                <th>상품 이름</th>
+                <th>전액</th>
+                <th>환불금액</th>
+                <th>환불</th>
             </tr>
         </thead>
         <tbody id="shpa"></tbody>
@@ -52,13 +51,9 @@
                         refund_pay.innerHTML = data[i].price * (90 / 100) + " 원";
 
                         let rebtn = document.createElement("td");
-                        rebtn.style.width = "100%";
-                        rebtn.style.height = "100%";
                         let btn = document.createElement("a");
                         btn.classList.add("waves-effect", "waves-light", "btn");
                         btn.innerHTML = "환불 하기";
-                        btn.style.width = "100%";
-                        btn.style.height = "100%";
                         rebtn.append(btn);
 
                         tr.append(user_name);

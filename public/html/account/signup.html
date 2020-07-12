@@ -314,8 +314,8 @@
                             <h4>전화번호</h4>
                             <input type="text" name="phonenum" id="muphone" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
                             <span class="checkphone"></span>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="msign35"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="mback35"><i class="material-icons left">navigate_before</i>이전</a>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign35"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback35"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                         <div id="msemail" style="display: none;">
                             <h4>이메일</h4>
@@ -478,7 +478,7 @@
                 idInfo = { id: uid.value }
             } else if(device == 'm') { idInfo = { id: muid.value } }
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', '/account/overlap/id');
+            xhr.open('POST', '/account/signup/overlap/id');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -520,7 +520,7 @@
                 phoneInfo = { phone: uphone.value }
             } else if(device == 'm') { phoneInfo = { phone: muphone.value } }
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', '/account/overlap/phone');
+            xhr.open('POST', '/account/signup/overlap/phone');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
@@ -1002,7 +1002,7 @@
                     alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
                     echeck = true;
                     let xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/account/signup/emailcheck');
+                    xhr.open('POST', '/account/signup/overlap/email');
                     xhr.setRequestHeader('Content-Type', 'application/json');
                     xhr.onreadystatechange = function () {
                         if(xhr.readyState === 4 && xhr.status === 200) {

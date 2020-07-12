@@ -1174,6 +1174,8 @@
             xhr.onreadystatechange = () => {
                 let data = JSON.parse(xhr.responseText);
                 if(xhr.status === 200 && xhr.readyState === 4) {
+                    jcodesubmit.disabled = false;
+                    mjcodesubmit.disabled = false;
                     loadingScreen.classList.remove('emphasized');
                     loadingScreen.style.display = "none";
                     if(data.msg) { alert(data.msg); }

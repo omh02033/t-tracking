@@ -10,9 +10,9 @@ const BootpayRest = require('bootpay-rest-client');
 const moment = require('moment');
 
 let conn = mysql.createConnection({
-    host : process.env.DATABASE_HOST,
-    user : process.env.DATABASE_USER,
-    password : process.env.DATABASE_PASSWORD,
+    host : 'localhost',
+    user : 'root',
+    password : '',
     database : 'delivery'
 });
 conn.connect();
@@ -148,7 +148,7 @@ router
     })
 })
 
-.post('/overlap/id/', (req, res) => {
+.post('/signup/overlap/id/', (req, res) => {
     let uid = req.body.id;
     let sql = 'SELECT * FROM account WHERE userid=?';
     conn.query(sql, [uid], (err, rows, fields) => {
@@ -173,7 +173,7 @@ router
     });
 })
 
-.post('/overlap/phone/', (req, res) => {
+.post('/signup/overlap/phone/', (req, res) => {
     let uphone = req.body.phone;
     let sql = 'SELECT * FROM account WHERE phone=?';
     conn.query(sql, [uphone], (err, data) => {
@@ -412,21 +412,21 @@ router
 
                                 if(_response.data.name == "국제 택배 조회" && _response.data.price == 1200) {
                                     console.log(_response.data.name);
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
                                     conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now], (err, rows, fields) => {
-                                        if(err) { res.status(400).json({ buySu: false }); }
+                                        if(err) { return res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
                                 } else if(_response.data.name == "카카오톡 봇 이용" && _response.data.price == 1500) {
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
                                     conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay2', _response.data.price, now, end, now], (err, rows, fields) => {
-                                        if(err) { res.status(400).json({ buySu: false }); }
+                                        if(err) { return res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
                                 } else if(_response.data.name == "둘다 마음껏" && _response.data.price == 2500) {
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
                                     conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay3', _response.data.price, now, end, now], (err, rows, fields) => {
-                                        if(err) { res.status(400).json({ buySu: false }); }
+                                        if(err) { return res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
                                 }
