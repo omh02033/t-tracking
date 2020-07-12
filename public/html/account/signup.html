@@ -502,6 +502,8 @@
                         } else if(!mnowid == '' && nowid == '') {
                             msid.style.display = "none";
                             mspass.style.display = "block";
+                            let s = document.querySelector(".s");
+                            s.classList.add('st');
                         } else { alert("아이디를 입력해주세요."); }
                     } else {
                         for(let i=0; i<idcheckspan.length; i++) {
