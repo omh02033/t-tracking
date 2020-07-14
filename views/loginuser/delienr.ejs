@@ -195,7 +195,7 @@
                 <div class="wel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="profileImg">
+                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -225,7 +225,7 @@
                 <div class="mwel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="mprofileImg">
+                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>

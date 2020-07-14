@@ -713,7 +713,7 @@
                 <div class="mwel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="../images/userProfile/<%=decoded.unum%>" onerror="this.src='../images/userProfile/none.png';" class="mprofileImg">
+                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -823,27 +823,27 @@
                 <div class="info-back">
                     <div class="info-back-line"></div>
                     <div class="text-center">
-                        <img src="../images/level1.png" alt="" class="l1">
+                        <img src="/images/level1.png" alt="" class="l1">
                         <div class="info-text"><span>배송준비중</span></div>
                     </div>
                     <div class="text-center">
-                        <img src="../images/level2.png" alt="" class="l2">
+                        <img src="/images/level2.png" alt="" class="l2">
                         <div class="info-text"><span>상품인수</span></div>
                     </div>
                     <div class="text-center">
-                        <img src="../images/level3.png" alt="" class="l3">
+                        <img src="/images/level3.png" alt="" class="l3">
                         <div class="info-text"><span>상품이동중</span></div>
                     </div>
                     <div class="text-center">
-                        <img src="../images/level4.png" alt="" class="l4">
+                        <img src="/images/level4.png" alt="" class="l4">
                         <div class="info-text"><span>배송지도착</span></div>
                     </div>
                     <div class="text-center">
-                        <img src="../images/level5.png" alt="" class="l5">
+                        <img src="/images/level5.png" alt="" class="l5">
                         <div class="info-text"><span>배송출발</span></div>
                     </div>
                     <div class="text-center">
-                        <img src="../images/level6.png" alt="" class="l6">
+                        <img src="/images/level6.png" alt="" class="l6">
                         <div class="info-text"><span>배송완료</span></div>
                     </div>
                 </div>
@@ -989,8 +989,8 @@
         </div>
     </div>
     <div id="mproselectd"></div>
-    <div class="loading emphasized"><div class="loadingif"><img src="../images/loading.gif" alt="" style="position: absolute; transform: translate(-50%, -50%); left: 50%; max-width: 80px; height:80px; box-shadow: none !important;"></div><span style="position:absolute; bottom:0; color: white; width: 100%; text-align: center;">잠시만 기다려주세요..</span></div>
-    <script src="/../javascripts/menu.js"></script>
+    <div class="loading emphasized"><div class="loadingif"><img src="/images/loading.gif" alt="" style="position: absolute; transform: translate(-50%, -50%); left: 50%; max-width: 80px; height:80px; box-shadow: none !important;"></div><span style="position:absolute; bottom:0; color: white; width: 100%; text-align: center;">잠시만 기다려주세요..</span></div>
+    <script src="/javascripts/menu.js"></script>
     <script>
         let jcodesubmit = document.getElementById("jcodesubmit");
         let jcode = document.getElementById("jcode");
