@@ -281,7 +281,7 @@
             <div class="profile">
                 <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" id="userprofile">
                 <div class="filebox">
-                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data">
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="cpro(event, this);">
                         <input class="upload-name" value="이미지 파일선택" disabled="disabled">
                         <label for="ex_filename">선택</label>
                         <input type="file" name="proImage" id="ex_filename" class="upload-hidden" accept="image/png, image/jpg, image/jpeg" onchange="excelExport(event); filecheck(this);">
@@ -397,6 +397,24 @@
                     }
                 }, 1);
             }
+        }
+
+        function cpro(e, form) {
+            e.preventDefault();
+
+            let formData = new FormData(form);
+            let foo;
+            foo = formData;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/profileUpload/');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.result == 'success') { location.replace(location.href); }
+                }
+            }
+            xhr.send(foo);
         }
 
         function filecheck(file) {

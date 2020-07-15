@@ -64,7 +64,6 @@ function gprofileSub(e, form) {
 
     let formData = new FormData(form);
     let foo;
-    console.log(formData);
     foo = formData;
 
     let xhr = new XMLHttpRequest();
