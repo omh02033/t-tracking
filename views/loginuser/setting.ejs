@@ -281,7 +281,7 @@
             <div class="profile">
                 <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" id="userprofile">
                 <div class="filebox">
-                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="cpro(event, this);">
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
                         <input class="upload-name" value="이미지 파일선택" disabled="disabled">
                         <label for="ex_filename">선택</label>
                         <input type="file" name="proImage" id="ex_filename" class="upload-hidden" accept="image/png, image/jpg, image/jpeg" onchange="excelExport(event); filecheck(this);">
