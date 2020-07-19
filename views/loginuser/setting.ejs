@@ -53,14 +53,6 @@
         .main1 h4 { font-size: 20px; }
         #show table tr:first-child td:first-child { width: 33.33333%; }
         #show table tr:first-child td:last-child { width: 66.66667%; }
-        #chdate {
-            margin-left: 50px;
-            width: fit-content;
-            height: 25px;
-            padding: 2px;
-            display: inline-block !important;
-            background-color: rgba(239,150,25,0.3);
-        }
         .profile {
             width: fit-content;
             height: 100px;
@@ -127,6 +119,7 @@
             margin-right: 8px;
             cursor: pointer;
         }
+        #show table { margin: auto; }
         @media only screen and (max-width: 600px) {
             .changepass, .changepassh {
                 margin: 100%;
@@ -337,6 +330,7 @@
         <div id="proselect">
             <div id="toppro">
                 <% if(decoded) { %>
+                    <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
                     <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
                 <% } else { %>
                     <i class="far fa-user" style="font-size: 35px;"></i>
@@ -359,14 +353,13 @@
     </div>
     <script src="/javascripts/menu.js"></script>
     <script>
-        let chdate = document.getElementById("chdate");
-
         let changepass = document.querySelector(".changepass");
         let changepassh = document.querySelector(".changepassh");
 
         let newpass = document.getElementById("newpass");
         let passcon = document.getElementById("passcon");
 
+        let proselect = document.getElementById("proselect");
         let userprofile = document.getElementById("userprofile");
         let ex_filename = document.getElementById("ex_filename");
 
@@ -378,25 +371,18 @@
         let path = location.href.substring(pathpoint+1, location.href.length);
         let type = path.toLowerCase();
 
-        userprofile.onclick = () => {
+        function shpr() {
             if(!setoggle) {
                 setoggle = true;
-                let w = 10;
-                let h = 10;
                 proselectd.style.display = "flex";
-                proselectd.style.justifyContent = "center";
-                proselectd.style.alignItems = "center";
-                let width = setInterval(() => {
-                    if(w > 100 && h > 100) {
-                        clearInterval(width);
-                    } else {
-                        proselect.style.width = `${w}%`;
-                        proselect.style.height = `${h}%`;
-                        w += 5;
-                        h += 5;
-                    }
-                }, 1);
+                proselect.classList.remove("psc");
+                proselect.classList.remove("pso");
+                proselect.classList.add("pso");
             }
+        }
+
+        userprofile.onclick = () => {
+            shpr();
         }
 
         function cpro(e, form) {

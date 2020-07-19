@@ -68,20 +68,21 @@
         .main1 h4 { font-size: 20px; }
         #show table tr:first-child td:first-child, #ing table tr:first-child td:first-child { width: 33.33333%; }
         #show table tr:first-child td:last-child, #ing table tr:first-child td:last-child { width: 66.66667%; }
+        
         #chdate {
             margin-left: 50px;
             width: fit-content;
             height: 25px;
             padding: 2px;
             display: inline-block !important;
-            background-color: rgba(239,150,25,0.3);
+            background-color: rgba(155, 155, 155, 0.3);
         }
         #si {
             width: fit-content;
             height: 25px;
             padding: 2px;
             display: inline-block !important;
-            background-color: rgba(239,150,25,0.3);
+            background-color: rgba(155, 155, 155, 0.3);
             position: absolute;
             transform: translate(-50%, -50%);
             left: 50%;
@@ -265,6 +266,7 @@
         <div id="proselect">
             <div id="toppro">
                 <% if(decoded) { %>
+                    <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
                     <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
                 <% } else { %>
                     <i class="far fa-user" style="font-size: 35px;"></i>

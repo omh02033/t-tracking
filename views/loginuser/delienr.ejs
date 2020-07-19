@@ -282,6 +282,7 @@
         <div id="proselect">
             <div id="toppro">
                 <% if(decoded) { %>
+                    <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
                     <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
                 <% } else { %>
                     <i class="far fa-user" style="font-size: 35px;"></i>

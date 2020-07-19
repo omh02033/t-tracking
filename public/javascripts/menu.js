@@ -34,16 +34,16 @@ originalPro.onclick = () => {
 closeselect.onclick = () => {
     setoggle = false;
     proselect.classList.remove("pso");
+    proselect.classList.remove("psc");
     proselect.classList.add("psc");
     let dis = setTimeout(() => {
         proselectd.style.display = "none";
-        toggle = true;
         clearTimeout(dis);
     }, 370);
 }
 
-profileImg.onclick = () => { shopro('c'); }
-mprofileImg.onclick = () => { shopro('m'); }
+profileImg.onclick = () => { toggle = false; shopro('c'); }
+mprofileImg.onclick = () => { mtoggle = false; shopro('m'); }
 
 function prochfilecheck(file) {
     let pathpoint = file.value.lastIndexOf('.');
@@ -82,12 +82,15 @@ function shopro(device) {
         toggle = false;
         menu.classList.remove("menuo");
         main1.classList.remove("menuo1");
+        menu.classList.remove("menuc");
+        main1.classList.remove("menuc1");
         menu.classList.add("menuc");
         main1.classList.add("menuc1");
     } else if(device == 'm') {
         if(mtoggle) {
             mtoggle = false;
             mmenu.classList.remove("mmenuo");
+            mmenu.classList.remove("mmenuc");
             mmenu.classList.add("mmenuc");
         }
     }
@@ -95,6 +98,7 @@ function shopro(device) {
         setoggle = true;
         proselectd.style.display = "flex";
         proselect.classList.remove("psc");
+        proselect.classList.remove("pso");
         proselect.classList.add("pso");
     }
 }
@@ -118,10 +122,12 @@ mmenuBar.onclick = () => {
     if(mtoggle) {
         mtoggle = false;
         mmenu.classList.remove("mmenuo");
+        mmenu.classList.remove("mmenuc");
         mmenu.classList.add("mmenuc");
     } else {
         mtoggle = true;
         mmenu.classList.remove("mmenuc");
+        mmenu.classList.remove("mmenuo");
         mmenu.classList.add("mmenuo");
     }
 }

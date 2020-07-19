@@ -99,6 +99,7 @@
             margin-bottom: 180px;
         }
         a { cursor: pointer; }
+        .payservice .btn, .mpayservice .btn { background-color: rgb(85, 109, 173); }
         @keyframes ser1 {0%{background-color: rgba(168,255,255,0.0);} 100%{background-color: rgba(168,255,255,0.4);}}
         @keyframes ser2 {0%{background-color: rgba(255,192,203,0.0);} 100%{background-color: rgba(255,192,203,0.4);}}
         @keyframes ser3 {0%{background-color: rgba(250,123,220,0.0);} 100%{background-color: rgba(220,93,220,0.2);}}
@@ -726,6 +727,7 @@
         <div id="proselect">
             <div id="toppro">
                 <% if(decoded) { %>
+                    <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
                     <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
                 <% } else { %>
                     <i class="far fa-user" style="font-size: 35px;"></i>
