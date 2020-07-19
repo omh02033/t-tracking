@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "env NODE_ENV=production node app.js",
-    "start-dev": "env NODE_ENV=development node app.js"
+    "start-dev": "env NODE_ENV=development supervisor app.js"
   },
   "dependencies": {
     "axios": "^0.19.2",

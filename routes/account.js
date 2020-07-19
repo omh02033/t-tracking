@@ -402,8 +402,21 @@ router
                         if(_response.status === 200) {
                             if(_response.data.receipt_id == req.body.data.receipt_id && _response.data.price == req.body.data.price) {
                                 let sq = 'INSERT INTO payment (`id`, `toolname`, `pay`, `card_name`, `card_no`, `n`, `receipt_id`, `purchased_at`, `status`, `pg`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                conn.query(sq, [decoded.unum, _response.data.name, _response.data.price, _response.data.payment_data.card_name, _response.data.payment_data.card_no, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
-                                
+                                let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+                                let cn = _response.data.payment_data.card_no;
+                                let cn1 = cn.substring(0, 4);
+                                let cn2 = cn.substring(4, 8);
+                                let cn3 = cn.substring(8, 12);
+                                let cn4 = cn.substring(12, cn.length);
+
+                                if(cn1 == '0000') { cn1 = "****"; }
+                                if(cn2 == '0000') { cn2 = "****"; }
+                                if(cn3 == '0000') { cn3 = "****"; }
+                                if(cn4 == '0000') { cn4 = "****"; }
+
+                                let card_number = cn1 + "-" + cn2 + "-" + cn3 + "-" + cn4;
+
                                 let date = moment();
                                 let now = date.format("YYYYMMDD");
 
@@ -411,20 +424,19 @@ router
                                 let end = date.format("YYYYMMDD");
 
                                 if(_response.data.name == "국제 택배 조회" && _response.data.price == 1200) {
-                                    console.log(_response.data.name);
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sq, [decoded.unum, 'pay1', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
                                     conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { return res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
                                 } else if(_response.data.name == "카카오톡 봇 이용" && _response.data.price == 1500) {
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sq, [decoded.unum, 'pay2', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
                                     conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay2', _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { return res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
                                     });
                                 } else if(_response.data.name == "둘다 마음껏" && _response.data.price == 2500) {
-                                    let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                    conn.query(sq, [decoded.unum, 'pay3', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
                                     conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay3', _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { return res.status(400).json({ buySu: false }); }
                                         res.status(200).json({ buySu: true });
@@ -436,7 +448,116 @@ router
                 }
             });
         });
-    } 
+    }
+})
+
+.post('/refund/cardcheck/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/account/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { return res.status(400).json({ msg: '에러가 발생했습니다..' }); }
+            let sql = 'SELECT * FROM payment WHERE id=? AND toolname=?';
+            conn.query(sql, [decoded.unum, req.body.toolname], (err, data) => {
+                if(err) { return res.status(400).json({msg: '확인도중 에러가 발생했습니다..'}); }
+                if(data.length == 0){
+                    res.status(400).json({msg: '존재하지 않은 데이터입니다.'});
+                } else{
+                    let info = data[0];
+                    res.status(200).json({ cardno: info.card_no });
+                }
+            });
+        });
+    }
+})
+
+.post('/refund/try/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/accountn/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { return res.status(400).json({ msg: '에러가 발생했습니다..' }); }
+            let sql = 'SELECT * FROM payment WHERE id=? AND toolname=?';
+            conn.query(sql, [decoded.unum, req.body.toolname], (err, data) => {
+                if(err) { return res.status(400).json({ msg: '확인도중 에러가 발생했습니다..' }); }
+                let info = data[0];
+                BootpayRest.setConfig(
+                    "5ef815974f74b40021f2b98c",
+                    "9VV9mQE4zOv+NdtKirEDIDFqAqY9ZZXcpES9UCBRWxE="
+                );
+                
+                BootpayRest.getAccessToken().then(function (token) {
+                    if (token.status === 200) {
+                        // req.body.refund_pay
+                        BootpayRest.cancel(info.receipt_id, 1200, req.body.username, '고객의 환불 요청').then(function (response) {
+                            if (response.status === 200) {
+                                let sql = 'DELETE FROM payment WHERE id=? AND toolname=?';
+                                conn.query(sql, [decoded.unum, req.body.toolname], (err, data) => {
+                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                                });
+                                let sq = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
+                                conn.query(sq, [decoded.unum, req.body.toolname, req.body.userid], (err, data) => {
+                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                                });
+                                // TODO: 결제 취소에 관련된 로직을 수행하시면 됩니다.
+                                res.status(200).json({ msg: "결제최소가 완료되었습니다." });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    }
+})
+
+.post('/finishcheck/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/account/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { return res.status(400).json({ msg: '에러가 발생했습니다..' }); }
+            let sql = 'SELECT * FROM subsc WHERE id=? AND toolname=?';
+            if(req.body.kind == 'pay1' || req.body.kind == 'pay2') {
+                conn.query(sql, [decoded.unum, req.body.kind], (err, data) => {
+                    if(err) { return res.status(400).json({ msg: '데이터 확인하는 도중 에러가 발생했습니다..' }); }
+                    if(data.length == 0) {
+                        conn.query(sql, [decoded.unum, 'pay3'], (err, data1) => {
+                            if(err) { return res.status(400).json({ msg: '데이터 확인하는 도중 에러가 발생했습니다..' }); }
+                            if(data1.length == 0) { res.status(400).json({ msg: '존재하지 않은 데이터 입니다..' }); }
+                            else { res.status(200).json({ value: data1[0].end_at }); }
+                        });
+                    } else {
+                        let info = data[0];
+                        res.status(200).json({ value: info.end_at });
+                    }
+                });
+            } else if(req.body.kind == 'pay3') {
+                conn.query(sql, [decoded.unum, req.body.kind], (err, data) => {
+                    if(err) { return res.status(400).json({ msg: '데이터 확인하는 도중 에러가 발생했습니다..' }); }
+                    if(data.length == 0) {
+                        conn.query(sql, [decoded.unum, 'pay1'], (err, data1) => {
+                            if(err) { return res.status(400).json({ msg: '데이터 확인하는 도중 에러가 발생했습니다..' }); }
+                            if(data1.length == 0) { res.status(400).json({ msg: '뭔가 이상한 값입니다..' }); }
+                            else {
+                                let pay1ec = data1[0].end_at;
+                                conn.query(sql, [decoded.unum, 'pay2'], (err, data2) => {
+                                    if(err) { return res.status(400).json({ msg: '데이터 확인하는 도중 에러가 발생했습니다..' }); }
+                                    if(data2.length == 0) { res.status(400).json({ msg: '데이터 확인하는 도중 에러가 발생했습니다..' }); }
+                                    else {
+                                        let pay2ec = data2[0].end_at;
+                                        res.status(200).json({ pay1ec, pay2ec });
+                                    }
+                                })
+                            }
+                        });
+                    } else {
+                        let info = data[0];
+                        res.status(200).json({ value: info.end_at });
+                    }
+                });
+            }
+        });
+    }
 })
 
 module.exports = router;

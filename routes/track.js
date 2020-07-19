@@ -411,7 +411,7 @@ router
 .post('/recordcheck/del/', (req, res) => {
     let sql = 'DELETE FROM delirecord WHERE id=? and denum=?';
     conn.query(sql, [req.body.id, req.body.denum], (err, data) => {
-        if(err) { res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+        if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
         res.status(200).json({ result: 'success' });
     })
 })

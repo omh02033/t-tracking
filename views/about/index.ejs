@@ -567,7 +567,7 @@
                         <label style="margin-bottom: 30px;">해외에 있을때는<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
                         <% if(decoded) { %>
                             <% if(payment.pay1 || payment.pay3) { %>
-                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <a class="waves-effect waves-light btn grey" onclick="Fclock('pay1');"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="ser1button" style="display: none;"></div>
                             <% } else { %>
                                 <a class="waves-effect waves-light btn" id="ser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
@@ -583,7 +583,7 @@
                         <label style="margin-bottom: 30px;">직접 웹에 들어오지 않아도<br>배송완료 알림, 조회, 기록등을<br>카톡 봇으로 조회해보세요!</label>
                         <% if (decoded) { %>
                             <% if(payment.pay2 || payment.pay3) { %>
-                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <a class="waves-effect waves-light btn grey" onclick="Fclock('pay2');"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="ser2button" style="display: none;"></div>
                             <% } else { %>
                                 <a class="waves-effect waves-light btn" id="ser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1500</a>
@@ -599,7 +599,7 @@
                         <label style="margin-bottom: 30px;">더 많은 택배 조회를 하면서도<br>카톡으로 모든 기능 이용까지 !<br>더더욱 많고 편한 조회를 !</label>
                         <% if(decoded) { %>
                             <% if(payment.pay3 || (payment.pay1 && payment.pay2)) { %>
-                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <a class="waves-effect waves-light btn grey" onclick="Fclock('pay3');"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="ser3button" style="display: none;"></div>
                             <% } else { %>
                                 <a class="waves-effect waves-light btn" id="ser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2500</a>
@@ -617,7 +617,7 @@
                         <label style="margin-bottom: 30px; display: block;">해외에 있어, 택배가 걱정이라면<br>국제택배 조회 서비스를<br>이용 해보세요 !</label>
                         <% if(decoded) { %>
                             <% if(payment.pay1 || payment.pay3) { %>
-                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <a class="waves-effect waves-light btn grey" onclick="Fclock('pay1');"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="mser1button" style="display: none;"></div>
                             <% } else { %>
                                 <a class="waves-effect waves-light btn" id="mser1button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1200</a>
@@ -632,7 +632,7 @@
                         <label style="margin-bottom: 30px; display: block;">직접 웹에 들어오지 않아도<br>배송상태 알림, 조회, 기록등을<br>카카오톡 봇으로 확인해보세요 !</label>
                         <% if(decoded) { %>
                             <% if(payment.pay2 || payment.pay3) { %>
-                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <a class="waves-effect waves-light btn grey" onclick="Fclock('pay2');"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="mser2button" style="display: none;"></div>
                             <% } else { %>
                                 <a class="waves-effect waves-light btn" id="mser2button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>1500</a>
@@ -647,7 +647,7 @@
                         <label style="margin-bottom: 30px; display: block;">더 많은 택배 조회를 하면서도<br>카톡으로 모든 기능 이용까지 !<br>더더욱 많고 편한 조회를 !</label>
                         <% if(decoded) { %>
                             <% if(payment.pay3 || (payment.pay1 && payment.pay2)) { %>
-                                <a class="waves-effect waves-light btn grey"><i class="material-icons right">check</i>구매완료</a>
+                                <a class="waves-effect waves-light btn grey" onclick="Fclock('pay3');"><i class="material-icons right">check</i>구매완료</a>
                                 <div id="mser3button" style="display: none;"></div>
                                 <% } else { %>
                                 <a class="waves-effect waves-light btn" id="mser3button"><i class="material-icons right"><i class="fas fa-won-sign"></i></i>2500</a>
@@ -798,6 +798,55 @@
             
             mchart.cursor = new am4charts.XYCursor();
             return mchart;
+        }
+
+        function Fclock(kind) {
+            let kindInfo = { kind };
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/finishcheck/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                let data = JSON.parse(xhr.responseText);
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    if(kind == 'pay1' || kind == 'pay2') {
+                        let val = data.value;
+                        let val1 = val.substring(0, 4);
+                        let val2 = val.substring(4, 6);
+                        let val3 = val.substring(6, val.length);
+                        let valf = val1 + "년 " + val2 + "월 " + val3 + "일";
+
+                        alert("만료 시간 : " + valf);
+                    }
+                    else {
+                        if(data.value) {
+                            let val = data.value;
+                            let val1 = val.substring(0, 4);
+                            let val2 = val.substring(4, 6);
+                            let val3 = val.substring(6, val.length);
+                            let valf = val1 + "년 " + val2 + "월 " + val3 + "일";
+
+                            alert("만료 시간" + valf);
+                        } else {
+                            let p1ec = data.pay1ec;
+                            let p1ec1 = p1ec.substring(0, 4);
+                            let p1ec2 = p1ec.substring(4, 6);
+                            let p1ec3 = p1ec.substring(6, p1ec.length);
+                            let p1ecf = p1ec1 + "년 " + p1ec2 + "월 " + p1ec3 + "일";
+
+                            let p2ec = data.pay2ec;
+                            let p2ec1 = p2ec.substring(0, 4);
+                            let p2ec2 = p2ec.substring(4, 6);
+                            let p2ec3 = p2ec.substring(6, p2ec.length);
+                            let p2ecf = p2ec1 + "년 " + p2ec2 + "월 " + p2ec3 + "일";
+
+                            alert('국제 택배 조회 만료시간 : ' + p1ecf + '\n카카오톡 봇 이용 만료시간 : ' + p2ecf);
+                        }
+                    }
+                } else if(xhr.status === 400) {
+                    alert(data.msg);
+                }
+            }
+            xhr.send(JSON.stringify(kindInfo));
         }
 
         let info = { app: 'apploval' }

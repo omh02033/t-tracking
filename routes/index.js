@@ -41,13 +41,67 @@ router
     if(!token) { res.json({err: 'NO Token'}); }
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) throw err;
-        let sql = 'SELECT * FROM subsc WHERE id=? and userid=?';
+        let sql = 'SELECT * FROM subsc WHERE id=? and userid=? ORDER BY `toolname` ASC LIMIT 1000;';
         conn.query(sql, [decoded.unum, decoded.uid], (err, data) => {
             if(err) { res.status(400).json({ err: '예상치 못한 에러가 발생했습니다.' }); }
             if(data.length == 0) { res.send("유료서비스를 먼저 구매해주세요!"); }
             res.status(200).json(data);
         });
     });
+})
+
+.post('/refund/cardcheck/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/account/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { return res.status(400).json({ msg: '에러가 발생했습니다..' }); }
+            let sql = 'SELECT * FROM payment WHERE id=? AND toolname=?';
+            conn.query(sql, [decoded.uid, req.body.toolname], (err, data) => {
+                if(err) { return res.status(400).json({msg: '확인도중 에러가 발생했습니다..'}); }
+                let info = data[0];
+                res.status(200).json({ cardno: info.card_no });
+            });
+        });
+    }
+})
+
+.post('/refund/try/', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) { res.redirect('/accountn/login/'); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { return res.status(400).json({ msg: '에러가 발생했습니다..' }); }
+            let sql = 'SELECT * FROM payment WHERE id=? AND toolname=?';
+            conn.query(sql, [decoded.uid, req.body.toolname], (err, data) => {
+                if(err) { return res.status(400).json({ msg: '확인도중 에러가 발생했습니다..' }); }
+                let info = data[0];
+                BootpayRest.setConfig(
+                    "5ef815974f74b40021f2b98c",
+                    "9VV9mQE4zOv+NdtKirEDIDFqAqY9ZZXcpES9UCBRWxE="
+                );
+                
+                BootpayRest.getAccessToken().then(function (token) {
+                    if (token.status === 200) {
+                        BootpayRest.cancel(info.receipt_id, req.body.refund_pay, req.body.username, '').then(function (response) {
+                            if (response.status === 200) {
+                                let sql = 'DELETE FROM payment WHERE id=? AND toolname=?';
+                                conn.query(sql, [decoded.uid, req.body.toolname], (err, data) => {
+                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                                });
+                                let sq = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
+                                conn.query(sq, [decoded.uid, req.body.toolname, req.body.userid], (err, data) => {
+                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                                });
+                                // TODO: 결제 취소에 관련된 로직을 수행하시면 됩니다.
+                                res.status(200).json({ msg: "결제최소가 완료되었습니다." });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    }
 })
 
 module.exports = router;
