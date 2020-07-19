@@ -488,8 +488,7 @@ router
                 
                 BootpayRest.getAccessToken().then(function (token) {
                     if (token.status === 200) {
-                        // req.body.refund_pay
-                        BootpayRest.cancel(info.receipt_id, 1200, req.body.username, '고객의 환불 요청').then(function (response) {
+                        BootpayRest.cancel(info.receipt_id, Number(req.body.refund_pay), req.body.username, '고객의 환불 요청').then(function (response) {
                             if (response.status === 200) {
                                 let sql = 'DELETE FROM payment WHERE id=? AND toolname=?';
                                 conn.query(sql, [decoded.unum, req.body.toolname], (err, data) => {
