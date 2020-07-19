@@ -323,10 +323,10 @@
                         location.replace('/loginuser/searchrecord');
                     } else if(data.result == "fail") {
                         alert(data.msg);
-                        uid.style.borderBottom = "3px solid red";
-                        upass.style.borderBottom = "3px solid red";
-                        muid.style.borderBottom = "3px solid red";
-                        mupass.style.borderBottom = "3px solid red";
+                        uid.style.borderBottomColor = "red";
+                        upass.style.borderBottomColor = "red";
+                        muid.style.borderBottomColor = "red";
+                        mpass.style.borderBottomColor = "red";
                         upass.value = "";
                         mupass.value = "";
                     } else {
