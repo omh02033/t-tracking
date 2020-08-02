@@ -164,7 +164,7 @@ function sm(email, res, uid, code) {
         from: 'sansogknnamu52@naver.com',
         to: email,
         subject: '통합 택배 조회 서비스 이메일 계정 본인확인',
-        html: `<h2>통합 택배 조회 서비스</h2>` + `<h3>회원가입</h3>` + `<h4>이메일 인증</h4>` + `<input type="button" value="인증 하기" onclick="window.open('` + `https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}` + `', '', 'width=650,height=400,scrollbar=yes,top=150,left=150')" style="width: 200px; height: 20px; font-weight: bold; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff;">`
+        html: `<h1 style="text-align: center; font-weight: bold; color: orange;">통합 택배 조회 서비스</h1>` + `<h2 style="text-align: center; font-weight: bold;">회원가입</h2>` + `<h3 style="text-align: center;">이메일 인증</h3>` + `<input type="button" value="인증 하기" onclick="window.open('` + `https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}` + `', '', 'width=650,height=400,scrollbar=yes,top=150,left=150')" style="margin: 0; width: 200px; height: 50px; font-weight: bold; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff;">`
     }
 
     transporter.sendMail(mailOptions, (err, info) => {

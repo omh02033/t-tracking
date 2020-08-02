@@ -744,6 +744,12 @@
                                         waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
                                         waitemail[i].style.color = "red";
                                     }
+                                } else if(data.errmsg) {
+                                    alert(data.errmsg);
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "예상치 못한 에러가 발생했습니다.";
+                                        waitemail[i].style.color = "red";
+                                    }
                                 }
                             }
                         }
@@ -795,7 +801,13 @@
                                         waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
                                         waitemail[i].style.color = "red";
                                     }
-                                } else if(data.errmsg) { alert(data.errmsg); }
+                                } else if(data.errmsg) {
+                                    alert(data.errmsg);
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "예상치 못한 에러가 발생했습니다.";
+                                        waitemail[i].style.color = "red";
+                                    }
+                                }
                             }
                             xhr.send(JSON.stringify(userInfo));
                         }
@@ -936,6 +948,12 @@
                                     console.log(data.msg);
                                     for(let i=0; i<waitemail.length; i++) {
                                         waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                        waitemail[i].style.color = "red";
+                                    }
+                                } else if(data.errmsg) {
+                                    alert(data.errmsg);
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "예상치 못한 에러가 발생했습니다.";
                                         waitemail[i].style.color = "red";
                                     }
                                 }
