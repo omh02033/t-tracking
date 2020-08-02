@@ -280,6 +280,15 @@ router
                 randomString += chars.substring(rnum, rnum+1);
             }
 
+            console.log(req.body.uid);
+            console.log(SHA256(req.body.uid));
+            console.log(SHA256(req.body.upass + randomString));
+            console.log(randomString);
+            console.log(req.body.uphone);
+            console.log(req.body.uemail);
+            console.log(req.body.seller);
+            console.log(code);
+
             let sql1 = 'INSERT INTO Signing (`originalid`, `userid`, `userpass`, `password_salt`, `phone`, `email`, `seller`, `code`, `result`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
             conn.query(sql1, [req.body.uid, SHA256(req.body.uid), SHA256(req.body.upass + randomString), randomString, req.body.uphone, req.body.uemail, String(req.body.seller), code, 'N'], (err, rows, fields) => {
                 if(err) { res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
