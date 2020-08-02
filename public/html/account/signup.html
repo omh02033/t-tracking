@@ -795,7 +795,7 @@
                                         waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
                                         waitemail[i].style.color = "red";
                                     }
-                                }
+                                } else if(data.errmsg) { alert(data.errmsg); }
                             }
                             xhr.send(JSON.stringify(userInfo));
                         }

@@ -265,7 +265,7 @@ router
         let info = data[0];
         if(err) {
             console.log('중복 확인도중 에러가 발생했습니다.');
-            res.status(200).json({ msg: '중복 확인도중 에러가 발생했습니다. 관리자에게 문의해주세요.' });
+            res.status(400).json({ errmsg: '중복 확인도중 에러가 발생했습니다. 관리자에게 문의해주세요.' });
         } else if(info == undefined || info == null) {
             let code = Math.floor(Math.random() * 1000000) + 100000;
             if(code > 100000) { code = code - 100000; }
@@ -282,7 +282,7 @@ router
 
             let sql1 = 'INSERT INTO Signing (`originalid`, `userid`, `userpass`, `password_salt`, `phone`, `email`, `seller`, `code`, `result`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
             conn.query(sql1, [req.body.uid, SHA256(req.body.uid), SHA256(req.body.upass + randomString), randomString, req.body.uphone, req.body.uemail, req.body.seller, code, 'N'], (err, rows, fields) => {
-                if(err) { return res.status(400).json({ msg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
+                if(err) { console.log(err); return res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
                 sm(email, res, req.body.uid, code);
             });
         } else { res.status(200).json({ msg: '이미 등록된 이메일입니다.' }); }
