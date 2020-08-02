@@ -19,7 +19,6 @@ conn.connect();
 
 
 function SHA256(s){
-      
     var chrsz   = 8;
     var hexcase = 0;
   
@@ -87,7 +86,6 @@ function SHA256(s){
                 b = a;
                 a = safe_add(T1, T2);
             }
-  
             HASH[0] = safe_add(a, HASH[0]);
             HASH[1] = safe_add(b, HASH[1]);
             HASH[2] = safe_add(c, HASH[2]);
@@ -112,11 +110,9 @@ function SHA256(s){
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
-  
+
         for (var n = 0; n < string.length; n++) {
-  
             var c = string.charCodeAt(n);
-  
             if (c < 128) {
                 utftext += String.fromCharCode(c);
             }
@@ -129,9 +125,7 @@ function SHA256(s){
                 utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                 utftext += String.fromCharCode((c & 63) | 128);
             }
-  
         }
-  
         return utftext;
     }
   
@@ -147,7 +141,6 @@ function SHA256(s){
   
     s = Utf8Encode(s);
     return binb2hex(core_sha256(str2binb(s), s.length * chrsz));
-  
 }
 
 function sm(email, res, uid, code) {
@@ -164,12 +157,12 @@ function sm(email, res, uid, code) {
         from: 'sansogknnamu52@naver.com',
         to: email,
         subject: '통합 택배 조회 서비스 이메일 계정 본인확인',
-        html: `<div style="width: 100%; height: 90px; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; display: flex; align-items: center; justify-content: center; position: relative; margin: 0 !important;">` + 
-        `<h1>통합 택배 조회 서비스</h1></div>` +
+        html: `<div style="width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; display: flex; align-items: center; justify-content: center; position: relative; margin: 0 !important;">` + 
+        `<h1>통합 택배 조회 서비스</h1>` +
         `<h2 style="text-align: center; font-weight: bold;">회원가입</h2>` +
         `<h3 style="text-align: center;">이메일 인증</h3>` +
         `<div>` +
-        `<a href="https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}" style="text-align: center;">이메일 인증하기</a></div>`
+        `버튼을 눌러, 이메일 인증해주세요! --> <a href="https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}" style="text-align: center;">이메일 인증하기</a> <---</div></div>`
     }
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -297,15 +290,22 @@ router
     let sql = 'SELECT * FROM Signing WHERE userid=?';
     conn.query(sql, [req.params.hashid], (err, data) => {
         if(err) { return res.status(400).json({ msg: '데이터를 읽는 과정에서 에러가 발생했습니다.' }); }
-        console.log(data.code);
-        console.log(req.params.code);
-        if(data.code == req.params.code) {
-            let sql1 = 'UPDATE Signing SET result=? WHERE userid=? AND code=?';
-            conn.query(sql1, ['Y', req.params.hashid, req.params.code], (err, rows, fields) => {
-                if(err) { return res.status(400).json({ msg: '처리하는 과정에서 에러가 발생했습니다.' }); }
-                res.sendFile('account/wName.html', { root: path.join(__dirname, '../public/html') });
-            });
-        } else { res.sendFile('account/ECErr.html', { root: path.join(__dirname, '../public/html') }); }
+        if(data.length > 0) {
+            let user = data[0];
+            if(user.code == req.params.code) {
+                let sql1 = 'UPDATE Signing SET result=? WHERE userid=? AND code=?';
+                conn.query(sql1, ['Y', req.params.hashid, req.params.code], (err, rows, fields) => {
+                    if(err) { return res.status(400).json({ msg: '처리하는 과정에서 에러가 발생했습니다.' }); }
+                    res.sendFile('account/wName.html', { root: path.join(__dirname, '../public/html') });
+                });
+            } else {
+                let sql1 = 'DELETE FROM Signing WHERE userid=?';
+                conn.query(sql1, [req.params.hashid], (err) => { if(err) throw err; });
+                res.sendFile('account/ECErr.html', { root: path.join(__dirname, '../public/html') });
+            }
+        } else {
+            res.status(400).json({ msg: '없는 정보입니다.', result: 'fali' });
+        }
     });
 })
 .post('/email/Certification', (req, res) => {
