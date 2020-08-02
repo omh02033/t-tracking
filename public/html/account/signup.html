@@ -775,8 +775,8 @@
                             xhr.open('POST', '/account/signup/overlap/email');
                             xhr.setRequestHeader('Content-Type', 'application/json');
                             xhr.onreadystatechange = function () {
+                                let data = JSON.parse(xhr.responseText);
                                 if(xhr.readyState === 4 && xhr.status === 200) {
-                                    let data = JSON.parse(xhr.responseText);
                                     if(data.msg) { console.log(data.msg); }
                                     if(data.result == "success") {
                                         alert("이메일을 발송했습니다. 확인해주세요.");
