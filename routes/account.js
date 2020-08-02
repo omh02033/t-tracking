@@ -157,7 +157,7 @@ function sm(email, res, uid, code) {
         from: 'sansogknnamu52@naver.com',
         to: email,
         subject: '통합 택배 조회 서비스 이메일 계정 본인확인',
-        html: `<div style="width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; display: flex; align-items: center; justify-content: center; position: relative; margin: 0 !important;">` + 
+        html: `<div style="width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; margin: 0 !important;">` + 
         `<h1>통합 택배 조회 서비스</h1>` +
         `<h2 style="text-align: center; font-weight: bold;">회원가입</h2>` +
         `<h3 style="text-align: center;">이메일 인증</h3>` +
@@ -292,6 +292,8 @@ router
         if(err) { return res.status(400).json({ msg: '데이터를 읽는 과정에서 에러가 발생했습니다.' }); }
         if(data.length > 0) {
             let user = data[0];
+            console.log(user.code);
+            console.log(req.params.code);
             if(user.code == req.params.code) {
                 let sql1 = 'UPDATE Signing SET result=? WHERE userid=? AND code=?';
                 conn.query(sql1, ['Y', req.params.hashid, req.params.code], (err, rows, fields) => {
@@ -304,7 +306,7 @@ router
                 res.sendFile('account/ECErr.html', { root: path.join(__dirname, '../public/html') });
             }
         } else {
-            res.status(400).json({ msg: '없는 정보입니다.', result: 'fali' });
+            res.send("다시 회원가입 해주세요..");
         }
     });
 })
@@ -316,6 +318,8 @@ router
             let user = data[0];
             if(user.result == "Y") { return res.status(200).json({ result: "success" }); }
             else { return res.status(200).json({ result: "fail" }); }
+        } else {
+            return res.status(200).json({ result: 'deleted' });
         }
     });
 })

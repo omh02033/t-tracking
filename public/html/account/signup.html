@@ -460,6 +460,8 @@
                             if(data.msg) { console.log(data.msg); }
                             if(data.result == "success") {
                                 window.close();
+                            } else if(data.result == "deleted") {
+                                location.replace(location.href);
                             } else {
                                 continue;
                             }
