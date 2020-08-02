@@ -235,7 +235,7 @@ router
             let user = data[0];
             if(user.result == "Y") {
                 let sql1 = 'INSERT INTO account (`userid`, `userpass`, `password_salt`, `phone`, `email`, `name`, `seller`) VALUES(?, ?, ?, ?, ?, ?, ?)';
-                conn.query(sql1, [user.originalid, , user.userpass, user.password_salt, user.email, req.body.nick, user.seller], (err, rows, fields) => {
+                conn.query(sql1, [user.originalid, , user.userpass, user.password_salt, user.phone, user.email, req.body.nick, user.seller], (err, rows, fields) => {
                     if(err) {
                         console.log(err + "(01)");
                         res.status(400).json({
