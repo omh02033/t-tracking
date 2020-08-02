@@ -710,7 +710,7 @@
                 } else {
                     if(uid.value != '' && upass.value != '' && upasscon != '' && uphone != '') {
                         let userInfo = {
-                            seller: seller.value,
+                            seller: seller,
                             uid: uid.value,
                             upass: upass.value,
                             uphone: uphone.value,
@@ -760,7 +760,7 @@
                     if(uid.value != '' && upass.value != '' && upasscon != '' && uphone != '') {
                         if(!sendemail) {
                             let userInfo = {
-                                seller: seller.value,
+                                seller: seller,
                                 uid: uid.value,
                                 upass: upass.value,
                                 uphone: uphone.value,
@@ -903,7 +903,7 @@
                 if(uid.value != '' && upass.value != '' && upasscon != '' && uphone != '') {
                     if(!sendemail) {
                         let userInfo = {
-                            seller: mseller.value,
+                            seller: seller,
                             uid: muid.value,
                             upass: mupass.value,
                             uphone: muphone.value,
