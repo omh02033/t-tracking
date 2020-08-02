@@ -297,7 +297,7 @@ router
             console.log(temp);
             let sql1 = 'INSERT INTO Signing (`originalid`, `userid`, `userpass`, `password_salt`, `phone`, `email`, `seller`, `code`, `result`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
             conn.query(sql1, temp, (err, rows, fields) => {
-                if(err) { return res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
+                if(err) { console.log(err); return res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
                 sm(email, res, req.body.uid, code);
             });
         } else { res.status(200).json({ msg: '이미 등록된 이메일입니다.' }); }
