@@ -157,7 +157,7 @@ function sm(email, res, uid, code) {
         from: 'sansogknnamu52@naver.com',
         to: email,
         subject: '통합 택배 조회 서비스 이메일 계정 본인확인',
-        html: `<div style="style="text-align: center; width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; margin: 0 !important;">` + 
+        html: `<div style="text-align: center; width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; margin: 0 !important;">` + 
         `<h1>통합 택배 조회 서비스</h1>` +
         `<h2 style="font-weight: bold;">회원가입</h2>` +
         `<h3>이메일 인증</h3>` +
@@ -234,7 +234,7 @@ router
         if(data.length > 0) {
             let user = data[0];
             if(user.result == "Y") {
-                let sql1 = 'INSERT INTO account (userid, userpass, password_salt, phone, email, name, seller) VALUES(?, ?, ?, ?, ?, ?, ?)';
+                let sql1 = 'INSERT INTO account (`userid`, `userpass`, `password_salt`, `phone`, `email`, `name`, `seller`) VALUES(?, ?, ?, ?, ?, ?, ?)';
                 conn.query(sql1, [user.originalid, , user.userpass, user.password_salt, user.email, req.body.nick, user.seller], (err, rows, fields) => {
                     if(err) {
                         console.log(err + "(01)");
