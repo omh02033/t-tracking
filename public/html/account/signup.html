@@ -26,6 +26,24 @@
         .mmenu { top: 0 !important; }
         .striped .btn { background-color: rgb(70, 92, 153) !important; }
         .striped { border-color: rgb(190, 190, 190) !important; }
+        .emphasized {
+            z-index: 500;
+            box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px;
+        }
+        .loading {
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 190px;
+            height: 80px;
+            transform: translate(-50%, -50%);
+        }
+        .loadingif {
+            width: 100%;
+            height: 100%;
+        }
 
         @media only screen and (max-width: 600px) {
             .logo {
@@ -222,61 +240,47 @@
                     <div class="loginp">
                         <h3>회원가입</h3>
                         <span class="who" style="position: absolute; right: 15px; top: 5px;"></span>
-                        <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
-                            <div id="sellercheck">
-                                <h4>당신은 ?</h4>
-                                <label>
-                                    <input type="radio" name="seller" id="consumer" onchange="idchang('c');"> <span>구매자</span><br><br>
-                                </label>
-                                <label>
-                                    <input type="radio" name="seller" id="seller" onchange="idchang('s');"> <span>판매자</span>
-                                </label>
-                            </div>
-                            <div id="sid" style="display: none;">
-                                <h4>아이디</h4>
-                                <input type="text" name="uid" id="uid" minlength="5" placeholder="ID" required><br>
-                                <span class="checkid"></span>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign1"><i class="material-icons right">navigate_next</i>다음</a><br>
-                            </div>
-                            <div id="spass" style="display: none;">
-                                <h4>비밀번호</h4>
-                                <input type="password" name="upass" id="upass" minlength="6" maxlength="18" placeholder="PASSWORD (6~18)" required>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign2"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back2"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="scon" style="display: none;">
-                                <h4>비밀번호 확인</h4>
-                                <input type="password" name="conpass" id="upasscon" placeholder="Confirm Password" required>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign3"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back3"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="sphone" style="display: none;">
-                                <h4>전화번호</h4>
-                                <input type="text" name="phonenum" id="uphone" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
-                                <span class="checkphone"></span>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign35"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back35"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="semail" style="display: none;">
-                                <h4>이메일</h4>
-                                <input type="email" name="uemail" id="uemail" placeholder="EMAIL" required><br>
-                                <span class="waitemail"></span>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign4"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back4"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="scheck" style="display: none;">
-                                <h4>이메일 인증</h4>
-                                <input type="number" name="uecheck" id="uemailcheck" placeholder="CODE">
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign45"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back45"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="sINB" style="display: none;">
-                                <h4>이름</h4>
-                                <input type="text" name="unick" id="unick" maxlength="5" placeholder="NAME" required>
-                                <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="signsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back5"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                        </form>
+                        <div id="sellercheck">
+                            <h4>당신은 ?</h4>
+                            <label>
+                                <input type="radio" name="seller" id="consumer" onchange="idchang('c');"> <span>구매자</span><br><br>
+                            </label>
+                            <label>
+                                <input type="radio" name="seller" id="seller" onchange="idchang('s');"> <span>판매자</span>
+                            </label>
+                        </div>
+                        <div id="sid" style="display: none;">
+                            <h4>아이디</h4>
+                            <input type="text" name="uid" id="uid" minlength="5" placeholder="ID" required><br>
+                            <span class="checkid"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign1"><i class="material-icons right">navigate_next</i>다음</a><br>
+                        </div>
+                        <div id="spass" style="display: none;">
+                            <h4>비밀번호</h4>
+                            <input type="password" name="upass" id="upass" minlength="6" placeholder="PASSWORD" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign2"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back2"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="scon" style="display: none;">
+                            <h4>비밀번호 확인</h4>
+                            <input type="password" name="conpass" id="upasscon" placeholder="Confirm Password" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign3"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back3"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="sphone" style="display: none;">
+                            <h4>전화번호</h4>
+                            <input type="text" name="phonenum" id="uphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
+                            <span class="checkphone"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign35"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back35"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="semail" style="display: none;">
+                            <h4>이메일</h4>
+                            <input type="email" name="uemail" id="uemail" maxlength="50" placeholder="EMAIL" required><br>
+                            <span class="waitemail"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign4"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back4"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -284,65 +288,52 @@
                 <div class="loginp">
                     <h3>회원가입</h3>
                     <span class="who" style="position: absolute; right: 10px; top: 5px;"></span>
-                    <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
-                        <div id="msellercheck">
-                            <h4>당신은 ?</h4>
-                            <label>
-                                <input type="radio" name="seller" id="mconsumer" onchange="midchang('c');"> <span>구매자</span><br><br>
-                            </label>
-                            <label>
-                                <input type="radio" name="seller" id="mseller" onchange="midchang('s');"> <span>판매자</span>
-                            </label>
-                        </div>
-                        <div id="msid" style="display: none;">
-                            <h4>아이디</h4>
-                            <input type="text" name="uid" id="muid" minlength="4" maxlength="45" placeholder="ID" required><br>
-                            <span class="checkid"></span>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign1"><i class="material-icons right">navigate_next</i>다음</a>
-                        </div>
-                        <div id="mspass" style="display: none;">
-                            <h4>비밀번호</h4>
-                            <input type="password" name="upass" id="mupass" minlength="6" maxlength="18" placeholder="PASSWORD (6~18)" required>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign2"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback2"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="mscon" style="display: none;">
-                            <h4>비밀번호 확인</h4>
-                            <input type="password" name="conpass" id="mupasscon" placeholder="Confirm Password" required>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="msphone" style="display: none;">
-                            <h4>전화번호</h4>
-                            <input type="text" name="phonenum" id="muphone" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
-                            <span class="checkphone"></span>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign35"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback35"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="msemail" style="display: none;">
-                            <h4>이메일</h4>
-                            <input type="email" name="uemail" id="muemail" placeholder="EMAIL" required><br>
-                            <span class="waitemail"></span>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign4"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="mscheck" style="display: none;">
-                            <h4>이메일 인증</h4>
-                            <input type="number" name="uecheck" id="muemailcheck" placeholder="CODE">
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign45"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback45"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="msINB" style="display: none;">
-                            <h4>이름</h4>
-                            <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
-                            <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback5"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                    </form>
+                    <div id="msellercheck">
+                        <h4>당신은 ?</h4>
+                        <label>
+                            <input type="radio" name="seller" id="mconsumer" onchange="midchang('c');"> <span>구매자</span><br><br>
+                        </label>
+                        <label>
+                            <input type="radio" name="seller" id="mseller" onchange="midchang('s');"> <span>판매자</span>
+                        </label>
+                    </div>
+                    <div id="msid" style="display: none;">
+                        <h4>아이디</h4>
+                        <input type="text" name="uid" id="muid" minlength="4" maxlength="45" placeholder="ID" required><br>
+                        <span class="checkid"></span>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign1"><i class="material-icons right">navigate_next</i>다음</a>
+                    </div>
+                    <div id="mspass" style="display: none;">
+                        <h4>비밀번호</h4>
+                        <input type="password" name="upass" id="mupass" minlength="6" placeholder="PASSWORD" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign2"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback2"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="mscon" style="display: none;">
+                        <h4>비밀번호 확인</h4>
+                        <input type="password" name="conpass" id="mupasscon" placeholder="Confirm Password" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msphone" style="display: none;">
+                        <h4>전화번호</h4>
+                        <input type="text" name="phonenum" id="muphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
+                        <span class="checkphone"></span>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign35"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback35"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msemail" style="display: none;">
+                        <h4>이메일</h4>
+                        <input type="email" name="uemail" id="muemail" maxlength="50" placeholder="EMAIL" required><br>
+                        <span class="waitemail"></span>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign4"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="loading emphasized"><div class="loadingif"><img src="/images/loading.gif" alt="" style="position: absolute; transform: translate(-50%, -50%); left: 50%; max-width: 80px; height:80px; box-shadow: none !important;"></div><span style="position:absolute; bottom:0; color: white; width: 100%; text-align: center;">이메일 인증을 기다리는 중..</span></div>
     <div id="proselectd" style="display: none;"></div>
     <div id="proselect" style="display: none;"></div>
     <div id="originalPro" style="display: none;"></div>
@@ -365,23 +356,19 @@
         let scon = document.getElementById("scon");
         let sphone = document.getElementById("sphone");
         let semail = document.getElementById("semail");
-        let scheck = document.getElementById("scheck");
         let sINB = document.getElementById("sINB");
 
         let sign1 = document.getElementById("sign1");  // 아이디 창
         let sign2 = document.getElementById("sign2");  // 비밀번호 창
         let sign35 = document.getElementById("sign35"); // 전화번호 창
         let sign3 = document.getElementById("sign3");  // 비밀번호 확인 창
-        let sign4 = document.getElementById("sign4");  // 이메일 창
-        let sign45 = document.getElementById("sign45");// 인증번호 창
+        let sign4 = document.getElementById("sign4");
 
         let back1 = document.getElementById("back1");
         let back2 = document.getElementById("back2");
         let back3 = document.getElementById("back3");
         let back35 = document.getElementById("back35");
         let back4 = document.getElementById("back4");
-        let back45 = document.getElementById("back45");
-        let back5 = document.getElementById("back5");
 
         let sellercheck = document.getElementById("sellercheck"); // 구매자 / 판매자
         let uid = document.getElementById("uid");            // 유저 아이디
@@ -389,8 +376,6 @@
         let upasscon = document.getElementById("upasscon");  // 비밀번호 확인
         let uphone = document.getElementById("uphone")       // 유저 전화번호
         let uemail = document.getElementById("uemail");      // 유저 이메일
-        let uemailcheck = document.getElementById("uemailcheck");//인증번호
-        let unick = document.getElementById("unick");        // 유저 이름
 
 
         let msid = document.getElementById("msid");
@@ -398,23 +383,18 @@
         let mscon = document.getElementById("mscon");
         let msphone = document.getElementById("msphone");
         let msemail = document.getElementById("msemail");
-        let mscheck = document.getElementById("mscheck");
-        let msINB = document.getElementById("msINB");
 
         let msign1 = document.getElementById("msign1");  // 아이디 창
         let msign2 = document.getElementById("msign2");  // 비밀번호 창
         let msign3 = document.getElementById("msign3");  // 비밀번호 확인 창
         let msign35 = document.getElementById("msign35");// 전화번호 창
         let msign4 = document.getElementById("msign4");  // 이메일 창
-        let msign45 = document.getElementById("msign45");// 인증번호 창
 
         let mback1 = document.getElementById("mback1");
         let mback2 = document.getElementById("mback2");
         let mback3 = document.getElementById("mback3");
         let mback35 = document.getElementById("mback35");
         let mback4 = document.getElementById("mback4");
-        let mback45 = document.getElementById("mback45");
-        let mback5 = document.getElementById("mback5");
 
 
         let msellercheck = document.getElementById("msellercheck") // 구매자 / 판매자
@@ -423,12 +403,13 @@
         let mupasscon = document.getElementById("mupasscon");   // 비밀번호 확인
         let muphone = document.getElementById("muphone");       // 유저 전화번호
         let muemail = document.getElementById("muemail");       // 유저 이메일
-        let muemailcheck = document.getElementById("muemailcheck");// 인증번호
-        let munick = document.getElementById("munick");         // 유저 이름
 
         let idcheckspan = document.querySelectorAll(".checkid");
         let waitemail = document.querySelectorAll(".waitemail");
         let checkphone = document.querySelectorAll(".checkphone");
+
+        let loadingScreen = document.querySelector(".loading");
+        let loadingif = document.querySelector(".loadingif");
 
         let who = document.querySelectorAll(".who");
 
@@ -464,6 +445,31 @@
             }
         }
 
+        function emailCertification(userid) {
+            setTimeout(() => {
+                setInterval(() => {
+                    let userInfo = {
+                        uid: userid
+                    }
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/account/email/Certification');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function () {
+                        if(xhr.readyState === 4 && xhr.status === 200) {
+                            let data = JSON.parse(xhr.responseText);
+                            if(data.msg) { console.log(data.msg); }
+                            if(data.result == "success") {
+                                window.close();
+                            } else {
+                                continue;
+                            }
+                        }
+                    }
+                    xhr.send(JSON.stringify(userInfo));
+                }, 2000);
+            }, 3000);
+        }
+
         if(echeck) {
             msid.style.display = "none";
             mspass.style.display = "none";
@@ -471,7 +477,6 @@
             msphone.style.display = "none";
             msemail.style.display = "none";
             msINB.style.display = "none";
-            mscheck.style.display = "block";
         }
 
         function idoverlapcheck(device) {
@@ -604,9 +609,7 @@
             if(upass.value == "") {
                 alert('비밀번호를 입력해주세요.');
             } else if(upass.value.length < 6) {
-                alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
-            } else if(upass.value.length > 18) {
-                alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
+                alert('비밀번호의 길이는 6자 이상입니다.');
             } else {
                 spass.style.display = "none";
                 scon.style.display = "block";
@@ -621,9 +624,7 @@
                 if(upass.value == "") {
                     alert('비밀번호를 입력해주세요.');
                 } else if(upass.value.length < 6) {
-                    alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
-                } else if(upass.value.length > 18) {
-                    alert('비밀번호의 길이는 6자 이상 18자 이하입니다.');
+                    alert('비밀번호의 길이는 6자 이상입니다.');
                 } else {
                     spass.style.display = "none";
                     scon.style.display = "block";
@@ -707,103 +708,19 @@
                 if(uemail.value == "") {
                     alert('이메일를 입력해주세요.');
                 } else {
-                    let userInfo = {
-                        uemail: uemail.value
-                    }
-                    for(let i=0; i<waitemail.length; i++) {
-                        waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
-                        waitemail[i].style.color = "black";
-                    }
-                    alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
-                    let xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/account/signup/overlap/email');
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    xhr.onreadystatechange = function () {
-                        if(xhr.readyState === 4 && xhr.status === 200) {
-                            let data = JSON.parse(xhr.responseText);
-                            if(data.msg) { console.log(data.msg); }
-                            if(data.result == "success") {
-                                alert("이메일로 인증번호를 발송했습니다. 확인해주세요.");
-                                for(let i=0; i<waitemail.length; i++) {
-                                    waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
-                                    waitemail[i].style.color = "green";
-                                }
-                                sendemail = true;
-                                semail.style.display = "none";
-                                scheck.style.display = "block";
-                                sign45.onclick = () => {
-                                    if(chance <= 0) {
-                                        alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                        chance = 5;
-                                        scheck.style.display = "none";
-                                        semail.style.display ="block";
-                                    } else {
-                                        if(uemailcheck.value == data.code) {
-                                            chance = 5;
-                                            wemail.innerHTML = "완료";
-                                            wINB.innerHTML = "진행중..";
-                                            scheck.style.display = "none";
-                                            sINB.style.display = "block";
-                                            let signup1 = document.querySelector(".signup1");
-                                            signup1.classList.add("signup1t");
-                                        } else {
-                                            alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                            chance--;
-                                        }
-                                    }
-                                }
-                                uemailcheck.onkeyup = (event) => {
-                                    if(event.keyCode == 13) {
-                                        if(chance <= 0) {
-                                            alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                            chance = 5;
-                                            scheck.style.display = "none";
-                                            semail.style.display ="block";
-                                        } else {
-                                            if(uemailcheck.value == data.code) {
-                                                chance = 5;
-                                                wemail.innerHTML = "완료";
-                                                wINB.innerHTML = "진행중..";
-                                                scheck.style.display = "none";
-                                                sINB.style.display = "block";
-                                                let signup1 = document.querySelector(".signup1");
-                                                signup1.classList.add("signup1t");
-                                            } else {
-                                                alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                                chance--;
-                                            }
-                                        }
-                                    }
-                                }
-                            } else if(data.msg) {
-                                alert(data.msg);
-                                for(let i=0; i<waitemail.length; i++) {
-                                    waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
-                                    waitemail[i].style.color = "red";
-                                }
-                            }
-                        }
-                    }
-                    xhr.send(JSON.stringify(userInfo));
-                }
-            } else {
-                semail.style.display = "none";
-                scheck.style.display = "block";
-            }
-        }
-        uemail.onkeyup = (event) => {
-            if(event.keyCode == 13) {
-                if(uemail.value == "") { alert('이메일를 입력해주세요.'); }
-                else {
-                    if(!sendemail) {
+                    if(uid.value != '' && upass.value != '' && upasscon != '' && uphone != '') {
                         let userInfo = {
+                            seller: seller.value,
+                            uid: uid.value,
+                            upass: upass.value,
+                            uphone: uphone.value,
                             uemail: uemail.value
                         }
                         for(let i=0; i<waitemail.length; i++) {
                             waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
                             waitemail[i].style.color = "black";
                         }
-                        alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                        alert('이메일 전송중입니다. 잠시만 기다려주세요.');
                         let xhr = new XMLHttpRequest();
                         xhr.open('POST', '/account/signup/overlap/email');
                         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -812,59 +729,15 @@
                                 let data = JSON.parse(xhr.responseText);
                                 if(data.msg) { console.log(data.msg); }
                                 if(data.result == "success") {
-                                    alert("이메일로 인증번호를 발송했습니다. 확인해주세요.");
+                                    alert("이메일을 발송했습니다. 확인해주세요.");
+                                    loadingScreen.style.display = "inline-block";
+                                    loadingScreen.classList.add('emphasized');
                                     for(let i=0; i<waitemail.length; i++) {
                                         waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
                                         waitemail[i].style.color = "green";
                                     }
+                                    emailCertification(uid.value);
                                     sendemail = true;
-                                    semail.style.display = "none";
-                                    scheck.style.display = "block";
-                                    sign45.onclick = () => {
-                                        if(chance <= 0) {
-                                            alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                            chance = 5;
-                                            scheck.style.display = "none";
-                                            semail.style.display ="block";
-                                        } else {
-                                            if(uemailcheck.value == data.code) {
-                                                chance = 5;
-                                                wemail.innerHTML = "완료";
-                                                wINB.innerHTML = "진행중..";
-                                                scheck.style.display = "none";
-                                                sINB.style.display = "block";
-                                                let signup1 = document.querySelector(".signup1");
-                                                signup1.classList.add("signup1t");
-                                            } else {
-                                                alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                                chance--;
-                                            }
-                                        }
-                                    }
-                                    uemailcheck.onkeyup = (event) => {
-                                        if(event.keyCode == 13) {
-                                            console.log(event.keyCode);
-                                            if(chance <= 0) {
-                                                alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                                chance = 5;
-                                                scheck.style.display = "none";
-                                                semail.style.display ="block";
-                                            } else {
-                                                if(uemailcheck.value == data.code) {
-                                                    chance = 5;
-                                                    wemail.innerHTML = "완료";
-                                                    wINB.innerHTML = "진행중..";
-                                                    scheck.style.display = "none";
-                                                    sINB.style.display = "block";
-                                                    let signup1 = document.querySelector(".signup1");
-                                                    signup1.classList.add("signup1t");
-                                                } else {
-                                                    alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                                    chance--;
-                                                }
-                                            }
-                                        }
-                                    }
                                 } else if(data.msg) {
                                     alert(data.msg);
                                     for(let i=0; i<waitemail.length; i++) {
@@ -875,10 +748,58 @@
                             }
                         }
                         xhr.send(JSON.stringify(userInfo));
-                    } else {
-                        semail.style.display = "none";
-                        scheck.style.display = "block";
-                    }
+                    } else { alert("중간에 작성되어 있지 않은것이 있습니다..!"); }
+                }
+            }
+        }
+
+        uemail.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(uemail.value == "") { alert('이메일를 입력해주세요.'); }
+                else {
+                    if(uid.value != '' && upass.value != '' && upasscon != '' && uphone != '') {
+                        if(!sendemail) {
+                            let userInfo = {
+                                seller: seller.value,
+                                uid: uid.value,
+                                upass: upass.value,
+                                uphone: uphone.value,
+                                uemail: uemail.value
+                            }
+                            for(let i=0; i<waitemail.length; i++) {
+                                waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
+                                waitemail[i].style.color = "black";
+                            }
+                            alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                            let xhr = new XMLHttpRequest();
+                            xhr.open('POST', '/account/signup/overlap/email');
+                            xhr.setRequestHeader('Content-Type', 'application/json');
+                            xhr.onreadystatechange = function () {
+                                if(xhr.readyState === 4 && xhr.status === 200) {
+                                    let data = JSON.parse(xhr.responseText);
+                                    if(data.msg) { console.log(data.msg); }
+                                    if(data.result == "success") {
+                                        alert("이메일을 발송했습니다. 확인해주세요.");
+                                        loadingScreen.style.display = "inline-block";
+                                        loadingScreen.classList.add('emphasized');
+                                        for(let i=0; i<waitemail.length; i++) {
+                                            waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
+                                            waitemail[i].style.color = "green";
+                                        }
+                                        emailCertification(uid.value);
+                                        sendemail = true;
+                                    }
+                                } else if(data.msg) {
+                                    alert(data.msg);
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                        waitemail[i].style.color = "red";
+                                    }
+                                }
+                            }
+                            xhr.send(JSON.stringify(userInfo));
+                        }
+                    } else { alert("중간에 작성되어 있지 않은것이 있습니다..!"); }
                 }
             }
         }
@@ -916,18 +837,6 @@
             let signup2 = document.querySelector(".signup2");
             signup2.classList.remove("signup2t");
         }
-        back45.onclick = () => {
-            scheck.style.display = "none";
-            scon.style.display = "block";
-        }
-        back5.onclick = () => {
-            sINB.style.display = "none";
-            semail.style.display = "block";
-            wemail.innerHTML = "진행중..";
-            wINB.innerHTML = "미완";
-            let signup1 = document.querySelector(".signup1");
-            signup1.classList.remove("signup1t");
-        }
 
 
 
@@ -951,9 +860,7 @@
             if(mupass.value == "") {
                 alert('비밀번호를 입력해주세요.');
             } else if(mupass.value.length < 6) {
-                alert('비밀번호의 길이는 6자 이상 18자 이하 입니다.');
-            } else if(mupass.value.length > 18) {
-                alert('비밀번호의 길이는 6자 이상 18자 이하 입니다.');
+                alert('비밀번호의 길이는 6자 이상입니다.');
             } else {
                 mspass.style.display = "none";
                 mscon.style.display = "block";
@@ -993,65 +900,50 @@
             if(muemail.value == "") {
                 alert('이메일를 입력해주세요.');
             } else {
-                if(!sendemail) {
-                    let userInfo = {
-                        uemail: muemail.value
-                    }
-                    for(let i=0; i<waitemail.length; i++) {
-                        waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
-                        waitemail[i].style.color = "black";
-                    }
-                    alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
-                    echeck = true;
-                    let xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/account/signup/overlap/email');
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    xhr.onreadystatechange = function () {
-                        if(xhr.readyState === 4 && xhr.status === 200) {
-                            let data = JSON.parse(xhr.responseText);
-                            if(data.msg) { console.log(data.msg); }
-                            if(data.result == "success") {
-                                alert("이메일로 인증번호가 발송되었습니다. 확인해주세요.");
-                                for(let i=0; i<waitemail.length; i++) {
-                                    waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
-                                    waitemail[i].style.color = "green";
-                                }
-                                sendemail = true;
-                                msemail.style.display = "none";
-                                mscheck.style.display = "block";
-                                msign45.onclick = () => {
-                                    if(chance <= 0) {
-                                        alert('기회 5번을 모두 사용하셨습니다. 다시 인증번호를 발급받아주세요.');
-                                        chance = 5;
-                                        mscheck.style.display = "none";
-                                        msemail.style.display ="block";
-                                    } else {
-                                        if(muemailcheck.value == data.code) {
-                                            chance = 5;
-                                            mscheck.style.display = "none";
-                                            msINB.style.display = "block";
-                                            let signup1 = document.querySelector(".signup1");
-                                            signup1.classList.add("signup1t");
-                                        } else {
-                                            alert(`인증번호가 일치하지 않습니다. 기회(${chance})`);
-                                            chance--;
-                                        }
+                if(uid.value != '' && upass.value != '' && upasscon != '' && uphone != '') {
+                    if(!sendemail) {
+                        let userInfo = {
+                            seller: mseller.value,
+                            uid: muid.value,
+                            upass: mupass.value,
+                            uphone: muphone.value,
+                            uemail: muemail.value
+                        }
+                        for(let i=0; i<waitemail.length; i++) {
+                            waitemail[i].innerHTML = "이메일 중복 체크중입니다..";
+                            waitemail[i].style.color = "black";
+                        }
+                        alert('인증번호 전송중입니다. 잠시만 기다려주세요.');
+                        echeck = true;
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/account/signup/overlap/email');
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.onreadystatechange = function () {
+                            if(xhr.readyState === 4 && xhr.status === 200) {
+                                let data = JSON.parse(xhr.responseText);
+                                if(data.msg) { console.log(data.msg); }
+                                if(data.result == "success") {
+                                    alert("이메일을 발송되었습니다. 확인해주세요.");
+                                    loadingScreen.style.display = "inline-block";
+                                    loadingScreen.classList.add('emphasized');
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "사용 가능한 이메일 입니다.";
+                                        waitemail[i].style.color = "green";
                                     }
-                                }
-                            } else if(data.msg) {
-                                console.log(data.msg);
-                                for(let i=0; i<waitemail.length; i++) {
-                                    waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
-                                    waitemail[i].style.color = "red";
+                                    emailCertification(muid.value);
+                                    sendemail = true;
+                                } else if(data.msg) {
+                                    console.log(data.msg);
+                                    for(let i=0; i<waitemail.length; i++) {
+                                        waitemail[i].innerHTML = "이미 등록되어 있는 이메일입니다.";
+                                        waitemail[i].style.color = "red";
+                                    }
                                 }
                             }
                         }
+                        xhr.send(JSON.stringify(userInfo));
                     }
-                    xhr.send(JSON.stringify(userInfo));
-                } else {
-                    msemail.style.display = "none";
-                    mscheck.style.display = "block";
-                }
+                } else { alert("중간에 작성되어 있지 않은것이 있습니다..!"); }
             }
         }
 
@@ -1077,62 +969,6 @@
         mback4.onclick = () => {
             msemail.style.display = "none";
             msphone.style.display = "block";
-        }
-        mback45.onclick = () => {
-            mscheck.style.display = "none";
-            msemail.style.display = "block";
-            let signup2 = document.querySelector(".signup2");
-            signup2.classList.remove("signup2t");
-        }
-        mback5.onclick = () => {
-            msINB.style.display = "none";
-            msemail.style.display = "block";
-            let signup1 = document.querySelector(".signup1");
-            signup1.classList.remove("signup1t");
-        }
-
-
-        function addUser(e, form) {
-            let s = document.querySelector(".s");
-            let s1 = document.querySelector(".s1");
-            let signin = document.querySelector(".signin");
-            let signup1 = document.querySelector(".signup1");
-            let signup2 = document.querySelector(".signup2");
-            if(s.classList.contains('st') && s1.classList.contains('s1t') && signin.classList.contains("signint") && signup1.classList.contains("signup1t") && signup2.classList.contains("signup2t")) {
-                e.preventDefault();
-
-                let userInfo = {
-                    seller: seller,
-                    id: form.uid.value,
-                    password: form.upass.value,
-                    phone: form.phonenum.value,
-                    email: form.uemail.value,
-                    nick: form.unick.value
-                }
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/signup/');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if(xhr.readyState === 4 && xhr.status === 200) {
-                        let data = JSON.parse(xhr.responseText);
-                        console.log(data.msg);
-                        if(data.result == "success") {
-                            let loginpage = confirm('회원가입에 성공하셨습니다 ! 로그인 화면으로 가시겠습니까?');
-                            if(loginpage) {
-                                location.replace('/account/login');
-                            } else {
-                                location.replace('/');
-                            }
-                        } else {
-                            alert('회원가입 등록 과정에서 오류가 발생했습니다. 나중에 다시 시도해주세요.');
-                        }
-                    }
-                }
-                xhr.send(JSON.stringify(userInfo));
-            } else {
-                alert("중간에 완료가 안된것이 있습니다.");
-                return;
-            }
         }
     </script>
 </body>

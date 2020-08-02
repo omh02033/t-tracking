@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="/stylesheets/top.css">
+    <title>회원가입</title>
+    <style>
+        .main {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .mmenu { top: 0 !important; }
+        .striped .btn { background-color: rgb(70, 92, 153) !important; }
+        .striped { border-color: rgb(190, 190, 190) !important; }
+
+        @media only screen and (max-width: 600px) {
+            .logo {
+                display: none;
+            }
+            #menubar {
+                display: none;
+            }
+            .loginmain {
+                display: none;
+            }
+            .mmright {
+                box-sizing: border-box;
+                width: 100%;
+                height: 300px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+            }
+            .loginp input {
+                width: 200px !important;
+                text-align: center;
+            }
+            .loginp h4 {
+                margin-bottom: 50px;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            #mmenubar {
+                display: none;
+            }
+            .mmright {
+                display: none;
+            }
+            .mleft {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position:relative;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                position: absolute;
+                left: 5px;
+                width: 88%;
+                height: 65%;
+                text-align: center;
+            }
+            .loginp input {
+                width: 300px !important;
+                text-align: center;
+            }
+            #consumer, #seller, #mconsumer, #mseller {
+                width: fit-content !important;
+            }
+            .loginp h4 {
+                margin-bottom: 50px;
+            }
+            .mright {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            .loginmain {
+                width: 1300px;
+                height: 600px;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                margin: auto;
+                display: flex;
+            }
+            .mleft table {
+                margin: auto;
+                width: fit-content !important;
+            }
+            .mleft table tr, .mleft table td {
+                padding: 5px !important;
+                border: 1px solid darkgray !important;
+                text-align: center;
+            }
+            .mleft table tr {
+                position: relative;
+            }
+        }
+        @media only screen and (min-width: 601px) {
+            #mmenubar {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 993px) {
+            #mmenubar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top s">
+        <div class="logo signin">
+            <i class="fa fa-truck signup2" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp signup1">
+            <span>회원가입</span>
+        </div>
+    </div>
+
+    <div class="main s1">
+        <div class="main1">
+            <div class="loginmain">
+                <div class="mright">
+                    <div class="loginp">
+                        <h3>회원가입</h3>
+                        <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
+                            <div id="sINB" style="display: none;">
+                                <h4>이름</h4>
+                                <input type="text" name="unick" id="unick" maxlength="5" placeholder="NAME" required>
+                                <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="signsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
+                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back5"><i class="material-icons left">navigate_before</i>이전</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="mmright">
+                <div class="loginp">
+                    <h3>회원가입</h3>
+                    <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
+                        <div id="msINB" style="display: none;">
+                            <h4>이름</h4>
+                            <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
+                            <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback5"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="proselectd" style="display: none;"></div>
+    <div id="proselect" style="display: none;"></div>
+    <div id="originalPro" style="display: none;"></div>
+    <div id="profilechange" style="display: none;"></div>
+    <div id="closeselect" style="display: none;"></div>
+    <div class="profileImg" style="display: none;"></div>
+    <div class="mprofileImg" style="display:none;"></div>
+    <div id="al" style="display: none;"></div>
+    <script>
+        let unick = document.getElementById("unick");
+        let munick = document.getElementById("munick");
+        function addUser(e, form) {
+            if(unick.value != '' || munick.value != '') {
+                e.preventDefault();
+
+                let url = location.href;
+                let urlArray = url.split("/");
+                let hashid = urlArray[7];
+
+                let userInfo = {
+                    hashid,
+                    nick: form.unick.value
+                }
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/account/signup/');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        console.log(data.msg);
+                        if(data.result == "success") {
+                            let loginpage = confirm('회원가입에 성공하셨습니다 ! 로그인 화면으로 가시겠습니까?');
+                            if(loginpage) {
+                                window.open("https://www.delitracking.com/account/login/", "_blank");
+                                window.close();
+                            } else {
+                                window.open("https://www.delitracking.com/", "_blank");
+                                window.close();
+                            }
+                        } else {
+                            console.log(data.result);
+                            alert('회원가입 등록 과정에서 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                            window.close();
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(userInfo));
+            } else {
+                alert("이름을 입력해 주세요.");
+            }
+        }
+    </script>
+</body>
+</html>

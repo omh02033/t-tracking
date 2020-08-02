@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
 const path = require('path');
 const multer = require('multer');
-const fs = require('fs');
+const moment = require('moment');
 
 let storage = multer.diskStorage({
     destination: function (req, file, cb) { cb(null, path.join(__dirname, '../public/images/userProfile/')); },
@@ -22,8 +22,8 @@ let conn = mysql.createConnection({
 conn.connect();
 
 router
-.get('/', check, (req, res) => { res.render('index'); })
-.get('/about/', checkabout, (req, res) => { res.render('about/index'); })
+.get('/', ech, check, (req, res) => { res.render('index'); })
+.get('/about/', ech, checkabout, (req, res) => { res.render('about/index'); })
 .get('/explain/', (req, res) => { res.sendFile('explain.html', { root: path.join(__dirname, '../public/html') }); })
 .get('/form/', youSeller, (req, res) => { res.download(__dirname + "/../public/xlsxForm/deliverySeller.xlsx"); })
 .get('/refund/', bcheck, (req, res) => { res.sendFile('refund.html', { root: path.join(__dirname, '../public/html') }); })
@@ -235,4 +235,34 @@ function youSeller(req, res, next) {
         if(seller) { return next(); }
         else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html') }); }
     })
+}
+
+function ech(req, res, next) {
+    let token = req.cookies.user;
+    if(!token) { next(); }
+    else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) { return next(); }
+            let sql = 'SELECT * FROM subsc WHERE id=? AND userid=?';
+            conn.query(sql, [decoded.unum, decoded.uid], (err ,data) => {
+                if(err) { return next(); }
+                if(data.length == 0) { next(); }
+                else {
+                    let date = moment();
+                    let now = date.format("YYYYMMDD");
+                    for(let i=0; i<data.length; i++) {
+                        if(data[i].toolname == "pay1") {
+                            if(data[i].end_at > now) {
+                                let dsql = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
+                                conn.query(dsql, [decoded.unum, data[i].toolname, decoded.uid], (err, data1) => {
+                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                                    next();
+                                });
+                            } else { next(); }
+                        }
+                    }
+                }
+            });
+        });
+    }
 }

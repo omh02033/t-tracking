@@ -57,7 +57,8 @@ router
         Promise.all(promises)
         .then(function (response) {
             for(let i=0; i<response.length; i++) {
-                if(response[i].data.result == 'Y' && !response[i].data.receiverName == '') {
+                if(response[i].data.result == 'Y') {
+                    console.log(response[i]);
                     let today = new Date();   
 
                     let year = String(today.getFullYear());
@@ -67,7 +68,7 @@ router
                     let sodate = month;
                     let pdate = year + '년 ' + month + '월 ' + date + '일';
                     let token = req.cookies.user;
-                    if(!token){
+                    if(!token) {
                         res.status(200).json({
                             code: response[i].data.invoiceNo,
                             uname: response[i].data.receiverName,
@@ -126,7 +127,6 @@ router
                     }
                     
                     // let sql = 'SELECT * FROM top WHERE code=?';
-                    // console.log(code[i]);
                     // conn.query(sql, [code[i]], (err, data) => {
                     //     let lookup = data[0]
                     //     console.log("data" + lookup.lookup);
@@ -174,7 +174,7 @@ router
                 console.log(promises.length);
                 for(let i=0; i<response.length; i++) {
                     console.log(i);
-                    if(response[i].data.result == 'Y' && !response[i].data.receiverName == '') {
+                    if(response[i].data.result == 'Y') {
                         let today = new Date();   
 
                         let year = String(today.getFullYear());
@@ -232,7 +232,6 @@ router
                         }
                         
                         // let sql = 'SELECT * FROM top WHERE code=?';
-                        // console.log(code[i]);
                         // conn.query(sql, [code[i]], (err, data) => {
                         //     let lookup = data[0]
                         //     console.log("data" + lookup.lookup);
@@ -279,7 +278,7 @@ router
             .then(function (response) {
                 console.log(promises.length);
                 for(let i=0; i<response.length; i++) {
-                    if(response[i].data.result == 'Y' && !response[i].data.receiverName == '') {
+                    if(response[i].data.result == 'Y') {
                         let today = new Date();   
 
                         let year = String(today.getFullYear());
@@ -337,7 +336,6 @@ router
                         }
                         
                         // let sql = 'SELECT * FROM top WHERE code=?';
-                        // console.log(code[i]);
                         // conn.query(sql, [code[i]], (err, data) => {
                         //     let lookup = data[0]
                         //     console.log("data" + lookup.lookup);

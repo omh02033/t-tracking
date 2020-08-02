@@ -1,12 +1,10 @@
 const path = require("path");
 require("dotenv").config({
     path: path.resolve(__dirname, "config", process.env.NODE_ENV == "production" ? ".env" : ".env.dev")
-})
-
+});
 const express = require("express");
 const logger = require("morgan");
 const cookieParser = require('cookie-parser');
-
 
 const app = express();
 
