@@ -168,8 +168,8 @@ function sm(email, res, uid, code) {
         `<h1>통합 택배 조회 서비스</h1></div>` +
         `<h2 style="text-align: center; font-weight: bold;">회원가입</h2>` +
         `<h3 style="text-align: center;">이메일 인증</h3>` +
-        `<div style="display: flex; align-item: center;">` +
-        `<input type="button" value="인증 하기" onclick="window.open('` + `https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}` + `', '', 'width=650,height=400,scrollbar=yes,top=150,left=150')" style="margin: 0; width: 200px; height: 50px; font-weight: bold; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff;"></div>`
+        `<div>` +
+        `<a href="https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}" style="text-align: center;">이메일 인증하기</a></div>`
     }
 
     transporter.sendMail(mailOptions, (err, info) => {
