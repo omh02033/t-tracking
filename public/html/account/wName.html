@@ -151,15 +151,42 @@
     <div class="main s1">
         <div class="main1">
             <div class="loginmain">
+                <div class="mleft">
+                    <table border="1" class="striped">
+                        <tr>
+                            <td style="width: 200px;">아이디</td>
+                            <td><label class="btn waves-effect waves-orange" id="wid">완료</label></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호</td style="width: 200px;">
+                            <td><label class="btn waves-effect waves-orange" id="wpass">완료</label></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호 확인</td>
+                            <td><label class="btn waves-effect waves-orange" id="wcon">완료</label></td>
+                        </tr>
+                        <tr>
+                            <td>전화번호</td>
+                            <td><label class="btn waves-effect waves-orange" id="wphone">완료</label></td>
+                        </tr>
+                        <tr>
+                            <td>이메일</td>
+                            <td><label class="btn waves-effect waves-orange" id="wemail">완료</label></td>
+                        </tr>
+                        <tr>
+                            <td>닉네임</td>
+                            <td><label class="btn waves-effect waves-orange" id="wINB">진행중..</label></td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="mright">
                     <div class="loginp">
                         <h3>회원가입</h3>
                         <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
-                            <div id="sINB" style="display: none;">
+                            <div id="sINB">
                                 <h4>이름</h4>
                                 <input type="text" name="unick" id="unick" maxlength="5" placeholder="NAME" required>
                                 <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="signsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back5"><i class="material-icons left">navigate_before</i>이전</a>
                             </div>
                         </form>
                     </div>
@@ -169,11 +196,10 @@
                 <div class="loginp">
                     <h3>회원가입</h3>
                     <form action="/account/signup/" method="POST" onsubmit="addUser(event, this)">
-                        <div id="msINB" style="display: none;">
+                        <div id="msINB">
                             <h4>이름</h4>
                             <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
                             <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback5"><i class="material-icons left">navigate_before</i>이전</a>
                         </div>
                     </form>
                 </div>
@@ -213,15 +239,16 @@
                         if(data.result == "success") {
                             let loginpage = confirm('회원가입에 성공하셨습니다 ! 로그인 화면으로 가시겠습니까?');
                             if(loginpage) {
-                                window.open("https://www.delitracking.com/account/login/", "_blank");
+                                window.opener.location.href = "https://www.delitracking.com/account/login/";
                                 window.close();
                             } else {
-                                window.open("https://www.delitracking.com/", "_blank");
+                                window.opener.location.href = "https://www.delitracking.com/";
                                 window.close();
                             }
                         } else {
                             console.log(data.result);
                             alert('회원가입 등록 과정에서 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                            window.opener.location.href = "https://www.delitracking.com/account/signup/";
                             window.close();
                         }
                     }

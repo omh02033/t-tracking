@@ -157,12 +157,12 @@ function sm(email, res, uid, code) {
         from: 'sansogknnamu52@naver.com',
         to: email,
         subject: '통합 택배 조회 서비스 이메일 계정 본인확인',
-        html: `<div style="width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; margin: 0 !important;">` + 
+        html: `<div style="style="text-align: center; width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; margin: 0 !important;">` + 
         `<h1>통합 택배 조회 서비스</h1>` +
-        `<h2 style="text-align: center; font-weight: bold;">회원가입</h2>` +
-        `<h3 style="text-align: center;">이메일 인증</h3>` +
+        `<h2 style="font-weight: bold;">회원가입</h2>` +
+        `<h3>이메일 인증</h3>` +
         `<div>` +
-        `버튼을 눌러, 이메일 인증해주세요! --> <a href="https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}" style="text-align: center;">이메일 인증하기</a> <---</div></div>`
+        `버튼을 눌러, 이메일 인증해주세요! --> <a href="https://www.delitracking.com/account/signup/email/waitingpage/certification/${SHA256(uid)}/${code}" style="text-align: center;">이메일 인증하기</a> <---</div></div>`
     }
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -285,6 +285,9 @@ router
             });
         } else { res.status(200).json({ msg: '이미 등록된 이메일입니다.' }); }
     });
+})
+.get("/signup/email/waitingpage/certification/:hashid/:code", check, (req, res) => {
+    res.sendFile('account/OpenWName.html', { root: path.join(__dirname, '../public/html') });
 })
 .get('/signup/email/certification/:hashid/:code', check, (req, res) => {
     let sql = 'SELECT * FROM Signing WHERE userid=?';
