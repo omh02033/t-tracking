@@ -164,7 +164,12 @@ function sm(email, res, uid, code) {
         from: 'sansogknnamu52@naver.com',
         to: email,
         subject: '통합 택배 조회 서비스 이메일 계정 본인확인',
-        html: `<h1 style="text-align: center; font-weight: bold; color: orange;">통합 택배 조회 서비스</h1>` + `<h2 style="text-align: center; font-weight: bold;">회원가입</h2>` + `<h3 style="text-align: center;">이메일 인증</h3>` + `<input type="button" value="인증 하기" onclick="window.open('` + `https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}` + `', '', 'width=650,height=400,scrollbar=yes,top=150,left=150')" style="margin: 0; width: 200px; height: 50px; font-weight: bold; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff;">`
+        html: `<div style="width: 100%; height: 90px; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; display: flex; align-items: center; justify-content: center; position: relative; margin: 0 !important;">` + 
+        `<h1>통합 택배 조회 서비스</h1></div>` +
+        `<h2 style="text-align: center; font-weight: bold;">회원가입</h2>` +
+        `<h3 style="text-align: center;">이메일 인증</h3>` +
+        `<div style="display: flex; align-item: center;">` +
+        `<input type="button" value="인증 하기" onclick="window.open('` + `https://www.delitracking.com/account/signup/email/certification/${SHA256(uid)}/${code}` + `', '', 'width=650,height=400,scrollbar=yes,top=150,left=150')" style="margin: 0; width: 200px; height: 50px; font-weight: bold; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff;"></div>`
     }
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -291,7 +296,7 @@ router
 
             let sql1 = 'INSERT INTO Signing (`originalid`, `userid`, `userpass`, `password_salt`, `phone`, `email`, `seller`, `code`, `result`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
             conn.query(sql1, [req.body.uid, SHA256(req.body.uid), SHA256(req.body.upass + randomString), randomString, req.body.uphone, req.body.uemail, String(req.body.seller), code, 'N'], (err, rows, fields) => {
-                if(err) { res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
+                if(err) { return res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
                 sm(email, res, req.body.uid, code);
             });
         } else { res.status(200).json({ msg: '이미 등록된 이메일입니다.' }); }
