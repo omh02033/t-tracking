@@ -293,9 +293,10 @@ router
             console.log(req.body.uemail);
             console.log(req.body.seller);
             console.log(code);
-
+            let temp = [req.body.uid, SHA256(req.body.uid), SHA256(req.body.upass + randomString), randomString, req.body.uphone, req.body.uemail, String(req.body.seller), code, 'N'];
+            console.log(temp);
             let sql1 = 'INSERT INTO Signing (`originalid`, `userid`, `userpass`, `password_salt`, `phone`, `email`, `seller`, `code`, `result`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            conn.query(sql1, [req.body.uid, SHA256(req.body.uid), SHA256(req.body.upass + randomString), randomString, req.body.uphone, req.body.uemail, String(req.body.seller), code, 'N'], (err, rows, fields) => {
+            conn.query(sql1, temp, (err, rows, fields) => {
                 if(err) { return res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
                 sm(email, res, req.body.uid, code);
             });
