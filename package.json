@@ -25,6 +25,7 @@
     "node-mysql": "^0.4.2",
     "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
+    "socket.io": "^2.3.0",
     "supervisor": "^0.12.0"
   }
 }
