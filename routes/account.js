@@ -157,7 +157,7 @@ function sm(email, res, uid, code) {
         from: 'sansogknnamu52@naver.com',
         to: email,
         subject: '통합 택배 조회 서비스 이메일 계정 본인확인',
-        html: `<div style="margin: 10px; text-align: center; width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; margin: 0 !important;">` + 
+        html: `<div style="padding: 10px !important; text-align: center; width: 100%; height: fit-content; background: linear-gradient(#ff951c, #ea7d00); background-color: #d67200; box-shadow: 0 1px 1px #ffb45e; color: #fff; font-weight: bold; min-width: 194px; margin: 0 !important;">` + 
         `<h1>통합 택배 조회 서비스</h1>` +
         `<h2 style="font-weight: bold;">회원가입</h2>` +
         `<h3>이메일 인증</h3>` +
