@@ -58,7 +58,6 @@ router
         .then(function (response) {
             for(let i=0; i<response.length; i++) {
                 if(response[i].data.result == 'Y') {
-                    console.log(response[i]);
                     let today = new Date();   
 
                     let year = String(today.getFullYear());

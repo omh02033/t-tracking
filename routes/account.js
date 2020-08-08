@@ -162,7 +162,7 @@ function sm(email, res, uid, code) {
         `<h2 style="font-weight: bold;">회원가입</h2>` +
         `<h3>이메일 인증</h3>` +
         `<div>` +
-        `버튼을 눌러, 이메일 인증해주세요!<br>--> <a href="https://www.delitracking.com/account/signup/email/waitingpage/certification/${SHA256(uid)}/${code}" style="text-align: center;">이메일 인증하기</a> <---</div></div>`
+        `버튼을 눌러, 이메일 인증해주세요!<br>--> <a href="https://www.delitracking.com/account/signup/email/waitingpage/certification/${SHA256(uid)}/${code}" style="text-align: center;">이메일 인증하기</a> <--</div></div>`
     }
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -310,7 +310,7 @@ router
                 res.sendFile('account/ECErr.html', { root: path.join(__dirname, '../public/html') });
             }
         } else {
-            res.send("다시 회원가입 해주세요..");
+            res.send("회원가입중인 상태가 아닙니다..!");
         }
     });
 })
