@@ -8,9 +8,9 @@ function IProfile() {
     i.classList.add("fa-user");
     i.style.fontSize = "35px";
     let h4 = document.createElement("h4");
-    h4.innerHTML = "프로필";
+    h4.innerHTML = "상대 정보";
     toppro.removeChild(deimg);
     toppro.removeChild(delh4);
-    toppro.append(i);
     toppro.append(h4);
+    toppro.append(i);
 }

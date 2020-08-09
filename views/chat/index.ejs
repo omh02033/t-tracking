@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <% if(seller) { %>
+        <title>구매자(<%= targetName %>)님과 채팅</title>
+    <% } else { %>
+        <title>판매자(<%= targetName %>)님과 채팅</title>
+    <% } %>
+    <style>
+        body{ margin: 0; }
+        #main {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            background-color: rgb(228, 228, 228);
+            position: relative;
+        }
+        #top {
+            margin: 0;
+            background-color: rgb(165, 165, 165);
+            font-weight: bold;
+            padding-bottom: 10px;
+            box-shadow: 0 0 10px gray;
+            padding-top: 5px;
+            position: relative;
+        }
+        #top > h4 {
+            margin-top: 0;
+            text-align: center;
+        }
+        #top > h6 {
+            margin-bottom: 0;
+            text-align: center;
+        }
+        #talkContents {
+            width: 100%;
+            height: calc(100% - 174.77px);
+            padding: 10px;
+            position: relative;
+            overflow: auto;
+        }
+        .textinput {
+            width: 100%;
+            height: 100px;
+            position: absolute;
+            bottom: 0;
+        }
+        #content {
+            background-color: white;
+            width: 85%;
+            height: 100%;
+        }
+        #sendbtn {
+            margin: 0;
+            height: 100%;
+            width: 15%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(#ffa136, #e07902);
+            background-color: #b96301;
+            box-shadow: 0 1px 1px #f8b569;
+        }
+
+        .mybox {
+            width: 78%;
+            position: relative;
+            left: 5px;
+            float: left;
+        }
+        .speechBubbleme {
+            background: linear-gradient(#ffa136, #e07902);
+            background-color: #b96301;
+            box-shadow: 0 1px 1px #f8b569;
+            position: relative;
+            width: fit-content;
+            left: 0px;
+            margin: 3px;
+            border-radius: 10px;
+            padding: 6px 8px;
+            color: white;
+            float: left;
+        }
+        .speechBubbltme::after {
+            border-top:15px solid #ffa136;
+            border-left: 15px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 0px solid transparent;
+            content:"";
+            position:absolute;
+            top:10px;
+            left:-15px;
+        }
+
+        .targetbox {
+            width: 78%;
+            position: relative;
+            right: 5px;
+            float: right;
+        }
+        .speechBubbletarget {
+            background: linear-gradient(#e4ddd4, #a7a29e);
+            background-color: #b4a89a;
+            box-shadow: 0 1px 1px #fff5ea;
+            position: relative;
+            width: fit-content;
+            right: 0px;
+            margin: 3px;
+            border-radius: 10px;
+            padding: 6px 8px;
+            float: right;
+        }
+        .speechBubblttarget::after {
+            border-top:15px solid #e4ddd4;
+            border-left: 0px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 0px solid transparent;
+            content:"";
+            position:absolute;
+            top:10px;
+            right:-15px;
+        }
+
+        #moreVert {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 30px;
+            z-index: 100;
+            cursor: pointer;
+        }
+        #toppro > h4 {
+            bottom: 55px !important;
+        }
+        #toppro > i, #toppro > img {
+            top: 30px !important;
+        }
+    </style>
+    <script src="/javascripts/IProfile.js"></script>
+</head>
+<body>
+    <div id="main">
+        <div id="top">
+            <i id="moreVert" class="material-icons">more_vert</i>
+            <% if(seller) { %>
+                <h4>구매자님과 채팅</h4>
+                <h6><%=targetName%></h6>
+            <% } else { %>
+                <h4>판매자님과 채팅</h4>
+                <h6><%=targetName%></h6>
+            <% } %>
+        </div>
+        <div id="talkContents"></div>
+        <div class="textinput">
+            <textarea name="" id="content" cols="30" rows="15" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
+            <a id="sendbtn" class="waves-effect waves-light btn"><i class="material-icons">send</i></a>
+        </div>
+    </div>
+
+    <div id="proselectd">
+        <div id="proselect">
+            <div id="toppro">
+                <h4 id="delh4">상대 정보</h4>
+                <img src="/images/userProfile/<%=targetInfo.id%>" onerror="IProfile();" id="deimg">
+            </div>
+            <div id="psoption">
+                <div id="originalPro"><span><%=targetInfo.email%></span></div>
+                <div id="profilechange"><a href="tel:<%=targetInfo.phone%>">전화하기</a></div>
+            </div>
+            <div id="closeselect"><span>닫기</span></div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let talkContents = document.getElementById("talkContents");
+        let content = document.getElementById("content");
+        let sendbtn = document.getElementById("sendbtn");
+
+        let moreVert = document.getElementById("moreVert");
+
+        let closeselect = document.getElementById("closeselect");
+
+        let setoggle = false;
+
+        const socket = io();
+        socket.on('connect', () => {
+            console.log("GOOD");  
+        });
+
+        socket.on("metoo", (d)=>{
+            let wi100 = document.createElement("div");
+            wi100.classList.add("targetbox");
+
+            let speechBubble = document.createElement("pre");
+            speechBubble.classList.add("speechBubbletarget");
+            speechBubble.innerHTML = d;
+
+            wi100.append(speechBubble);
+            talkContents.append(wi100);
+            talkContents.scrollTop = talkContents.scrollHeight
+        });
+
+        content.addEventListener('keyup', (event)=>{
+            if(event.keyCode == 13) {
+                if(content.value.length > 0 && content.value != "\n" && !event.shiftKey) {
+                    send();
+                }
+            }
+        });
+        sendbtn.onclick = () => { send(); }
+
+        function send() {
+            socket.emit("hi", content.value);
+            let wi100 = document.createElement("div");
+            wi100.classList.add("mybox");
+            let speechBubble = document.createElement("pre");
+            speechBubble.classList.add("speechBubbleme");
+            speechBubble.innerHTML = content.value;
+
+            wi100.append(speechBubble);
+            talkContents.append(wi100);
+            talkContents.scrollTop = talkContents.scrollHeight
+            content.value = null;
+        }
+
+        moreVert.onclick = () => {
+            toggle = false;
+            if(!setoggle) {
+                setoggle = true;
+                proselectd.style.display = "flex";
+                proselect.classList.remove("psc");
+                proselect.classList.remove("pso");
+                proselect.classList.add("pso");
+            }
+        }
+
+        closeselect.onclick = () => {
+            if(setoggle) {
+                setoggle = false;
+                proselect.classList.remove("pso");
+                proselect.classList.remove("psc");
+                proselect.classList.add("psc");
+                let dis = setTimeout(() => {
+                    proselectd.style.display = "none";
+                    clearTimeout(dis);
+                }, 370);
+            } else if(!setoggle) {
+                setoggle = true;
+                proselectd.style.display = "flex";
+                proselect.classList.remove("psc");
+                proselect.classList.remove("pso");
+                proselect.classList.add("pso");
+            }
+        }
+    </script>
+</body>
+</html>

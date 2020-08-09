@@ -20,5 +20,9 @@ app.use('/', require('./routes/index.js'));
 app.use('/account/', require('./routes/account.js'));
 app.use('/tracking/', require('./routes/track.js'));
 app.use('/loginuser/', require('./routes/loginuser.js'));
+app.use('/chat/', require('./routes/chat.js'));
 
-app.listen(3000, () => { console.log("Connected !") });
+const httpServer = app.listen(3000, () => { console.log("Connected !") });
+
+const Socket = require("./routes/socket");
+Socket.init(httpServer);
