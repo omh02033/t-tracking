@@ -61,6 +61,21 @@ router
     });
 })
 
+.post('/history', (req, res) => {
+    let token = req.cookies.user;
+    if(!token) return res.status(400).json({ msg: '토큰을 불러오지 못했습니다.' });
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if(err) return res.status(400).json({ msg: '토큰을 읽지 못했습니다.' });
+        let room = req.body.url;
+
+        let sql = 'SELECT * FROM chat WHERE roomID=? ORDER BY `time` ASC, `date` ASC LIMIT 1000';
+        conn.query(sql, [room], (err, data) => {
+            if(err) return res.status(400).json({ msg: '조회도중 에러가 발생했습니다' });
+            res.status(200).json({ result: 'success', data, me: decoded.unum });
+        });
+    });
+})
+
 module.exports = router;
 
 function check(req, res, next) {

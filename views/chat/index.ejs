@@ -40,11 +40,17 @@
             text-align: center;
         }
         #talkContents {
+            display:flex;
+            flex-direction: column;
             width: 100%;
             height: calc(100% - 174.77px);
             padding: 10px;
             position: relative;
-            overflow: auto;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        #talkContents > *{
+            flex-shrink: 0;
         }
         .textinput {
             width: 100%;
@@ -73,10 +79,15 @@
         }
 
         .mybox {
-            width: 78%;
+            width: 100%;
             position: relative;
             left: 5px;
-            float: left;
+            float: right;
+            display: flex;
+            align-items: flex-end;
+            flex-direction: row-reverse;
+            overflow: hidden;
+            word-wrap: break-word;
         }
         .speechBubbleme {
             background: linear-gradient(#ffa136, #e07902);
@@ -84,44 +95,14 @@
             box-shadow: 0 1px 1px #f8b569;
             position: relative;
             width: fit-content;
-            left: 0px;
-            margin: 3px;
-            border-radius: 10px;
-            padding: 6px 8px;
-            color: white;
-            float: left;
-        }
-        .speechBubbltme::after {
-            border-top:15px solid #ffa136;
-            border-left: 15px solid transparent;
-            border-right: 0px solid transparent;
-            border-bottom: 0px solid transparent;
-            content:"";
-            position:absolute;
-            top:10px;
-            left:-15px;
-        }
-
-        .targetbox {
-            width: 78%;
-            position: relative;
-            right: 5px;
-            float: right;
-        }
-        .speechBubbletarget {
-            background: linear-gradient(#e4ddd4, #a7a29e);
-            background-color: #b4a89a;
-            box-shadow: 0 1px 1px #fff5ea;
-            position: relative;
-            width: fit-content;
             right: 0px;
             margin: 3px;
             border-radius: 10px;
             padding: 6px 8px;
-            float: right;
+            color: white;
         }
-        .speechBubblttarget::after {
-            border-top:15px solid #e4ddd4;
+        .speechBubbltme::after {
+            border-top: 15px solid #ffa136;
             border-left: 0px solid transparent;
             border-right: 15px solid transparent;
             border-bottom: 0px solid transparent;
@@ -129,6 +110,37 @@
             position:absolute;
             top:10px;
             right:-15px;
+        }
+
+        .targetbox {
+            align-items: flex-end;
+            display: flex;
+            overflow: hidden;
+            word-break: break-all;
+            width: 78%;
+            word-wrap: break-word;
+        }
+        .speechBubbletarget {
+            background: linear-gradient(#e4ddd4, #a7a29e);
+            background-color: #b4a89a;
+            box-shadow: 0 1px 1px #fff5ea;
+            position: relative;
+            width: fit-content;
+            left: 0px;
+            margin: 3px;
+            border-radius: 10px;
+            padding: 6px 8px;
+            float: left;
+        }
+        .speechBubblttarget::after {
+            border-top: 15px solid #e4ddd4;
+            border-left: 15px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 0px solid transparent;
+            content:"";
+            position:absolute;
+            top:10px;
+            left:-15px;
         }
 
         #moreVert {
@@ -145,6 +157,49 @@
         #toppro > i, #toppro > img {
             top: 30px !important;
         }
+        .timespan {
+            color: darkgray;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+        .back-line {
+            width: 100%;
+            height: 1.2px;
+            background-color: darkgray;
+            position: absolute;
+            transform: translate(0%, -50%);
+            top: 50%;
+            z-index: 5;
+        }
+        .date-span {
+            z-index: 10;
+            background-color: rgb(228, 228, 228);
+            font-size: 15px;
+            font-weight: bold;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+        .timespan.me {
+            padding-right: 8px;
+        }
+        .timespan.target { padding-left: 8px; }
+        .datebox {
+            height: 23px;
+            text-align: center;
+            position: relative;
+            margin: 8px 0 5px 0;
+        }
+        .startSpan {
+            position: relative;
+            transform: translate(-50%, -50%);
+            top: 20%;
+            left: 50%;
+            color: darkgray;
+            font-size: 20px;
+            text-align: center;
+        }
     </style>
     <script src="/javascripts/IProfile.js"></script>
 </head>
@@ -153,16 +208,16 @@
         <div id="top">
             <i id="moreVert" class="material-icons">more_vert</i>
             <% if(seller) { %>
-                <h4>구매자님과 채팅</h4>
+                <h4 class="who seller">구매자님과 채팅</h4>
                 <h6><%=targetName%></h6>
             <% } else { %>
-                <h4>판매자님과 채팅</h4>
+                <h4 class="who consumer">판매자님과 채팅</h4>
                 <h6><%=targetName%></h6>
             <% } %>
         </div>
         <div id="talkContents"></div>
         <div class="textinput">
-            <textarea name="" id="content" cols="30" rows="15" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
+            <textarea name="" id="content" cols="30" rows="15" maxlength="152" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
             <a id="sendbtn" class="waves-effect waves-light btn"><i class="material-icons">send</i></a>
         </div>
     </div>
@@ -184,6 +239,133 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         let talkContents = document.getElementById("talkContents");
+
+        let lastDate;
+
+        window.onload = () => {
+            let ur = location.href.split('/');
+            let url = {
+                url: `${ur[4]}.${ur[5]}.${ur[6]}`
+            }
+            console.log(url)
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/chat/history/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                let data = JSON.parse(xhr.responseText);
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    if(data.result == "success") {
+                        let thenDate;
+
+                        if(data.data.length == 0) {
+                            let start = document.createElement("span");
+                            start.classList.add("startSpan");
+                            start.innerHTML = "먼저 말을 걸어보세요..!";
+                            talkContents.append(start);
+                            talkContents.classList.add('first');
+                        } else {
+                            lastDate = data.data[data.data.length-1].date;
+
+                            for(let i=0; i<data.data.length; i++) {
+                                if(thenDate == data.data[i].date) {
+                                    if(data.data[i].senderID == data.me) {
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("mybox");
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbleme");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        wi100.append(speechBubble);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+
+                                        let timespan = document.createElement("span");
+                                        timespan.innerHTML = data.data[i].time;
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('me');
+
+                                        wi100.append(timespan);
+                                        talkContents.append(wi100);
+                                    } else {
+                                        let timespan = document.createElement("span");
+                                        timespan.innerHTML = data.data[i].time;
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('target');
+
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("targetbox");
+
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbletarget");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        wi100.append(speechBubble);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+
+                                        wi100.append(timespan);
+                                        talkContents.append(wi100);
+                                    }
+                                } else {
+                                    thenDate = data.data[i].date;
+                                    let datebox = document.createElement('div');
+                                    datebox.classList.add('datebox');
+
+                                    let backLine = document.createElement('div');
+                                    backLine.classList.add('back-line');
+                                    datebox.append(backLine);
+
+                                    let datespan = document.createElement('span');
+                                    datespan.innerHTML = `${data.data[i].date} ${data.data[i].week}`;
+                                    datespan.classList.add('date-span');
+
+                                    datebox.append(datespan);
+                                    talkContents.append(datebox);
+
+                                    if(data.data[i].senderID == data.me) {
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("mybox");
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbleme");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        wi100.append(speechBubble);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+
+                                        let timespan = document.createElement("span");
+                                        timespan.innerHTML = data.data[i].time;
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('me');
+
+                                        wi100.append(timespan);
+                                        talkContents.append(wi100);
+                                    } else {
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("targetbox");
+
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbletarget");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        let timespan = document.createElement("span");
+                                        timespan.innerHTML = data.data[i].time;
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('target');
+
+                                        wi100.append(speechBubble);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+
+                                        wi100.append(timespan);
+                                        talkContents.append(wi100);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    console.log(data);
+                }
+            }
+            xhr.send(JSON.stringify(url));
+        }
         let content = document.getElementById("content");
         let sendbtn = document.getElementById("sendbtn");
 
@@ -199,39 +381,150 @@
         });
 
         socket.on("metoo", (d)=>{
+            if(talkContents.classList.contains('first')) {
+                let start = document.querySelector(".startSpan");
+                start.parentNode.removeChild(start);
+                talkContents.classList.remove('first');
+            }
+
+            let today = new Date;
+
+            let year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+            let week = today.getDay();
+            let KoWeek;
+
+            if(week == 0) KoWeek = '일요일';
+            else if(week == 1) KoWeek = '월요일';
+            else if(week == 2) KoWeek = '화요일';
+            else if(week == 3) KoWeek = '수요일';
+            else if(week == 4) KoWeek = '목요일';
+            else if(week == 5) KoWeek = '금요일';
+            else if(week == 6) KoWeek = '토요일';
+
+            let date = `${year}년 ${month}월 ${day}일`;
+
+            if(lastDate != date) {
+                let datebox = document.createElement('div');
+                datebox.classList.add('datebox');
+
+                let backLine = document.createElement('div');
+                backLine.classList.add('back-line');
+                datebox.append(backLine);
+
+                let datespan = document.createElement('span');
+                datespan.innerHTML = `${date} ${KoWeek}`;
+                datespan.classList.add('date-span');
+
+                datebox.append(datespan);
+                talkContents.append(datebox);
+            }
+
+            let time = today.toLocaleTimeString();
+
             let wi100 = document.createElement("div");
             wi100.classList.add("targetbox");
 
-            let speechBubble = document.createElement("pre");
+            let speechBubble = document.createElement("div");
             speechBubble.classList.add("speechBubbletarget");
             speechBubble.innerHTML = d;
 
+            let timespan = document.createElement("span");
+            timespan.innerHTML = time;
+            timespan.classList.add('timespan');
+            timespan.classList.add('target');
+
             wi100.append(speechBubble);
+            wi100.append(timespan);
             talkContents.append(wi100);
-            talkContents.scrollTop = talkContents.scrollHeight
+            talkContents.scrollTop = talkContents.scrollHeight;
+            lastDate = date;
         });
 
         content.addEventListener('keyup', (event)=>{
             if(event.keyCode == 13) {
-                if(content.value.length > 0 && content.value != "\n" && !event.shiftKey) {
-                    send();
-                }
+                if(content.value.trim().length > 0 && !event.shiftKey) {
+                    send(content.value.trim());
+                } else if(content.value.trim().length == 0 && !event.shiftKey) { alert("문자를 입력해주세요."); }
             }
         });
-        sendbtn.onclick = () => { send(); }
+        content.addEventListener('keydown', (event) => {
+            if(event.keyCode == 13 && !event.shiftKey){
+                event.preventDefault();
+            }
+        })
+        sendbtn.onclick = () => {
+            if(content.value.trim().length > 0) {
+                send(content.value.trim());
+            } else if(content.value.trim().length == 0) { alert("문자를 입력해주세요."); }
+        }
 
-        function send() {
-            socket.emit("hi", content.value);
+        function send(msg) {
+            if(talkContents.classList.contains('first')) {
+                let start = document.querySelector(".startSpan");
+                start.parentNode.removeChild(start);
+                talkContents.classList.remove('first');
+            }
+
+            let regex = /\n/gi;
+            let bmsg = msg.replace(regex, '<br>');
+
+            socket.emit("hi", bmsg);
+
+            let today = new Date;
+
+            let year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+            let week = today.getDay();
+            let KoWeek;
+
+            if(week == 0) KoWeek = '일요일';
+            else if(week == 1) KoWeek = '월요일';
+            else if(week == 2) KoWeek = '화요일';
+            else if(week == 3) KoWeek = '수요일';
+            else if(week == 4) KoWeek = '목요일';
+            else if(week == 5) KoWeek = '금요일';
+            else if(week == 6) KoWeek = '토요일';
+
+            let date = `${year}년 ${month}월 ${day}일`;
+
+            if(lastDate != date) {
+                let datebox = document.createElement('div');
+                datebox.classList.add('datebox');
+
+                let backLine = document.createElement('div');
+                backLine.classList.add('back-line');
+                datebox.append(backLine);
+
+                let datespan = document.createElement('span');
+                datespan.innerHTML = `${date} ${KoWeek}`;
+                datespan.classList.add('date-span');
+
+                datebox.append(datespan);
+                talkContents.append(datebox);
+            }
+
+            let time = today.toLocaleTimeString();
+
             let wi100 = document.createElement("div");
             wi100.classList.add("mybox");
-            let speechBubble = document.createElement("pre");
+            let speechBubble = document.createElement("div");
             speechBubble.classList.add("speechBubbleme");
-            speechBubble.innerHTML = content.value;
+            speechBubble.innerHTML = bmsg;
+
+            let timespan = document.createElement('span');
+            timespan.innerHTML = time;
+            timespan.classList.add('timespan');
+            timespan.classList.add('me');
 
             wi100.append(speechBubble);
+            wi100.append(timespan);
             talkContents.append(wi100);
-            talkContents.scrollTop = talkContents.scrollHeight
-            content.value = null;
+            talkContents.scrollTop = talkContents.scrollHeight;
+            content.value = '';
+            lastDate = date;
         }
 
         moreVert.onclick = () => {

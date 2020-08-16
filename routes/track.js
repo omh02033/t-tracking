@@ -125,25 +125,25 @@ router
                         });
                     }
                     
-                    // let sql = 'SELECT * FROM top WHERE code=?';
-                    // conn.query(sql, [code[i]], (err, data) => {
-                    //     let lookup = data[0]
-                    //     console.log("data" + lookup.lookup);
-                    //     if(err) {
-                    //         res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
-                    //     } else {
-                    //         let look = lookup.lookup + 1;
-                    //         let sq = 'UPDATE top SET lookup=? WHERE code=?';
-                    //         console.log(look, code[i]);
-                    //         conn.query(sq, [look, code[i]], (err, result, fields) => {
-                    //             if(err) {
-                    //                 console.log(err);
-                    //             } else {
-                    //                 console.log('success');
-                    //             }
-                    //         })
-                    //     }
-                    // });
+                    let sql = 'SELECT * FROM top WHERE code=?';
+                    conn.query(sql, [code[i]], (err, data) => {
+                        let lookup = data[0]
+                        console.log("data" + lookup.lookup);
+                        if(err) {
+                            res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
+                        } else {
+                            let look = lookup.lookup + 1;
+                            let sq = 'UPDATE top SET lookup=? WHERE code=?';
+                            console.log(look, code[i]);
+                            conn.query(sq, [look, code[i]], (err, result, fields) => {
+                                if(err) {
+                                    console.log(err);
+                                } else {
+                                    console.log('success');
+                                }
+                            })
+                        }
+                    });
                     
                     return;
                 } else if(i+1 == response.length) {
@@ -230,25 +230,25 @@ router
                             });
                         }
                         
-                        // let sql = 'SELECT * FROM top WHERE code=?';
-                        // conn.query(sql, [code[i]], (err, data) => {
-                        //     let lookup = data[0]
-                        //     console.log("data" + lookup.lookup);
-                        //     if(err) {
-                        //         res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
-                        //     } else {
-                        //         let look = lookup.lookup + 1;
-                        //         let sq = 'UPDATE top SET lookup=? WHERE code=?';
-                        //         console.log(look, code[i]);
-                        //         conn.query(sq, [look, code[i]], (err, result, fields) => {
-                        //             if(err) {
-                        //                 console.log(err);
-                        //             } else {
-                        //                 console.log('success');
-                        //             }
-                        //         })
-                        //     }
-                        // });
+                        let sql = 'SELECT * FROM top WHERE code=?';
+                        conn.query(sql, [code[i]], (err, data) => {
+                            let lookup = data[0]
+                            console.log("data" + lookup.lookup);
+                            if(err) {
+                                res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
+                            } else {
+                                let look = lookup.lookup + 1;
+                                let sq = 'UPDATE top SET lookup=? WHERE code=?';
+                                console.log(look, code[i]);
+                                conn.query(sq, [look, code[i]], (err, result, fields) => {
+                                    if(err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log('success');
+                                    }
+                                })
+                            }
+                        });
                         
                         return;
                     } else if(i+1 == response.length) {
@@ -334,25 +334,25 @@ router
                             });
                         }
                         
-                        // let sql = 'SELECT * FROM top WHERE code=?';
-                        // conn.query(sql, [code[i]], (err, data) => {
-                        //     let lookup = data[0]
-                        //     console.log("data" + lookup.lookup);
-                        //     if(err) {
-                        //         res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
-                        //     } else {
-                        //         let look = lookup.lookup + 1;
-                        //         let sq = 'UPDATE top SET lookup=? WHERE code=?';
-                        //         console.log(look, code[i]);
-                        //         conn.query(sq, [look, code[i]], (err, result, fields) => {
-                        //             if(err) {
-                        //                 console.log(err);
-                        //             } else {
-                        //                 console.log('success');
-                        //             }
-                        //         })
-                        //     }
-                        // });
+                        let sql = 'SELECT * FROM top WHERE code=?';
+                        conn.query(sql, [code[i]], (err, data) => {
+                            let lookup = data[0]
+                            console.log("data" + lookup.lookup);
+                            if(err) {
+                                res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
+                            } else {
+                                let look = lookup.lookup + 1;
+                                let sq = 'UPDATE top SET lookup=? WHERE code=?';
+                                console.log(look, code[i]);
+                                conn.query(sq, [look, code[i]], (err, result, fields) => {
+                                    if(err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log('success');
+                                    }
+                                })
+                            }
+                        });
                         
                         return;
                     } else if(i+1 == response.length) {
