@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 const config = require('../config/jwt');
 const path = require('path');
+const sha256 = require('./sha256');
 
 let conn = mysql.createConnection({
     host : process.env.DATABASE_HOST,
@@ -38,6 +39,7 @@ router
                                 res.locals.seller = true;
                                 res.locals.targetName = consumerInfo.name;
                                 res.locals.targetInfo = consumerInfo;
+                                res.locals.ProFile = sha256(String(consumerInfo.id));
                                 res.render('chat/index');
                             } else { res.send("판매자 아이디에 해당 송장번호가 존재하지 않습니다."); }
                         });
@@ -51,6 +53,7 @@ router
                                 res.locals.seller = null;
                                 res.locals.targetName = sellerInfo.name;
                                 res.locals.targetInfo = sellerInfo;
+                                res.locals.ProFile = sha256(String(sellerInfo.id));
                                 res.render('chat/index');
                             } else { res.send("판매자 아이디에 해당 송장번호가 존재하지 않습니다."); }
                         });

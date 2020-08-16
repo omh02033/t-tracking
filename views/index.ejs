@@ -689,7 +689,7 @@
                 <div class="wel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -719,7 +719,7 @@
                 <div class="mwel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -975,7 +975,7 @@
             <div id="toppro">
                 <% if(decoded) { %>
                     <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
-                    <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
+                    <img src="/images/userProfile/<%=ProFile%>" onerror="IProfile();" id="deimg">
                 <% } else { %>
                     <i class="far fa-user" style="font-size: 35px;"></i>
                     <div id="deimg" style="display: none !important;"></div>

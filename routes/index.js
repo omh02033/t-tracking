@@ -6,10 +6,11 @@ const mysql = require('mysql');
 const path = require('path');
 const multer = require('multer');
 const moment = require('moment');
+const sha256 = require('./sha256');
 
 let storage = multer.diskStorage({
     destination: function (req, file, cb) { cb(null, path.join(__dirname, '../public/images/userProfile/')); },
-    filename: function (req, file, cb) { cb(null, String(req.decoded.unum) ); }
+    filename: function (req, file, cb) { cb(null, sha256(String(req.decoded.unum)) ); }
 });
 const upload = multer({storage: storage});
 
@@ -43,8 +44,8 @@ router
         if(err) throw err;
         let sql = 'SELECT * FROM subsc WHERE id=? and userid=? ORDER BY `toolname` ASC LIMIT 1000;';
         conn.query(sql, [decoded.unum, decoded.uid], (err, data) => {
-            if(err) { res.status(400).json({ err: '예상치 못한 에러가 발생했습니다.' }); }
-            if(data.length == 0) { res.send("유료서비스를 먼저 구매해주세요!"); }
+            if(err) { return res.status(400).json({ err: '예상치 못한 에러가 발생했습니다.' }); }
+            if(data.length == 0) { return res.send("유료서비스를 먼저 구매해주세요!"); }
             res.status(200).json(data);
         });
     });
@@ -138,6 +139,7 @@ function fcheck(req, res, next) {
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
+        res.locals.ProFile = null;
         res.locals.seller = null;
         return next();
     }
@@ -152,6 +154,7 @@ function fcheck(req, res, next) {
             else if(user.pay1 == 'true') { res.locals.payo = true; }
             req.decoded = decoded;
             res.locals.decoded = decoded;
+            res.locals.ProFile = sha256(String(decoded.unum));
             res.locals.seller = await sellercheck(decoded.uid);
             next();
         });
@@ -169,6 +172,7 @@ function check(req, res, next){
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
+        res.locals.ProFile = null;
         res.locals.seller = null;
         return next();
     }
@@ -186,6 +190,7 @@ function check(req, res, next){
 
             req.decoded = decoded;
             res.locals.decoded = decoded;
+            res.locals.ProFile = sha256(String(decoded.unum));
             res.locals.seller = await sellercheck(decoded.uid);
             next();
         })
@@ -196,6 +201,7 @@ function checkabout(req, res, next){
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
+        res.locals.ProFile = null;
         res.locals.seller = null;
         res.locals.payo = null;
         res.locals.payt = null;
@@ -215,6 +221,7 @@ function checkabout(req, res, next){
                 res.locals.payment[type] = isRegistered(data, type);
             }
             res.locals.decoded = decoded;
+            res.locals.ProFile = sha256(String(decoded.unum));
             res.locals.seller = sellercheck(decoded.uid);
             next();
         })
@@ -225,12 +232,14 @@ function youSeller(req, res, next) {
     let token = req.cookies.user;
     if(!token) {
         res.locals.decoded = null;
+        res.locals.ProFile = null;
         res.locals.seller = null;
         return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
         res.locals.decoded = decoded;
+        res.locals.ProFile = sha256(String(decoded.unum));
         let seller = await sellercheck(decoded.uid);
         if(seller) { return next(); }
         else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html') }); }

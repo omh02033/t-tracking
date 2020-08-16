@@ -122,7 +122,7 @@
         #show table { margin: auto; }
         @media only screen and (max-width: 600px) {
             .changepass, .changepassh {
-                margin: 100%;
+                margin: auto;
             }
             .exp span {
                 font-size: 35px;
@@ -167,6 +167,7 @@
         @media only screen and (min-width: 601px) and (max-width: 992px) {
             .changepass, .changepassh {
                 width: 100%;
+                margin: auto;
             }
             .mmlogin {
                 display: none;
@@ -205,7 +206,7 @@
                 <div class="wel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -235,7 +236,7 @@
                 <div class="mwel1">
                     <% if(decoded) { %>
                         <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
-                        <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
                         <div class="lbtn">
                             <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
                         </div>
@@ -272,7 +273,7 @@
             <% } %>
             
             <div class="profile">
-                <img src="/images/userProfile/<%=decoded.unum%>" onerror="this.src='/images/userProfile/none.png';" id="userprofile">
+                <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" id="userprofile">
                 <div class="filebox">
                     <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
                         <input class="upload-name" value="이미지 파일선택" disabled="disabled">
@@ -309,14 +310,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="changepass" style="display: none; margin: 0 !important;">
+            <div class="changepass" style="display: none;">
                 <h3>비밀번호 변경</h3>
                 <form action="/account/numcheck/" method="POST" onsubmit="checkpass(event, this);">
                     <input type="password" name="passcheck" id="passcheck" placeholder="현재 비밀번호">
                     <input type="submit" value="확인" id="passchsubmit">
                 </form>
             </div>
-            <div class="changepassh" style="display: none; margin: 0 !important;">
+            <div class="changepassh" style="display: none;">
                 <h3>비밀번호 변경</h3>
                 <form action="/account/newpass/" method="POST" onsubmit="changenewpass(event, this);">
                     <input type="password" name="newpass" id="newpass" placeholder="새로운 비밀번호"><br>
@@ -331,7 +332,7 @@
             <div id="toppro">
                 <% if(decoded) { %>
                     <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
-                    <img src="/images/userProfile/<%=decoded.unum%>" onerror="IProfile();" id="deimg">
+                    <img src="/images/userProfile/<%=ProFile%>" onerror="IProfile();" id="deimg">
                 <% } else { %>
                     <i class="far fa-user" style="font-size: 35px;"></i>
                     <div id="deimg" style="display: none !important;"></div>
@@ -363,7 +364,6 @@
         let ex_filename = document.getElementById("ex_filename");
 
         let nowid = "";
-        let nowpass = "";
         let nowemail = "";
 
         let pathpoint = location.href.lastIndexOf('#');
@@ -428,7 +428,6 @@
                     if(data.msg) { console.log(data.msg); }
 
                     nowid = data.userid;
-                    nowpass = data.userpass;
                     nowemail = data.useremail;
                     
                     let pass = document.querySelectorAll(".pass");
@@ -437,7 +436,7 @@
 
                     let starpass = "";
 
-                    for(let i=0; i<data.userpass.length; i++) { starpass += "*"; }
+                    for(let i=0; i<12; i++) { starpass += "*"; }
                     let ing = document.getElementById("ing");
 
                     let  passa = document.createElement("a");
@@ -462,29 +461,31 @@
             let passcheck = document.getElementById("passcheck");
             let passchsubmit = document.getElementById("passchsubmit");
 
-            if(passcheck.value == nowpass) {
-                let userInfo = {
-                    result: 'true',
-                    uid: nowid,
-                    email: nowemail
-                }
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/numcheck/');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if(xhr.readyState === 4 && xhr.status === 200) {
-                        let data = JSON.parse(xhr.responseText);
-                        if(data.msg = 'success') {
-                            changepass.style.display = "none";
-                            changepassh.style.display = "block";
-                        }
+            let userInfo = {
+                result: 'true',
+                uid: nowid,
+                email: nowemail,
+                pass: passcheck.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/numcheck/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.msg == 'success') {
+                        changepass.style.display = "none";
+                        changepassh.style.display = "block";
+                    }
+                } else if(xhr.readyState === 4 && xhr.status === 400) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.msg == 'fail') {
+                        passcheck.style.borderBottomColor = "red";
+                        alert("비밀번호가 일치하지 않습니다.");
                     }
                 }
-                xhr.send(JSON.stringify(userInfo));
-            } else {
-                passcheck.style.borderBottomColor = "red";
-                alert("비밀번호가 일치하지 않습니다.");
             }
+            xhr.send(JSON.stringify(userInfo));
         }
 
         function changenewpass(e, form) {

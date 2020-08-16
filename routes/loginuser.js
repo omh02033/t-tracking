@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const config = require('../config/jwt');
+let sha256 = require('./sha256');
 
 
 let conn = mysql.createConnection({
@@ -28,12 +29,14 @@ function chatcheck(req, res, next) {
     let token = req.cookies.user;
     if(!token) {
         res.locals.decoded = null;
+        res.locals.ProFile = null;
         res.locals.seller = null;
         return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html' ) });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
         res.locals.decoded = decoded;
+        res.locals.ProFile = sha256(String(decoded.unum));
         res.locals.seller = await sellercheck(decoded.uid);
         next();
     })
@@ -43,12 +46,14 @@ function check(req, res, next) {
     let token = req.cookies.user;
     if(!token){
         res.locals.decoded = null;
+        res.locals.ProFile = null;
         res.locals.seller = null;
         return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
         res.locals.decoded = decoded;
+        res.locals.ProFile = sha256(String(decoded.unum));
         res.locals.seller = await sellercheck(decoded.uid);
         next();
     });
@@ -58,12 +63,14 @@ function youSeller(req, res, next) {
     let token = req.cookies.user;
     if(!token) {
         res.locals.decoded = null;
+        res.locals.ProFile = null;
         res.locals.seller = null;
         return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
         res.locals.decoded = decoded;
+        res.locals.ProFile = sha256(String(decoded.unum));
         let seller = await sellercheck(decoded.uid);
         if(seller) {
             res.locals.seller = seller;
