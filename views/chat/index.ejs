@@ -49,6 +49,18 @@
             overflow-y: auto;
             box-sizing: border-box;
         }
+        #talkContents::-webkit-scrollbar { width: 7px; }
+        #talkContents::-webkit-scrollbar-thumb {
+            background: linear-gradient(#ffa136, #e07902);
+            background-color: #b96301;
+            box-shadow: 0 1px 1px #f8b569;
+            border-radius: 50px;
+        }
+        #talkContents::-webkit-scrollbar-track {
+            background-color: rgb(114, 70, 19);
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
         #talkContents > *{
             flex-shrink: 0;
         }
@@ -230,7 +242,7 @@
             </div>
             <div id="psoption">
                 <div id="originalPro"><span><%=targetInfo.email%></span></div>
-                <div id="profilechange"><a href="tel:<%=targetInfo.phone%>">전화하기</a></div>
+                <div id="profilechange"><a id="phone" href="tel:<%=targetInfo.phone%>">전화하기</a></div>
             </div>
             <div id="closeselect"><span>닫기</span></div>
         </div>
@@ -276,7 +288,6 @@
                                         speechBubble.innerHTML = data.data[i].content;
 
                                         wi100.append(speechBubble);
-                                        talkContents.scrollTop = talkContents.scrollHeight;
 
                                         let timespan = document.createElement("span");
                                         timespan.innerHTML = data.data[i].time;
@@ -285,6 +296,7 @@
 
                                         wi100.append(timespan);
                                         talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
                                     } else {
                                         let timespan = document.createElement("span");
                                         timespan.innerHTML = data.data[i].time;
@@ -299,10 +311,10 @@
                                         speechBubble.innerHTML = data.data[i].content;
 
                                         wi100.append(speechBubble);
-                                        talkContents.scrollTop = talkContents.scrollHeight;
 
                                         wi100.append(timespan);
                                         talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
                                     }
                                 } else {
                                     thenDate = data.data[i].date;
@@ -328,7 +340,6 @@
                                         speechBubble.innerHTML = data.data[i].content;
 
                                         wi100.append(speechBubble);
-                                        talkContents.scrollTop = talkContents.scrollHeight;
 
                                         let timespan = document.createElement("span");
                                         timespan.innerHTML = data.data[i].time;
@@ -337,6 +348,7 @@
 
                                         wi100.append(timespan);
                                         talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
                                     } else {
                                         let wi100 = document.createElement("div");
                                         wi100.classList.add("targetbox");
@@ -351,10 +363,10 @@
                                         timespan.classList.add('target');
 
                                         wi100.append(speechBubble);
-                                        talkContents.scrollTop = talkContents.scrollHeight;
 
                                         wi100.append(timespan);
                                         talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
                                     }
                                 }
                             }
@@ -372,6 +384,12 @@
         let moreVert = document.getElementById("moreVert");
 
         let closeselect = document.getElementById("closeselect");
+
+        let profilechange = document.getElementById("profilechange");
+        let phone = document.getElementById("phone");
+        profilechange.onclick = () => {
+            location.href = phone.href;
+        }
 
         let setoggle = false;
 

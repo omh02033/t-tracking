@@ -14,9 +14,9 @@ let conn = mysql.createConnection({
 });
 conn.connect();
 
-let apis = ['8UPsZK2GvDM4ET2IFMjh1Q', 'XKacA2p9rhnlMEWqXLcWZg'];
-//XKacA2p9rhnlMEWqXLcWZg
-//8UPsZK2GvDM4ET2IFMjh1Q
+let apis = ['O3hHsyJmbAd7iUYtnqxtmQ', 'kq160AvkBrsmemLwXgPQgA'];
+//kq160AvkBrsmemLwXgPQgA
+//O3hHsyJmbAd7iUYtnqxtmQ
 let apiIndex = 0;
 
 let gcode = ['99', '37', '29',     // 국제 택배
