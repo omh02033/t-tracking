@@ -1180,7 +1180,7 @@
                 xhr.onreadystatechange = function () {
                     if(xhr.readyState === 4 && xhr.status === 200) {
                         let data = JSON.parse(xhr.responseText);
-                        if(data.buySu) {
+                        if(data.buySu == true) {
                             alert("결제가 성공적으로 처리되었습니다.");
                             location.replace(location.href);
                         } else {

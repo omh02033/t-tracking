@@ -510,7 +510,7 @@ router
                                     });
                                 }
                             } else { res.status(400).json({ buySu: false, msg: '변조가 감지되었습니다.' }); }
-                        }
+                        } else { res.status(400).json({ buySu: false, msg: '에러가 발생했습니다.' }); }
                     });
                 }
             });
