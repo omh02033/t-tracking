@@ -421,7 +421,7 @@ router
     else {
         jwt.verify(token, config.secret, (err, decoded) => {
             if(err) { res.json(err); }
-            fs.unlink(path.join(__dirname, '../public/images/userProfile/')+decoded.unum, (err) => {
+            fs.unlink(path.join(__dirname, `../public/images/userProfile/${SHA256(String(decoded.unum))}`), (err) => {
                 res.status(200).json({ result: 'success' });
             });
         });
@@ -468,8 +468,8 @@ router
                         _response = JSON.parse(_response);
                         if(_response.status === 200) {
                             if(_response.data.receipt_id == req.body.data.receipt_id && _response.data.price == req.body.data.price) {
-                                let sq = 'INSERT INTO payment (`id`, `toolname`, `pay`, `card_name`, `card_no`, `n`, `receipt_id`, `purchased_at`, `status`, `pg`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                let sql = 'INSERT INTO subsc (`id`, `userid`, `username`, `kinds`, `toolname`, `price`, `purchased`, `end_at`, `recent_pay`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                let sq = `INSERT INTO payment VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                                let sql = `INSERT INTO subsc VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
                                 let cn = _response.data.payment_data.card_no;
                                 let cn1 = cn.substring(0, 4);
@@ -492,8 +492,10 @@ router
 
                                 if(_response.data.name == "국제 택배 조회" && _response.data.price == 1200) {
                                     conn.query(sq, [decoded.unum, 'pay1', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
+                                    [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now].forEach(v => console.log(typeof v));
                                     conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now], (err, rows, fields) => {
                                         if(err) { return res.status(400).json({ buySu: false }); }
+                                        console.log(`${decoded.unum}\n${decoded.uid}\n${decoded.uname}\n${_response.data.name}\npay1\n${_response.data.price}\n${now}\n${end}\n${now}`);
                                         res.status(200).json({ buySu: true });
                                     });
                                 } else if(_response.data.name == "카카오톡 봇 이용" && _response.data.price == 1500) {

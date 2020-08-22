@@ -421,7 +421,7 @@
 }
 .profileImg, .mprofileImg { cursor: pointer; }
 #psoption {
-    background-color: rgb(216, 216, 216);
+    background-color: rgb(238, 237, 237);
     margin: 0 10px 0 10px;
     width: calc(100% - 20px);
     border: 2px solid darkgray;

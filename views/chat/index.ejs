@@ -24,7 +24,7 @@
         }
         #top {
             margin: 0;
-            background-color: rgb(165, 165, 165);
+            background-color: rgb(199, 199, 199);
             font-weight: bold;
             padding-bottom: 10px;
             box-shadow: 0 0 10px gray;
@@ -57,7 +57,7 @@
             border-radius: 50px;
         }
         #talkContents::-webkit-scrollbar-track {
-            background-color: rgb(114, 70, 19);
+            background-color: rgb(255, 255, 255);
             border-radius: 10px;
             box-shadow: inset 0px 0px 5px white;
         }
@@ -133,9 +133,10 @@
             word-wrap: break-word;
         }
         .speechBubbletarget {
-            background: linear-gradient(#e4ddd4, #a7a29e);
-            background-color: #b4a89a;
-            box-shadow: 0 1px 1px #fff5ea;
+            background: linear-gradient(#ffffff, #d4d4d4);
+            background-color: #ffffff;
+            box-shadow: 0 1px 1px #dddddd;
+            /* background-color: white; */
             position: relative;
             width: fit-content;
             left: 0px;
@@ -169,7 +170,7 @@
         #toppro > i, #toppro > img {
             top: 30px !important;
         }
-        .timespan {
+        .timespan, .readS {
             color: darkgray;
             font-size: 10px;
             flex-shrink: 0;
@@ -195,6 +196,7 @@
         }
         .timespan.me {
             padding-right: 8px;
+            text-align: right;
         }
         .timespan.target { padding-left: 8px; }
         .datebox {
@@ -213,7 +215,24 @@
             text-align: center;
         }
     </style>
-    <script src="/javascripts/IProfile.js"></script>
+    <script>
+        function IProfile() {
+            let toppro = document.getElementById("toppro");
+            let deimg = document.getElementById("deimg");
+            let delh4 = document.getElementById("delh4");
+
+            let i = document.createElement("i");
+            i.classList.add("far");
+            i.classList.add("fa-user");
+            i.style.fontSize = "35px";
+            let h4 = document.createElement("h4");
+            h4.innerHTML = "상대 정보";
+            toppro.removeChild(deimg);
+            toppro.removeChild(delh4);
+            toppro.append(h4);
+            toppro.append(i);
+        }
+    </script>
 </head>
 <body>
     <div id="main">
@@ -254,12 +273,13 @@
 
         let lastDate;
 
+        requestAnimationFrame = () => { console.log("ing"); }
+
         window.onload = () => {
             let ur = location.href.split('/');
             let url = {
                 url: `${ur[4]}.${ur[5]}.${ur[6]}`
             }
-            console.log(url)
             let xhr = new XMLHttpRequest();
             xhr.open('POST', '/chat/history/');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -290,6 +310,12 @@
                                         wi100.append(speechBubble);
 
                                         let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
+                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
+                                        timespan.append(readS);
+                                        timespan.append(document.createElement("br"));
                                         timespan.innerHTML = data.data[i].time;
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('me');
@@ -299,6 +325,12 @@
                                         talkContents.scrollTop = talkContents.scrollHeight;
                                     } else {
                                         let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
+                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
+                                        timespan.append(readS);
+                                        timespan.append(document.createElement("br"));
                                         timespan.innerHTML = data.data[i].time;
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('target');
@@ -342,6 +374,12 @@
                                         wi100.append(speechBubble);
 
                                         let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
+                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
+                                        timespan.append(readS);
+                                        timespan.append(document.createElement("br"));
                                         timespan.innerHTML = data.data[i].time;
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('me');
@@ -358,6 +396,12 @@
                                         speechBubble.innerHTML = data.data[i].content;
 
                                         let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
+                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
+                                        timespan.append(readS);
+                                        timespan.append(document.createElement("br"));
                                         timespan.innerHTML = data.data[i].time;
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('target');

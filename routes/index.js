@@ -219,6 +219,9 @@ function checkabout(req, res, next){
             let paymentTypes = ["pay1", "pay2", "pay3"];
             for(let type of paymentTypes) {
                 res.locals.payment[type] = isRegistered(data, type);
+                // console.log(type + " = " + isRegistered(data, type));
+                console.log(data);
+                console.log(type);
             }
             res.locals.decoded = decoded;
             res.locals.ProFile = sha256(String(decoded.unum));
@@ -260,15 +263,13 @@ function ech(req, res, next) {
                     let date = moment();
                     let now = date.format("YYYYMMDD");
                     for(let i=0; i<data.length; i++) {
-                        if(data[i].toolname == "pay1") {
-                            if(data[i].end_at > now) {
-                                let dsql = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
-                                conn.query(dsql, [decoded.unum, data[i].toolname, decoded.uid], (err, data1) => {
-                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
-                                    next();
-                                });
-                            } else { next(); }
-                        }
+                        if(data[i].end_at < now) {
+                            let dsql = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
+                            conn.query(dsql, [decoded.unum, data[i].toolname, decoded.uid], (err, data1) => {
+                                if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                                next();
+                            });
+                        } else { next(); }
                     }
                 }
             });

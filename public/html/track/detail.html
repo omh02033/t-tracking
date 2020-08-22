@@ -68,6 +68,12 @@
             overflow: hidden;
             -moz-binding: url('ellipsis.xml#ellipsis');
         }
+        .statushead {
+            background-color: rgba(173, 173, 173, 0.5);
+        }
+        .statushead td {
+            font-weight: bold !important;
+        }
     </style>
 </head>
 <body>
@@ -98,7 +104,7 @@
     <div class="status">
         <table>
             <thead>
-                <tr>
+                <tr class="statushead">
                     <td style="width: 150px;">시간</td>
                     <td>현재 위치</td>
                     <td>배송 상태</td>

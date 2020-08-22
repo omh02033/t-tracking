@@ -24,7 +24,7 @@
             border-radius: 10px;
         }
         body::-webkit-scrollbar-track {
-            background-color: rgb(114, 70, 19);
+            background-color: rgb(255, 255, 255);
             border-radius: 10px;
             box-shadow: inset 0px 0px 5px white;
         }
@@ -100,6 +100,12 @@
         }
         a { cursor: pointer; }
         .payservice .btn, .mpayservice .btn { background-color: rgb(85, 109, 173); }
+        #forget {
+            width: 180px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
         @keyframes ser1 {0%{background-color: rgba(168,255,255,0.0);} 100%{background-color: rgba(168,255,255,0.4);}}
         @keyframes ser2 {0%{background-color: rgba(255,192,203,0.0);} 100%{background-color: rgba(255,192,203,0.4);}}
         @keyframes ser3 {0%{background-color: rgba(250,123,220,0.0);} 100%{background-color: rgba(220,93,220,0.2);}}
@@ -672,8 +678,8 @@
                     <a id="backh" style="display: none;"></a><a id="refund" style="display: none;"></a>
                 <% } %>
             </div>
-            <div class="explain" style="margin-bottom: 50px; position: absolute; transform: translate(-50%, -50%); left: 50%;">
-                <a class="waves-effect waves-light btn-small orange" id="forget"><i class="material-icons left" style="font-size: 25px;">assignment</i>자세한 설명 보기</a>
+            <div class="explain" style="margin-bottom: 100px; position: absolute; transform: translate(-50%, -50%); left: 50%;">
+                <a class="waves-effect waves-light btn-small orange" id="forget"><i class="material-icons left" style="font-size: 30px;">assignment</i>자세한 설명 보기</a>
             </div>
         </div>
         <% if(decoded) { %>
