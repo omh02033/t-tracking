@@ -70,6 +70,10 @@
             position: absolute;
             bottom: 0;
         }
+        .textinput textarea, .textinput a {
+            position: absolute;
+            z-index: 50;
+        }
         #content {
             background-color: white;
             width: 85%;
@@ -174,6 +178,11 @@
             color: darkgray;
             font-size: 10px;
             flex-shrink: 0;
+            padding-right: 8px;
+        }
+        .timebox.me {
+            vertical-align: bottom;
+            text-align: right;
         }
         .back-line {
             width: 100%;
@@ -194,11 +203,14 @@
             top: 50%;
             left: 50%;
         }
-        .timespan.me {
-            padding-right: 8px;
+        .timespan.me, .readS.me {
             text-align: right;
+            display: block;
         }
-        .timespan.target { padding-left: 8px; }
+        .timespan.target, .readS.target {
+            padding-left: 8px;
+            display: block;
+        }
         .datebox {
             height: 23px;
             text-align: center;
@@ -214,6 +226,35 @@
             font-size: 20px;
             text-align: center;
         }
+        @keyframes ingOn {
+            from { top: 0; }
+            to { top: -21px; }
+        }
+        @keyframes ingOff {
+            from { top: -21px; }
+            to { top: 0; }
+        }
+        @keyframes tcOn {
+            from { height: calc(100% - 174.77px); }
+            to { height: calc(100% - 195.77px); }
+        }
+        @keyframes tcOff {
+            from { height: calc(100% - 195.77px); }
+            to { height: calc(100% - 174.77px); }
+        }
+        .textinput .Tchatting {
+            color: white;
+            background-color: rgb(161, 161, 161);
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            z-index: 10;
+            padding-left: 20px;
+        }
+        .textinput .Tchatting.on { animation: ingOn 0.6s forwards; }
+        #talkContents.chaton { animation: tcOn 0.6s forwards; }
+        .textinput .Tchatting.off { animation: ingOff 0.2s forwards; }
+        #talkContents.chatoff { animation: tcOff 0.2s forwards; }
     </style>
     <script>
         function IProfile() {
@@ -248,6 +289,7 @@
         </div>
         <div id="talkContents"></div>
         <div class="textinput">
+            <div class="Tchatting"><span>상대가 입력중입니다...</span></div>
             <textarea name="" id="content" cols="30" rows="15" maxlength="152" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
             <a id="sendbtn" class="waves-effect waves-light btn"><i class="material-icons">send</i></a>
         </div>
@@ -273,13 +315,26 @@
 
         let lastDate;
 
-        requestAnimationFrame = () => { console.log("ing"); }
+        function move() {
+            if(!document.body.classList.contains('ontap')){
+                document.body.classList.remove('offtap');
+                document.body.classList.add('ontap');
+            }
+            console.log("접속");
+            setTimeout(()=>{
+                if(document.body.classList.contains('ontap')) {
+                    document.body.classList.remove('ontap');
+                    document.body.classList.add('offtap');
+                }
+                requestAnimationFrame(move);
+            }, 500);
+        }
+        
+        move();
 
         window.onload = () => {
             let ur = location.href.split('/');
-            let url = {
-                url: `${ur[4]}.${ur[5]}.${ur[6]}`
-            }
+            let url = { url: `${ur[4]}.${ur[5]}.${ur[6]}` }
             let xhr = new XMLHttpRequest();
             xhr.open('POST', '/chat/history/');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -309,28 +364,51 @@
 
                                         wi100.append(speechBubble);
 
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('me');
+                                        span.dataset.msgid = data.data[i].msgID;
                                         let timespan = document.createElement("span");
                                         let readS = document.createElement("span");
                                         readS.classList.add('readS');
+                                        readS.classList.add('me');
                                         if(data.data[i].readS == 0) readS.innerHTML = "읽음";
                                         else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
-                                        timespan.append(readS);
-                                        timespan.append(document.createElement("br"));
                                         timespan.innerHTML = data.data[i].time;
+                                        span.append(readS);
+                                        span.append(timespan);
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('me');
 
-                                        wi100.append(timespan);
+                                        wi100.append(span);
                                         talkContents.append(wi100);
                                         talkContents.scrollTop = talkContents.scrollHeight;
                                     } else {
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('target');
+                                        span.dataset.msgid = data.data[i].msgID;
                                         let timespan = document.createElement("span");
                                         let readS = document.createElement("span");
                                         readS.classList.add('readS');
-                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
-                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
-                                        timespan.append(readS);
-                                        timespan.append(document.createElement("br"));
+                                        readS.classList.add('target');
+                                        if(data.data[i].readS == 1) {
+                                            let dt = { data: data.data[i] };
+                                            let xhr1 = new XMLHttpRequest();
+                                            xhr1.open('POST', '/chat/readed/');
+                                            xhr1.setRequestHeader('Content-Type', 'application/json');
+                                            xhr1.onreadystatechange = () => {
+                                                let data1 = JSON.parse(xhr1.responseText);
+                                                if(xhr1.readyState === 4 && xhr1.status === 400) { alert(data1.msg);}
+                                                else if(xhr1.readyState === 4 && xhr1.status === 200) {
+                                                    socket.emit('nowRead', data.data[i]);
+                                                }
+                                            }
+                                            xhr1.send(JSON.stringify(dt));
+                                        }
+                                        readS.innerHTML = "읽음";
+                                        span.append(readS);
+                                        span.append(timespan);
                                         timespan.innerHTML = data.data[i].time;
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('target');
@@ -344,7 +422,7 @@
 
                                         wi100.append(speechBubble);
 
-                                        wi100.append(timespan);
+                                        wi100.append(span);
                                         talkContents.append(wi100);
                                         talkContents.scrollTop = talkContents.scrollHeight;
                                     }
@@ -373,18 +451,23 @@
 
                                         wi100.append(speechBubble);
 
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('me');
+                                        span.dataset.msgid = data.data[i].msgID;
                                         let timespan = document.createElement("span");
                                         let readS = document.createElement("span");
                                         readS.classList.add('readS');
+                                        readS.classList.add('me');
                                         if(data.data[i].readS == 0) readS.innerHTML = "읽음";
                                         else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
-                                        timespan.append(readS);
-                                        timespan.append(document.createElement("br"));
+                                        span.append(readS);
+                                        span.append(timespan);
                                         timespan.innerHTML = data.data[i].time;
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('me');
 
-                                        wi100.append(timespan);
+                                        wi100.append(span);
                                         talkContents.append(wi100);
                                         talkContents.scrollTop = talkContents.scrollHeight;
                                     } else {
@@ -395,20 +478,38 @@
                                         speechBubble.classList.add("speechBubbletarget");
                                         speechBubble.innerHTML = data.data[i].content;
 
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('target');
                                         let timespan = document.createElement("span");
                                         let readS = document.createElement("span");
                                         readS.classList.add('readS');
-                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
-                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
-                                        timespan.append(readS);
-                                        timespan.append(document.createElement("br"));
+                                        readS.classList.add('target');
+                                        span.dataset.msgid = data.data[i].msgID;
+                                        if(data.data[i].readS == 1) {
+                                            let dt = { data: data.data[i] };
+                                            let xhr1 = new XMLHttpRequest();
+                                            xhr1.open('POST', '/chat/readed/');
+                                            xhr1.setRequestHeader('Content-Type', 'application/json');
+                                            xhr1.onreadystatechange = () => {
+                                                let data1 = JSON.parse(xhr1.responseText);
+                                                if(xhr1.readyState === 4 && xhr1.status === 400) { alert(data1.msg); }
+                                                else if(xhr1.readyState === 4 && xhr1.status === 200) {
+                                                    socket.emit('nowRead', data.data[i]);
+                                                }
+                                            }
+                                            xhr1.send(JSON.stringify(dt));
+                                        }
+                                        readS.innerHTML = "읽음";
+                                        span.append(readS);
+                                        span.append(timespan);
                                         timespan.innerHTML = data.data[i].time;
                                         timespan.classList.add('timespan');
                                         timespan.classList.add('target');
 
                                         wi100.append(speechBubble);
 
-                                        wi100.append(timespan);
+                                        wi100.append(span);
                                         talkContents.append(wi100);
                                         talkContents.scrollTop = talkContents.scrollHeight;
                                     }
@@ -416,8 +517,6 @@
                             }
                         }
                     }
-                } else {
-                    console.log(data);
                 }
             }
             xhr.send(JSON.stringify(url));
@@ -438,11 +537,87 @@
         let setoggle = false;
 
         const socket = io();
+
         socket.on('connect', () => {
             console.log("GOOD");  
         });
 
+        socket.on("targetNowRead", (data) => {
+            let readS = document.querySelector(`.timebox.me[data-msgID="${data.msgID}"] .readS`);
+            readS.innerHTML = "읽음";
+        });
+
+        let checking;
+
+        function chatStopChecker() {
+            if(checking !== undefined)
+                clearTimeout(checking);
+            checking = setTimeout(() => {
+                socket.emit('myNoChatting', 'noChatting');
+            }, 3000);
+        }
+
+        content.onkeyup = () => {
+            socket.emit('mychatting', 'chatting');
+            chatStopChecker();
+        }
+
+        let toggle = false;
+
+        socket.on("targetChatting", (d) => {
+            if(d == 'chatting') {
+                if(!toggle) {
+                    document.querySelector(".Tchatting").classList.remove('off');
+                    document.querySelector(".Tchatting").classList.add('on');
+                    talkContents.classList.remove('chatoff');
+                    talkContents.classList.add('chaton');
+                    let idx = 30;
+                    let down = setInterval(() => {
+                        if(idx == 600) {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            clearInterval(down);
+                        } else {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            idx += 30;
+                        }
+                    }, 30);
+                    toggle = true;
+                }
+            }
+        });
+        socket.on("targetNoChatting", (d) => {
+            if(d == 'noChatting') {
+                if(toggle) {
+                    document.querySelector(".Tchatting").classList.remove('on');
+                    document.querySelector(".Tchatting").classList.add('off');
+                    talkContents.classList.remove('chaton');
+                    talkContents.classList.add('chatoff');
+                    let idx = 10;
+                    let down = setInterval(() => {
+                        if(idx == 200) {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            clearInterval(down);
+                        } else {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            idx += 10;
+                        }
+                    }, 10);
+                    toggle = false;
+                }
+            }
+        });
+
         socket.on("metoo", (d)=>{
+            let data = JSON.parse(d);
+            let time = data.time;
+            let msg = data.bmsg;
+            let msgID = data.msgID;
+
+            document.querySelector(".Tchatting").classList.remove('on');
+            document.querySelector(".Tchatting").classList.add('off');
+            talkContents.classList.remove('chaton');
+            talkContents.classList.add('chatoff');
+
             if(talkContents.classList.contains('first')) {
                 let start = document.querySelector(".startSpan");
                 start.parentNode.removeChild(start);
@@ -483,22 +658,28 @@
                 talkContents.append(datebox);
             }
 
-            let time = today.toLocaleTimeString();
-
             let wi100 = document.createElement("div");
             wi100.classList.add("targetbox");
 
             let speechBubble = document.createElement("div");
             speechBubble.classList.add("speechBubbletarget");
-            speechBubble.innerHTML = d;
+            speechBubble.innerHTML = msg;
 
+            let span = document.createElement("span");
+            span.classList.add('timebox', 'target');
+            span.dataset.msgid = msgID;
+            let readS = document.createElement("span");
+            readS.classList.add('readS', 'target');
+            readS.innerHTML = "읽음";
             let timespan = document.createElement("span");
             timespan.innerHTML = time;
             timespan.classList.add('timespan');
             timespan.classList.add('target');
+            span.append(readS);
+            span.append(timespan);
 
             wi100.append(speechBubble);
-            wi100.append(timespan);
+            wi100.append(span);
             talkContents.append(wi100);
             talkContents.scrollTop = talkContents.scrollHeight;
             lastDate = date;
@@ -507,7 +688,9 @@
         content.addEventListener('keyup', (event)=>{
             if(event.keyCode == 13) {
                 if(content.value.trim().length > 0 && !event.shiftKey) {
-                    send(content.value.trim());
+                    let today = new Date;
+                    let time = today.toLocaleTimeString();
+                    send(content.value.trim(), time);
                 } else if(content.value.trim().length == 0 && !event.shiftKey) { alert("문자를 입력해주세요."); }
             }
         });
@@ -518,21 +701,18 @@
         })
         sendbtn.onclick = () => {
             if(content.value.trim().length > 0) {
-                send(content.value.trim());
+                let today = new Date;
+                let time = today.toLocaleTimeString();
+                send(content.value.trim(), time);
             } else if(content.value.trim().length == 0) { alert("문자를 입력해주세요."); }
         }
 
-        function send(msg) {
+        function send(msg, time) {
             if(talkContents.classList.contains('first')) {
                 let start = document.querySelector(".startSpan");
                 start.parentNode.removeChild(start);
                 talkContents.classList.remove('first');
             }
-
-            let regex = /\n/gi;
-            let bmsg = msg.replace(regex, '<br>');
-
-            socket.emit("hi", bmsg);
 
             let today = new Date;
 
@@ -540,6 +720,27 @@
             let month = today.getMonth() + 1;
             let day = today.getDate();
             let week = today.getDay();
+
+            let shmonth;
+            let shday;
+
+            if(String(month).length == 1) { shmonth = `0${month}`; }
+            if(String(day).length == 1) { shday = `0${day}`; }
+
+            let regex = /\n/gi;
+            let bmsg = msg.replace(regex, '<br>');
+
+            let url = location.href.split('/');
+            let msgID = `${url[4]}${url[5]}${url[6]}${year}${month}${day}${today.getHours()}${today.getMinutes()}${today.getSeconds()}${today.getMilliseconds()}`;
+
+            let Info = {
+                time,
+                bmsg,
+                msgID
+            }
+
+            socket.emit("hi", JSON.stringify(Info));
+
             let KoWeek;
 
             if(week == 0) KoWeek = '일요일';
@@ -568,21 +769,27 @@
                 talkContents.append(datebox);
             }
 
-            let time = today.toLocaleTimeString();
-
             let wi100 = document.createElement("div");
             wi100.classList.add("mybox");
             let speechBubble = document.createElement("div");
             speechBubble.classList.add("speechBubbleme");
             speechBubble.innerHTML = bmsg;
 
+            let span = document.createElement("span");
+            span.classList.add('timebox', 'me');
+            span.dataset.msgid = msgID;
+            let readS = document.createElement("span");
+            readS.classList.add('readS', 'me');
+            readS.innerHTML = "안읽음";
             let timespan = document.createElement('span');
             timespan.innerHTML = time;
             timespan.classList.add('timespan');
             timespan.classList.add('me');
+            span.append(readS);
+            span.append(timespan);
 
             wi100.append(speechBubble);
-            wi100.append(timespan);
+            wi100.append(span);
             talkContents.append(wi100);
             talkContents.scrollTop = talkContents.scrollHeight;
             content.value = '';
@@ -590,7 +797,6 @@
         }
 
         moreVert.onclick = () => {
-            toggle = false;
             if(!setoggle) {
                 setoggle = true;
                 proselectd.style.display = "flex";

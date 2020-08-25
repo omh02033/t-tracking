@@ -71,11 +71,20 @@ router
         if(err) return res.status(400).json({ msg: '토큰을 읽지 못했습니다.' });
         let room = req.body.url;
 
-        let sql = 'SELECT * FROM chat WHERE roomID=? ORDER BY `time` ASC, `date` ASC LIMIT 1000';
+        let sql = 'SELECT * FROM chat WHERE roomID=? ORDER BY `date` ASC, `time` ASC LIMIT 1000;';
         conn.query(sql, [room], (err, data) => {
             if(err) return res.status(400).json({ msg: '조회도중 에러가 발생했습니다' });
             res.status(200).json({ result: 'success', data, me: decoded.unum });
         });
+    });
+})
+
+.post('/readed', (req, res) => {
+    let data = req.body.data;
+    let sql = 'UPDATE chat SET `readS`=? WHERE senderID=? AND recipientID=? AND roomID=? AND denum=? AND content=? AND date=? AND week=? AND time=?';
+    conn.query(sql, [0, data.senderID, data.recipientID, data.roomID, data.denum, data.content, data.date, data.week, data.time], (err) => {
+        if(err) { console.log(err);return res.status(400).json({ msg: '데이터를 변경하는 과정에서 에러가 발생했습니다.' }); }
+        res.status(200).json({ result: 'success' });
     });
 })
 
