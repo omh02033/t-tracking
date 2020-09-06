@@ -17,7 +17,7 @@
         body{ margin: 0; }
         #main {
             height: 100vh;
-            width: 100vw;
+            width: 500px;
             margin: 0;
             background-color: rgb(228, 228, 228);
             position: relative;
@@ -313,24 +313,29 @@
     <script>
         let talkContents = document.getElementById("talkContents");
 
+        const socket = io();
+
         let lastDate;
 
-        function move() {
-            if(!document.body.classList.contains('ontap')){
-                document.body.classList.remove('offtap');
-                document.body.classList.add('ontap');
-            }
-            console.log("접속");
-            setTimeout(()=>{
-                if(document.body.classList.contains('ontap')) {
-                    document.body.classList.remove('ontap');
-                    document.body.classList.add('offtap');
+        document.body.classList.add('ontap');
+        window.addEventListener('focus', () => {
+            document.body.classList.remove('offtap');
+            document.body.classList.add('ontap');
+
+            let not = document.querySelectorAll('.not');
+            if(not.length != 0) {
+                for(let i of not) {
+                    let data = { msgID: i.parentNode.dataset.msgid };
+                    i.innerHTML = "읽음";
+                    socket.emit('nowRead', data);
+                    i.classList.remove('not');
                 }
-                requestAnimationFrame(move);
-            }, 500);
-        }
-        
-        move();
+            }
+        });
+        window.addEventListener('blur', () => {
+            document.body.classList.remove('ontap');
+            document.body.classList.add('offtap');
+        });
 
         window.onload = () => {
             let ur = location.href.split('/');
@@ -373,7 +378,10 @@
                                         readS.classList.add('readS');
                                         readS.classList.add('me');
                                         if(data.data[i].readS == 0) readS.innerHTML = "읽음";
-                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
+                                        else if(data.data[i].readS == 1) {
+                                            readS.innerHTML = "안읽음";
+                                            readS.classList.add('not');
+                                        }
                                         timespan.innerHTML = data.data[i].time;
                                         span.append(readS);
                                         span.append(timespan);
@@ -460,7 +468,10 @@
                                         readS.classList.add('readS');
                                         readS.classList.add('me');
                                         if(data.data[i].readS == 0) readS.innerHTML = "읽음";
-                                        else if(data.data[i].readS == 1) readS.innerHTML = "안읽음";
+                                        else if(data.data[i].readS == 1) {
+                                            readS.innerHTML = "안읽음";
+                                            readS.classList.add('not');
+                                        }
                                         span.append(readS);
                                         span.append(timespan);
                                         timespan.innerHTML = data.data[i].time;
@@ -535,8 +546,6 @@
         }
 
         let setoggle = false;
-
-        const socket = io();
 
         socket.on('connect', () => {
             console.log("GOOD");  
@@ -670,7 +679,11 @@
             span.dataset.msgid = msgID;
             let readS = document.createElement("span");
             readS.classList.add('readS', 'target');
-            readS.innerHTML = "읽음";
+            if(document.body.classList.contains('ontap')) readS.innerHTML = "읽음";
+            else {
+                readS.innerHTML = "안읽음";
+                readS.classList.add('not');
+            }
             let timespan = document.createElement("span");
             timespan.innerHTML = time;
             timespan.classList.add('timespan');
@@ -683,6 +696,13 @@
             talkContents.append(wi100);
             talkContents.scrollTop = talkContents.scrollHeight;
             lastDate = date;
+
+            let msgID1 = { msgID };
+            console.log(msgID);
+
+            if(document.body.classList.contains('ontap')) {
+                socket.emit('nowRead', msgID1);
+            }
         });
 
         content.addEventListener('keyup', (event)=>{
@@ -781,6 +801,7 @@
             let readS = document.createElement("span");
             readS.classList.add('readS', 'me');
             readS.innerHTML = "안읽음";
+            readS.classList.add('not');
             let timespan = document.createElement('span');
             timespan.innerHTML = time;
             timespan.classList.add('timespan');

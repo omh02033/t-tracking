@@ -26,6 +26,8 @@ let i = 0;
 let toggle = false;
 let mtoggle = false;
 let setoggle = false;
+let chattoggle = false;
+let mchattoggle = false;
 
 originalPro.onclick = () => {
     let tf = confirm("기본 프로필 사진으로 바꾸시겠습니까?");
@@ -162,5 +164,45 @@ mtop.onmouseup = () => {
         mtoggle = false;
         mmenu.classList.remove("mmenuo");
         mmenu.classList.add("mmenuc");
+    }
+}
+
+function chatdown(menu55) {
+    let asschat = document.querySelectorAll(".asschat");
+
+    if(!chattoggle) {
+        chattoggle = true;
+        menu55.innerHTML = "판매자와 채팅 ▲";
+        menu55.classList.remove('sel');
+        for(let i=0; i<asschat.length; i++) {
+            asschat[i].style.display = "flex";
+        }
+    } else {
+        chattoggle = false;
+        menu55.innerHTML = "판매자와 채팅 ▼";
+        menu55.classList.add('sel');
+        for(let i=0; i<asschat.length; i++) {
+            asschat[i].style.display = "none";
+        }
+    }
+}
+
+function mchatdown(mmenu55) {
+    let masschat = document.querySelectorAll(".masschat");
+
+    if(!mchattoggle) {
+        mchattoggle = true;
+        mmenu55.innerHTML = "판매자와 채팅 ▲";
+        mmenu55.classList.remove('sel');
+        for(let i=0; i<masschat.length; i++) {
+            masschat[i].style.display = "flex";
+        }
+    } else {
+        mchattoggle = false;
+        mmenu55.innerHTML = "판매자와 채팅 ▼";
+        mmenu55.classList.add('sel');
+        for(let i=0; i<masschat.length; i++) {
+            masschat[i].style.display = "none";
+        }
     }
 }
