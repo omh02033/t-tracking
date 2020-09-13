@@ -380,7 +380,7 @@
                                         if(data.data[i].readS == 0) readS.innerHTML = "읽음";
                                         else if(data.data[i].readS == 1) {
                                             readS.innerHTML = "안읽음";
-                                            readS.classList.add('not');
+                                            readS.classList.add('menot');
                                         }
                                         timespan.innerHTML = data.data[i].time;
                                         span.append(readS);
@@ -470,7 +470,7 @@
                                         if(data.data[i].readS == 0) readS.innerHTML = "읽음";
                                         else if(data.data[i].readS == 1) {
                                             readS.innerHTML = "안읽음";
-                                            readS.classList.add('not');
+                                            readS.classList.add('menot');
                                         }
                                         span.append(readS);
                                         span.append(timespan);
@@ -801,7 +801,7 @@
             let readS = document.createElement("span");
             readS.classList.add('readS', 'me');
             readS.innerHTML = "안읽음";
-            readS.classList.add('not');
+            readS.classList.add('menot');
             let timespan = document.createElement('span');
             timespan.innerHTML = time;
             timespan.classList.add('timespan');
