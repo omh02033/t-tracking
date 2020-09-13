@@ -373,6 +373,7 @@
 
                         chatbtn.dataset.target = data.sellerID;
                         chatbtn.dataset.me = data.myID;
+                        chatbtn.dataset.denum = data.denum;
 
                         sellerF.classList.remove("dn");
                         sellerF.classList.add("db");
@@ -389,7 +390,7 @@
         }
 
         function chaton() {
-            window.open(`/chat/${chatbtn.dataset.me}/380160267435/${chatbtn.dataset.target}`, '', 'width=500,height=705,scrollbar=yes,top=150,left=800');
+            window.open(`/chat/${chatbtn.dataset.me}/${chatbtn.dataset.denum}/${chatbtn.dataset.target}`, '', 'width=500,height=705,scrollbar=yes,top=150,left=800');
         }
     </script>
 </body>
