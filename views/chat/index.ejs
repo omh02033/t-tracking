@@ -552,7 +552,7 @@
         });
 
         socket.on("targetNowRead", (data) => {
-            let readS = document.querySelector(`.timebox.me[data-msgID="${data.msgID}"] .readS.not`);
+            let readS = document.querySelector(`.timebox.me[data-msgID="${data.msgID}"] .readS.menot`);
             readS.innerHTML = "읽음";
         });
 
