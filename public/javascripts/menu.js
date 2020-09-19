@@ -167,7 +167,7 @@ mtop.onmouseup = () => {
     }
 }
 
-function chatdown(menu55) {
+function chatdown(menu55, local) {
     let asschat = document.querySelectorAll(".asschat");
 
     if(!chattoggle) {
@@ -180,14 +180,14 @@ function chatdown(menu55) {
     } else {
         chattoggle = false;
         menu55.innerHTML = "판매자와 채팅 ▼";
-        menu55.classList.add('sel');
+        if(local) menu55.classList.add('sel');
         for(let i=0; i<asschat.length; i++) {
             asschat[i].style.display = "none";
         }
     }
 }
 
-function mchatdown(mmenu55) {
+function mchatdown(mmenu55, local) {
     let masschat = document.querySelectorAll(".masschat");
 
     if(!mchattoggle) {
@@ -200,7 +200,7 @@ function mchatdown(mmenu55) {
     } else {
         mchattoggle = false;
         mmenu55.innerHTML = "판매자와 채팅 ▼";
-        mmenu55.classList.add('sel');
+        if(local) mmenu55.classList.add('sel');
         for(let i=0; i<masschat.length; i++) {
             masschat[i].style.display = "none";
         }
