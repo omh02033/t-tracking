@@ -219,9 +219,6 @@ function checkabout(req, res, next){
             let paymentTypes = ["pay1", "pay2", "pay3"];
             for(let type of paymentTypes) {
                 res.locals.payment[type] = isRegistered(data, type);
-                // console.log(type + " = " + isRegistered(data, type));
-                console.log(data);
-                console.log(type);
             }
             res.locals.decoded = decoded;
             res.locals.ProFile = sha256(String(decoded.unum));

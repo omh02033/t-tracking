@@ -128,13 +128,11 @@ router
                     let sql = 'SELECT * FROM top WHERE code=?';
                     conn.query(sql, [code[i]], (err, data) => {
                         let lookup = data[0]
-                        console.log("data" + lookup.lookup);
                         if(err) {
                             res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
                         } else {
                             let look = lookup.lookup + 1;
                             let sq = 'UPDATE top SET lookup=? WHERE code=?';
-                            console.log(look, code[i]);
                             conn.query(sq, [look, code[i]], (err, result, fields) => {
                                 if(err) {
                                     console.log(err);
@@ -170,9 +168,7 @@ router
             })
             Promise.all(promises)
             .then(function (response) {
-                console.log(promises.length);
                 for(let i=0; i<response.length; i++) {
-                    console.log(i);
                     if(response[i].data.result == 'Y') {
                         let today = new Date();   
 
@@ -233,13 +229,11 @@ router
                         let sql = 'SELECT * FROM top WHERE code=?';
                         conn.query(sql, [code[i]], (err, data) => {
                             let lookup = data[0]
-                            console.log("data" + lookup.lookup);
                             if(err) {
                                 res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
                             } else {
                                 let look = lookup.lookup + 1;
                                 let sq = 'UPDATE top SET lookup=? WHERE code=?';
-                                console.log(look, code[i]);
                                 conn.query(sq, [look, code[i]], (err, result, fields) => {
                                     if(err) {
                                         console.log(err);
@@ -275,7 +269,6 @@ router
             })
             Promise.all(promises)
             .then(function (response) {
-                console.log(promises.length);
                 for(let i=0; i<response.length; i++) {
                     if(response[i].data.result == 'Y') {
                         let today = new Date();   
@@ -337,13 +330,11 @@ router
                         let sql = 'SELECT * FROM top WHERE code=?';
                         conn.query(sql, [code[i]], (err, data) => {
                             let lookup = data[0]
-                            console.log("data" + lookup.lookup);
                             if(err) {
                                 res.status(400).json({ msg: `조회 추가과정에서 에러가 발생했습니다 : ${code[i]}` });
                             } else {
                                 let look = lookup.lookup + 1;
                                 let sq = 'UPDATE top SET lookup=? WHERE code=?';
-                                console.log(look, code[i]);
                                 conn.query(sq, [look, code[i]], (err, result, fields) => {
                                     if(err) {
                                         console.log(err);
