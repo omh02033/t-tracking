@@ -1,18 +1,9 @@
-<mxfile host="app.diagrams.net" modified="2020-09-19T03:22:05.748Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" etag="fA2tEp4TzGOklUuoo7Hs" version="13.4.2" type="github">
+<mxfile host="app.diagrams.net" modified="2020-09-19T03:29:42.991Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" etag="xA75ORblclhw2_86ua6h" version="13.4.2" type="github">
   <diagram id="6a731a19-8d31-9384-78a2-239565b7b9f0" name="Page-1">
     <mxGraphModel dx="1422" dy="806" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="YKyr20h2RR8HEIQhORqA-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.106;entryY=0.358;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="YPvsJpygd0um0hrGQUCj-2257" target="YPvsJpygd0um0hrGQUCj-2263">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="528" y="450" />
-              <mxPoint x="609" y="450" />
-              <mxPoint x="609" y="475" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <mxCell id="YKyr20h2RR8HEIQhORqA-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="YPvsJpygd0um0hrGQUCj-2257" target="YPvsJpygd0um0hrGQUCj-2259">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -68,7 +59,7 @@
           <mxGeometry x="370" y="390" width="40" height="20" as="geometry" />
         </mxCell>
         <mxCell id="YKyr20h2RR8HEIQhORqA-8" value="채팅 기록" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="610" y="456" width="70" height="20" as="geometry" />
+          <mxGeometry x="620" y="456" width="70" height="20" as="geometry" />
         </mxCell>
         <mxCell id="YKyr20h2RR8HEIQhORqA-10" value="채팅 기록" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="340" y="430" width="60" height="20" as="geometry" />
@@ -76,25 +67,38 @@
         <mxCell id="YKyr20h2RR8HEIQhORqA-18" value="socket(content)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="270" y="483" width="40" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="YKyr20h2RR8HEIQhORqA-21" value="" style="endArrow=classic;dashed=1;html=1;exitX=-0.011;exitY=0.367;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;endFill=1;" edge="1" parent="1" source="YPvsJpygd0um0hrGQUCj-2257" target="YPvsJpygd0um0hrGQUCj-2257">
+        <mxCell id="YKyr20h2RR8HEIQhORqA-21" value="" style="endArrow=classic;html=1;exitX=-0.011;exitY=0.367;exitDx=0;exitDy=0;exitPerimeter=0;endFill=1;" edge="1" parent="1" source="YPvsJpygd0um0hrGQUCj-2257" target="YPvsJpygd0um0hrGQUCj-2262">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="440" y="470" as="sourcePoint" />
             <mxPoint x="490" y="420" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="690" y="510" />
+              <mxPoint x="600" y="509" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="YKyr20h2RR8HEIQhORqA-23" value="내용 저장" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
-          <mxGeometry x="560" y="503" width="100" height="20" as="geometry" />
+          <mxGeometry x="603" y="509" width="100" height="20" as="geometry" />
         </mxCell>
         <mxCell id="YKyr20h2RR8HEIQhORqA-25" value="읽음(socket)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="10" y="456" width="40" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="YKyr20h2RR8HEIQhORqA-26" value="" style="endArrow=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="YPvsJpygd0um0hrGQUCj-2257">
+        <mxCell id="YKyr20h2RR8HEIQhORqA-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="YPvsJpygd0um0hrGQUCj-2263">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="475" as="sourcePoint" />
+            <mxPoint x="530" y="450" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="690" y="475" />
+              <mxPoint x="620" y="475" />
+              <mxPoint x="620" y="470" />
+              <mxPoint x="540" y="470" />
+              <mxPoint x="540" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YKyr20h2RR8HEIQhORqA-33" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="YPvsJpygd0um0hrGQUCj-2257">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="550" y="450" as="sourcePoint" />
-            <mxPoint x="490" y="420" as="targetPoint" />
+            <mxPoint x="440" y="510" as="sourcePoint" />
+            <mxPoint x="440" y="490" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
