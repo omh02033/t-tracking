@@ -45,7 +45,6 @@ function connectHandler(socket) {
 
     socket.on('hi', (data) => {
         let data1 = JSON.parse(data);
-        let time = data1.time;
         let msg = data1.bmsg;
         let msgID = data1.msgID;
 
@@ -69,6 +68,7 @@ function connectHandler(socket) {
         let month = today.getMonth() + 1;
         let day = today.getDate();
         let week = today.getDay();
+        let time = today.toLocaleTimeString();
         let KoWeek;
 
         if(week == 0) KoWeek = '일요일';

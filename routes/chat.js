@@ -173,6 +173,60 @@ router
     });
 })
 
+.get('/getTime', (req, res) => {
+    let today = new Date();
+    let time = today.toLocaleTimeString();
+    res.status(200).json({ time });
+})
+.get('/getWeek', (req, res) => {
+    let today = new Date;
+
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+    let week = today.getDay();
+    let KoWeek;
+
+    if(week == 0) KoWeek = '일요일';
+    else if(week == 1) KoWeek = '월요일';
+    else if(week == 2) KoWeek = '화요일';
+    else if(week == 3) KoWeek = '수요일';
+    else if(week == 4) KoWeek = '목요일';
+    else if(week == 5) KoWeek = '금요일';
+    else if(week == 6) KoWeek = '토요일';
+
+    let date = `${year}년 ${month}월 ${day}일`;
+
+    res.status(200).json({ date, KoWeek });
+})
+.get('/getMsgid', (req, res) => {
+    let today = new Date;
+
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+    let week = today.getDay();
+
+    let shmonth;
+    let shday;
+
+    if(String(month).length == 1) { shmonth = `0${month}`; }
+    else shmonth = month;
+    if(String(day).length == 1) { shday = `0${day}`; }
+    else shday = day;
+
+    res.status(200).json({
+        year,
+        month: shmonth,
+        day: shday,
+        week,
+        hours: today.getHours(),
+        minutes: today.getMinutes(),
+        seconds: today.getSeconds(),
+        milliseconds: today.getMilliseconds()
+    });
+})
+
 module.exports = router;
 
 function check(req, res, next) {

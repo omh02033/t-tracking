@@ -616,7 +616,7 @@
             }
         });
 
-        socket.on("metoo", (d)=>{
+        socket.on("metoo", async (d)=>{
             let data = JSON.parse(d);
             let time = data.time;
             let msg = data.bmsg;
@@ -633,25 +633,9 @@
                 talkContents.classList.remove('first');
             }
 
-            let today = new Date;
+            let date = await Xrequest('/chat/getWeek');
 
-            let year = today.getFullYear();
-            let month = today.getMonth() + 1;
-            let day = today.getDate();
-            let week = today.getDay();
-            let KoWeek;
-
-            if(week == 0) KoWeek = '일요일';
-            else if(week == 1) KoWeek = '월요일';
-            else if(week == 2) KoWeek = '화요일';
-            else if(week == 3) KoWeek = '수요일';
-            else if(week == 4) KoWeek = '목요일';
-            else if(week == 5) KoWeek = '금요일';
-            else if(week == 6) KoWeek = '토요일';
-
-            let date = `${year}년 ${month}월 ${day}일`;
-
-            if(lastDate != date) {
+            if(lastDate != date.date) {
                 let datebox = document.createElement('div');
                 datebox.classList.add('datebox');
 
@@ -660,7 +644,7 @@
                 datebox.append(backLine);
 
                 let datespan = document.createElement('span');
-                datespan.innerHTML = `${date} ${KoWeek}`;
+                datespan.innerHTML = `${date.date} ${date.KoWeek}`;
                 datespan.classList.add('date-span');
 
                 datebox.append(datespan);
@@ -708,9 +692,7 @@
         content.addEventListener('keyup', (event)=>{
             if(event.keyCode == 13) {
                 if(content.value.trim().length > 0 && !event.shiftKey) {
-                    let today = new Date;
-                    let time = today.toLocaleTimeString();
-                    send(content.value.trim(), time);
+                    send(content.value.trim());
                 } else if(content.value.trim().length == 0 && !event.shiftKey) { alert("문자를 입력해주세요."); }
             }
         });
@@ -721,59 +703,39 @@
         })
         sendbtn.onclick = () => {
             if(content.value.trim().length > 0) {
-                let today = new Date;
-                let time = today.toLocaleTimeString();
-                send(content.value.trim(), time);
+                send(content.value.trim());
             } else if(content.value.trim().length == 0) { alert("문자를 입력해주세요."); }
         }
 
-        function send(msg, time) {
+        async function send(msg) {
             if(talkContents.classList.contains('first')) {
                 let start = document.querySelector(".startSpan");
                 start.parentNode.removeChild(start);
                 talkContents.classList.remove('first');
             }
 
-            let today = new Date;
-
-            let year = today.getFullYear();
-            let month = today.getMonth() + 1;
-            let day = today.getDate();
-            let week = today.getDay();
-
-            let shmonth;
-            let shday;
-
-            if(String(month).length == 1) { shmonth = `0${month}`; }
-            if(String(day).length == 1) { shday = `0${day}`; }
+            let getmsgid = await Xrequest('/chat/getMsgid');
 
             let regex = /\n/gi;
             let bmsg = msg.replace(regex, '<br>');
 
             let url = location.href.split('/');
-            let msgID = `${url[4]}${url[5]}${url[6]}${year}${month}${day}${today.getHours()}${today.getMinutes()}${today.getSeconds()}${today.getMilliseconds()}`;
+            let msgID = `${url[4]}${url[5]}${url[6]}${getmsgid.year}${getmsgid.month}${getmsgid.day}${getmsgid.hours}${getmsgid.minutes}${getmsgid.seconds}${getmsgid.milliseconds}`;
+
+            let time = await Xrequest('/chat/getTime');
 
             let Info = {
-                time,
+                time: time.time,
                 bmsg,
                 msgID
             }
 
             socket.emit("hi", JSON.stringify(Info));
 
-            let KoWeek;
+            let date = await Xrequest('/chat/getWeek');
+            console.log(date);
 
-            if(week == 0) KoWeek = '일요일';
-            else if(week == 1) KoWeek = '월요일';
-            else if(week == 2) KoWeek = '화요일';
-            else if(week == 3) KoWeek = '수요일';
-            else if(week == 4) KoWeek = '목요일';
-            else if(week == 5) KoWeek = '금요일';
-            else if(week == 6) KoWeek = '토요일';
-
-            let date = `${year}년 ${month}월 ${day}일`;
-
-            if(lastDate != date) {
+            if(lastDate != date.date) {
                 let datebox = document.createElement('div');
                 datebox.classList.add('datebox');
 
@@ -782,7 +744,7 @@
                 datebox.append(backLine);
 
                 let datespan = document.createElement('span');
-                datespan.innerHTML = `${date} ${KoWeek}`;
+                datespan.innerHTML = `${date.date} ${date.KoWeek}`;
                 datespan.classList.add('date-span');
 
                 datebox.append(datespan);
@@ -803,7 +765,7 @@
             readS.innerHTML = "안읽음";
             readS.classList.add('menot');
             let timespan = document.createElement('span');
-            timespan.innerHTML = time;
+            timespan.innerHTML = time.time;
             timespan.classList.add('timespan');
             timespan.classList.add('me');
             span.append(readS);
@@ -844,6 +806,11 @@
                 proselect.classList.remove("pso");
                 proselect.classList.add("pso");
             }
+        }
+        async function Xrequest(url) {
+            let data = await fetch(url, { method: 'GET' })
+            data = await data.json();
+            return data;
         }
     </script>
 </body>

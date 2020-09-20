@@ -63,6 +63,7 @@ router
 
 .get('/logout/', (req, res) => {
     res.clearCookie('user');
+    console.log(req);
     res.redirect('/');
 })
 
