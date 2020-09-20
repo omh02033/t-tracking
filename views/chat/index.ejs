@@ -808,7 +808,7 @@
             }
         }
         async function Xrequest(url) {
-            let data = await fetch(url, { method: 'GET' })
+            let data = await fetch(url, { method: 'GET' });
             data = await data.json();
             return data;
         }
