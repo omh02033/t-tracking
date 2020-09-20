@@ -109,9 +109,10 @@ router
         if(data.length > 0) {
             let user = data[0];
             if(user.result == "Y") {
-                console.log(user);
-                let sql1 = 'INSERT INTO account (`userid`, `userpass`, `password_salt`, `phone`, `email`, `name`, `seller`) VALUES(?, ?, ?, ?, ?, ?, ?)';
-                conn.query(sql1, [user.originalid, user.userpass, user.password_salt, user.phone, user.email, req.body.nick, user.seller], (err, rows, fields) => {
+                let date = moment();
+                let today = date.format('LLLL');
+                let sql1 = 'INSERT INTO account (`userid`, `userpass`, `password_salt`, `phone`, `email`, `name`, `signing_date`, `seller`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                conn.query(sql1, [user.originalid, user.userpass, user.password_salt, user.phone, user.email, req.body.nick, today, user.seller], (err, rows, fields) => {
                     if(err) {
                         console.log(err + "(01)");
                         res.status(400).json({
