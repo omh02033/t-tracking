@@ -51,14 +51,13 @@
             display: flex;
             flex-flow: column;
             align-items: center;
+            overflow-y: auto;
+            height: 500px;
         }
         .backmain > h3 {
             color: darkgray;
             font-weight: bold;
             text-align: center;
-        }
-        .backmain table {
-            margin-bottom: 70px;
         }
         .backmain table td {
             text-align: center;
@@ -69,15 +68,21 @@
         .backmain table thead {
             font-weight: bold;
         }
+        .backmain::-webkit-scrollbar-track {
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
         .textred { color: red !important; }
         footer {
+            display: grid;
+            bottom: 0;
             width: 100%;
             text-align: center;
             background-color: rgba(0, 0, 0, 0.1);
             color: darkgray;
             border-top: 2px solid rgba(0, 0, 0, 0.12);
             padding: 14px;
-            margin-bottom: 20px;
         }
 
         @media only screen and (max-width: 600px) {
@@ -249,15 +254,15 @@
                     <tbody id="data-info"></tbody>
                 </table>
             </div>
-            <footer>
-                <div class="content">
-                    <p class="textred">* 모바일인 경우 옆으로 돌려 보시는것을 권장힙니다.</p>
-                    <br>
-                    <br>
-                    <p>차동 찾기는 <a href="/loginuser/searchrecord">택배 조회 기록</a> 페이지에 있는 데이터를 기반으로 찾습니다.</p>
-                </div>
-            </footer>
         </div>
+        <footer>
+            <div class="content">
+                <p class="textred">* 모바일인 경우 옆으로 돌려 보시는것을 권장힙니다.</p>
+                <br>
+                <br>
+                <p>차동 찾기는 <a href="/loginuser/searchrecord">택배 조회 기록</a> 페이지에 있는 데이터를 기반으로 찾습니다.</p>
+            </div>
+        </footer>
     </div>
     <div id="proselectd">
         <div id="proselect">
