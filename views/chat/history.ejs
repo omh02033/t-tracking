@@ -74,12 +74,17 @@
         .user.sel {
             background-color: rgba(0, 0, 0, 0.1);
         }
-        .user span {
+        .user .TargetName {
             font-weight: bold;
             color: black;
             font-size: 22px;
             display: block;
             margin-top: 5px;
+            margin-right: 12px;
+        }
+        .user span.denum {
+            color: darkgray;
+            font-size: 12px;
         }
         .user img {
             border-radius: 50%;
@@ -241,7 +246,7 @@
             <% } %>
         </div>
     </div>
-
+    
     <div class="main">
         <div class="menu">
             <div class="welcometap">
@@ -340,7 +345,7 @@
                             </div>
                             <div class="userIn">
                                 <% if(me == chatData[i].senderID) { %>
-                                    <span><%=chatData[i].recipientName%></span>
+                                    <span class="TargetName"><%=chatData[i].recipientName%></span>
                                     <div class="fu">회원님 : <%=chatData[i].content%> · <%=chatData[i].week.substring(0, 1)%> <%=chatData[i].time%></div>
                                 <% } else { %>
                                     <span><%=chatData[i].senderName%></span>

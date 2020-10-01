@@ -125,7 +125,7 @@ router
         let user = data[0];
         if(user.result == 'true') {
             let sql1 = 'INSERT INTO account (`userid`, `userpass`, `password_salt`, `phone`, `name`, `signing_date`, `seller`) VALUES(?, ?, ?, ?, ?, ?, ?)';
-            conn.query(sql1, [req.body.userid, SHA256(`${req.body.password}${randomString}`), randomString, req.body.phone, req.body.name, today, req.body.seller], (err, rows, fields) => {
+            conn.query(sql1, [req.body.userid, SHA256(`${req.body.password}${randomString}`), randomString, req.body.phone, req.body.name, today, String(req.body.seller)], (err, rows, fields) => {
                 if(err) {
                     console.log(err + "(01)");
                     res.status(400).json({
