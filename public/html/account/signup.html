@@ -854,12 +854,12 @@
         cnum_5.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_6.focus(); }
         cnum_6.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cerfi('c'); }
 
-        mnum_1.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_2.focus(); }
-        mnum_2.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_3.focus(); }
-        mnum_3.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_4.focus(); }
-        mnum_4.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_5.focus(); }
-        mnum_5.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_6.focus(); }
-        mnum_6.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cerfi('m'); }
+        mnum_1.onkeyup = () => { mnum_2.focus(); }
+        mnum_2.onkeyup = () => { mnum_3.focus(); }
+        mnum_3.onkeyup = () => { mnum_4.focus(); }
+        mnum_4.onkeyup = () => { mnum_5.focus(); }
+        mnum_5.onkeyup = () => { mnum_6.focus(); }
+        mnum_6.onkeyup = () => { cerfi('m'); }
 
         function userEnrollment(device) {
             let info;
