@@ -18,8 +18,95 @@ router
 .get('/', check, (req, res) => {
     if(req.query.location == 'denum') res.render('chat/foundSeller');
     else if(req.query.location == 'auto') res.render('chat/autoFound');
-    else if(req.query.location == 'history') res.render('chat/history');
+    else if(req.query.location == 'history') {
+        let token = req.cookies.user;
+        if(!token) return res.redirect('/account/login');
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) return res.send("예상치 못한 에러가 발생했습니다.");
+
+            let sql = 'SELECT * FROM (SELECT * FROM chat WHERE senderID=? OR recipientID=? ORDER BY `date` DESC, `time` DESC LIMIT 1000) AS chat GROUP BY roomID';
+            conn.query(sql, [decoded.unum, decoded.unum], (err, data) => {
+                if(err) return res.send('예상치 못한 에러가 발생했습니다.');
+                let dt = data;
+                dt.sort(function(a, b) {
+                    return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
+                });
+                dt.sort(function(a, b) {
+                    return a.time > b.time ? -1 : a.time < b.time ? 1 : 0;
+                });
+                res.locals.chatData = dt;
+                res.locals.sha256 = sha256;
+                res.locals.me = decoded.unum;
+                res.render('chat/history');
+            });
+        });
+    }
     else res.render('chat/foundSeller');
+})
+.get('/chatnotfound', (req, res) => {
+    res.sendFile('chatnotfound.html', { root: path.join(__dirname, '../public/html/err') });
+})
+
+.get('/:consumer/:denum/:seller/history', async (req, res) => {
+    let sql = 'SELECT * FROM account WHERE id=?';
+    let sellerInfo = await NameCheck(sql, req.params.seller, res);
+    let consumerInfo = await NameCheck(sql, req.params.consumer, res);
+
+    let token = req.cookies.user;
+    if(!token) return res.redirect("/account/login/");
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if(err) return res.send("토큰 값을 불러오는데 실패하였습니다.");
+
+        if(req.params.consumer == req.params.seller) return res.sendFile('meandme.html', { root: path.join(__dirname, '../public/html/err') });
+
+        conn.query(sql, [decoded.unum], (err, data) => {
+            if(err) return res.send("데이터를 읽어오는 도중 에러가 발생했습니다.<br>다시 시도해 주세요.");
+            if(data.length == 1) {
+                let user = data[0];
+                if(user.seller == 'true') {
+                    if(req.params.seller == decoded.unum && req.params.seller == user.id && decoded.unum == user.id) {
+                        let sql1 = 'SELECT * FROM sellerdb WHERE id=? AND denum=?';
+                        conn.query(sql1, [req.params.seller, req.params.denum], (err, data) => {
+                            if(err) return res.send("데이터를 읽어오는 도중 에러가 발생했습니다.<br>다시 시도해 주세요.");
+                            if(data.length == 1) {
+                                res.locals.seller = true;
+                                res.locals.targetName = consumerInfo.name;
+                                res.locals.targetInfo = consumerInfo;
+                                res.locals.ProFile = sha256(String(consumerInfo.id));
+                                res.render('chat/historychat');
+                            } else { res.send("판매자 아이디에 해당 송장번호가 존재하지 않습니다."); }
+                        });
+                    } else {
+                        let sql1 = 'SELECT * FROM sellerdb WHERE id=? AND denum=?';
+                        conn.query(sql1, [req.params.seller, req.params.denum], (err, data) => {
+                            if(err) return res.send("데이터를 읽어오는 도중 에러가 발생했습니다.<br>다시 시도해 주세요.<br>1-1");
+                            if(data.length == 1) {
+                                res.locals.seller = null;
+                                res.locals.targetName = sellerInfo.name;
+                                res.locals.targetInfo = sellerInfo;
+                                res.locals.ProFile = sha256(String(sellerInfo.id));
+                                res.render('chat/historychat');
+                            } else { res.send("판매자 아이디에 해당 송장번호가 존재하지 않습니다."); }
+                        });
+                    }
+                } else {
+                    if(req.params.consumer == decoded.unum && req.params.consumer == user.id && decoded.unum == user.id) {
+                        let sql1 = 'SELECT * FROM sellerdb WHERE id=? AND denum=?';
+                        conn.query(sql1, [req.params.seller, req.params.denum], (err, data) => {
+                            if(err) return res.send("데이터를 읽어오는 도중 에러가 발생했습니다.<br>다시 시도해 주세요.");
+                            if(data.length == 1) {
+                                res.locals.seller = null;
+                                res.locals.targetName = sellerInfo.name;
+                                res.locals.targetInfo = sellerInfo;
+                                res.locals.ProFile = sha256(String(sellerInfo.id));
+                                res.render('chat/historychat');
+                            } else { res.send("판매자 아이디에 해당 송장번호가 존재하지 않습니다."); }
+                        });
+                    } else { res.send("맞지 않는 url값이 들어왔습니다."); }
+                }
+            } else { res.send("존재하지 않는 ID입니다."); }
+        });
+    });
 })
 
 .get('/:consumer/:denum/:seller', async (req, res) => {
@@ -32,7 +119,7 @@ router
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) return res.send("토큰 값을 불러오는데 실패하였습니다.");
 
-        if(req.params.consumer == req.params.seller) return res.sendFile('meandme.html', { root: path.join(__dirname, '../public/html') });
+        if(req.params.consumer == req.params.seller) return res.sendFile('meandme.html', { root: path.join(__dirname, '../public/html/err') });
 
         conn.query(sql, [decoded.unum], (err, data) => {
             if(err) return res.send("데이터를 읽어오는 도중 에러가 발생했습니다.<br>다시 시도해 주세요.");
@@ -117,7 +204,7 @@ router
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) return res.status(400).json({ msg: '토큰을 읽지 못했습니다.' });
         let sql = 'SELECT * FROM delirecord WHERE id=?';
-        conn.query(sql, [decoded.unum], (err, data) => {
+        conn.query(sql, [decoded.unum], async (err, data) => {
             if(err) return res.status(400).json({ msg: '데이터를 조회하는 과정에서 에러가 발생했습니다.' });
             if(data.length == 0) return res.status(200).json({ result: 'fail' });
             
@@ -138,13 +225,13 @@ router
             // Promise : await - promise : promise 한개를 기다리겠다.
             // promise.then() : 한개를 기다리겠다.
             // Promise.all([promise]) : promise가 여러개있을때 그 여러개를 다 기다라겠다.
-            Promise.all(promises)
-            .then((chseller) => {
+            try{
+                const chseller = await Promise.all(promises)
                 res.status(200).json({ result: 'success', chseller, me: decoded.unum });
-            }).catch(err => {
+            } catch(err){
                 console.log(err);
                 return res.status(400).json({ msg: '상대를 조회하는 과정에서 에러가 발생했습니다.' });
-            });
+            }
         });
     });
 })

@@ -68,13 +68,34 @@ router
 })
 
 .post('/refund/try/', (req, res) => {
+    function bcsf(response) {
+        if (response.status === 200) {
+            let sql = 'DELETE FROM payment WHERE id=? AND toolname=?';
+            conn.query(sql, [decoded.uid, req.body.toolname], (err, data) => {
+                if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+            });
+            let sq = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
+            conn.query(sq, [decoded.uid, req.body.toolname, req.body.userid], (err, data) => {
+                if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+            });
+            // TODO: 결제 취소에 관련된 로직을 수행하시면 됩니다.
+            res.status(200).json({ msg: "결제최소가 완료되었습니다." });
+        }
+    }
+    async function bcs(token) {
+        if (token.status === 200) {
+            const data2 = await BootpayRest.cancel(info.receipt_id, req.body.refund_pay, req.body.username, '');
+            bcsf(data2);
+        }
+    }
+
     let token = req.cookies.user;
     if(!token) { res.redirect('/accountn/login/'); }
     else {
         jwt.verify(token, config.secret, (err, decoded) => {
             if(err) { return res.status(400).json({ msg: '에러가 발생했습니다..' }); }
             let sql = 'SELECT * FROM payment WHERE id=? AND toolname=?';
-            conn.query(sql, [decoded.uid, req.body.toolname], (err, data) => {
+            conn.query(sql, [decoded.uid, req.body.toolname], async (err, data) => {
                 if(err) { return res.status(400).json({ msg: '확인도중 에러가 발생했습니다..' }); }
                 let info = data[0];
                 BootpayRest.setConfig(
@@ -82,24 +103,8 @@ router
                     "9VV9mQE4zOv+NdtKirEDIDFqAqY9ZZXcpES9UCBRWxE="
                 );
                 
-                BootpayRest.getAccessToken().then(function (token) {
-                    if (token.status === 200) {
-                        BootpayRest.cancel(info.receipt_id, req.body.refund_pay, req.body.username, '').then(function (response) {
-                            if (response.status === 200) {
-                                let sql = 'DELETE FROM payment WHERE id=? AND toolname=?';
-                                conn.query(sql, [decoded.uid, req.body.toolname], (err, data) => {
-                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
-                                });
-                                let sq = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
-                                conn.query(sq, [decoded.uid, req.body.toolname, req.body.userid], (err, data) => {
-                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
-                                });
-                                // TODO: 결제 취소에 관련된 로직을 수행하시면 됩니다.
-                                res.status(200).json({ msg: "결제최소가 완료되었습니다." });
-                            }
-                        });
-                    }
-                });
+                const bc = await BootpayRest.getAccessToken();
+                bcs(bc);
             });
         });
     }
@@ -187,7 +192,7 @@ function check(req, res, next){
             for(let type of paymentTypes) {
                 res.locals.payment[type] = isRegistered(data, type);
             }
-
+            
             req.decoded = decoded;
             res.locals.decoded = decoded;
             res.locals.ProFile = sha256(String(decoded.unum));
@@ -234,7 +239,7 @@ function youSeller(req, res, next) {
         res.locals.decoded = null;
         res.locals.ProFile = null;
         res.locals.seller = null;
-        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html/err') });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
@@ -242,7 +247,7 @@ function youSeller(req, res, next) {
         res.locals.ProFile = sha256(String(decoded.unum));
         let seller = await sellercheck(decoded.uid);
         if(seller) { return next(); }
-        else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html') }); }
+        else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html/err') }); }
     })
 }
 

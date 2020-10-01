@@ -55,6 +55,9 @@
             left: 50%;
             top: 35px;
         }
+        .formdown > i {
+            margin-right: 5px;
+        }
         .filebox {
             width: fit-content;
             margin: auto;
@@ -269,7 +272,7 @@
             <% } %>
 
             <form action="/form/" method="GET" onsubmit="formdownload(event, this);">
-                <input type="submit" value="폼 다운로드" class="formdown">
+                <button type="submit" class="formdown"><i class="material-icons left">file_download</i> 폼 다운로드</button>
                 <div style="display: flex; position: absolute; transform: translate(-50%, 0); left:50%; top: 90px;"><span style="color: red;">*</span><label>제공하는 폼을 다운받아 쓰시는것을 추천드립니다.</label></div>
                 <div style="display: flex; position: absolute; transform: translate(-50%, 0); left:50%; top: 110px;"><span><a href="" onclick="window.open(`/explain#delienr`, '', 'width=600,height=705,scrollbar=yes');" style="font-size: .8rem;">자세히 보기</a></span></div>
             </form>

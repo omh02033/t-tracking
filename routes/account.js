@@ -9,6 +9,11 @@ const fs = require('fs');
 const BootpayRest = require('bootpay-rest-client');
 const moment = require('moment');
 const SHA256 = require('./sha256');
+const AWS = require('aws-sdk');
+
+// 액세스 key : AKIA3E2KWJGWEWPLND4F
+// secret key :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
+// region : ap-northeast-1
 
 let conn = mysql.createConnection({
     host : process.env.DATABASE_HOST,
@@ -63,7 +68,6 @@ router
 
 .get('/logout/', (req, res) => {
     res.clearCookie('user');
-    console.log(req);
     res.redirect('/');
 })
 
@@ -103,106 +107,178 @@ router
 })
 
 .post('/signup/', (req, res) => {
-    let hashid = req.body.hashid;
-    let sql = 'SELECT * FROM Signing WHERE userid=?';
-    conn.query(sql, [hashid], (err, data) => {
-        if(err) { return res.status(400).json({ result: "fail" }); }
-        if(data.length > 0) {
-            let user = data[0];
-            if(user.result == "Y") {
-                let date = moment();
-                let today = date.format('LLLL');
-                let sql1 = 'INSERT INTO account (`userid`, `userpass`, `password_salt`, `phone`, `email`, `name`, `signing_date`, `seller`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-                conn.query(sql1, [user.originalid, user.userpass, user.password_salt, user.phone, user.email, req.body.nick, today, user.seller], (err, rows, fields) => {
-                    if(err) {
-                        console.log(err + "(01)");
-                        res.status(400).json({
-                            msg: '저장하는데 에러가 발생했습니다.',
-                            result: 'fail'
-                        });
-                    } else {
-                        let desql = 'DELETE FROM Signing WHERE userid=? AND code=?';
-                        conn.query(desql, [hashid, user.code], (err, data) => { if(err) { console.log(err); } });
-                        console.log('signup : success');
-                        res.status(200).json({
-                            msg: '유저 등록이 성공적으로 이루어졌습니다.',
-                            result: 'success'
-                        });
-                    }
-                });
-            } else { return res.status(400).json({ result: "emailfail" }); }
-        } else { return res.status(400).json({ result: "fail" }); }
-    });
-})
-.post('/signup/overlap/email/', (req, res) => {
-    let email = req.body.uemail;
-    let sql = 'SELECT * FROM account WHERE email=?';
-    conn.query(sql, [email], (err, data) => {
-        let info = data[0];
-        if(err) {
-            console.log('중복 확인도중 에러가 발생했습니다.');
-            res.status(400).json({ errmsg: '중복 확인도중 에러가 발생했습니다. 관리자에게 문의해주세요.' });
-        } else if(info == undefined || info == null) {
-            let code = Math.floor(Math.random() * 1000000) + 100000;
-            if(code > 100000) { code = code - 100000; }
-
-            let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-            let min_length = 7;
-            let max_length = 13;
-            let string_length = Math.floor(Math.random() * (max_length - min_length +1)) + min_length;
-            let randomString = '';
-            for(let i=0; i<string_length; i++) {
-                let rnum = Math.floor(Math.random() * chars.length);
-                randomString += chars.substring(rnum, rnum+1);
-            }
-
-            let sql1 = 'INSERT INTO Signing (`originalid`, `userid`, `userpass`, `password_salt`, `phone`, `email`, `seller`, `code`, `result`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            conn.query(sql1, [req.body.uid, SHA256(req.body.uid), SHA256(req.body.upass + randomString), randomString, req.body.uphone, req.body.uemail, String(req.body.seller), code, 'N'], (err, rows, fields) => {
-                if(err) { return res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
-                sm(email, res, req.body.uid, code);
+    let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+    let min_length = 7;
+    let max_length = 13;
+    let string_length = Math.floor(Math.random() * (max_length - min_length +1)) + min_length;
+    let randomString = '';
+    for(let i=0; i<string_length; i++) {
+        let rnum = Math.floor(Math.random() * chars.length);
+        randomString += chars.substring(rnum, rnum+1);
+    }
+    let date = moment();
+    let today = date.format('LLLL');
+    let sql = 'SELECT * FROM smsCode WHERE userid=? ORDER BY `ID` DESC LIMIT 1000;';
+    conn.query(sql, [req.body.userid], (err, data) => {
+        if(err) return res.status(400).json({ result: 'fail' });
+        if(data.length == 0) return res.status(400).json({ result: 'not found' });
+        let user = data[0];
+        if(user.result == 'true') {
+            let sql1 = 'INSERT INTO account (`userid`, `userpass`, `password_salt`, `phone`, `name`, `signing_date`, `seller`) VALUES(?, ?, ?, ?, ?, ?, ?)';
+            conn.query(sql1, [req.body.userid, SHA256(`${req.body.password}${randomString}`), randomString, req.body.phone, req.body.name, today, req.body.seller], (err, rows, fields) => {
+                if(err) {
+                    console.log(err + "(01)");
+                    res.status(400).json({
+                        msg: '저장하는데 에러가 발생했습니다.',
+                        result: 'fail'
+                    });
+                } else {
+                    let desql = 'DELETE FROM smsCode WHERE userid=? AND code=?';
+                    conn.query(desql, [req.body.userid, req.body.code], (err) => { if(err) { console.log(err); } });
+                    console.log('signup : success');
+                    res.status(200).json({
+                        msg: '유저 등록이 성공적으로 이루어졌습니다.',
+                        result: 'success'
+                    });
+                }
             });
-        } else { res.status(200).json({ msg: '이미 등록된 이메일입니다.' }); }
+        } else return res.status(400).json({ result: 'not cer' });
     });
 })
-.get("/signup/email/waitingpage/certification/:hashid/:code", check, (req, res) => {
-    res.sendFile('account/OpenWName.html', { root: path.join(__dirname, '../public/html') });
-})
-.get('/signup/email/certification/:hashid/:code', check, (req, res) => {
-    let sql = 'SELECT * FROM Signing WHERE userid=?';
-    conn.query(sql, [req.params.hashid], (err, data) => {
-        if(err) { return res.status(400).json({ msg: '데이터를 읽는 과정에서 에러가 발생했습니다.' }); }
-        if(data.length > 0) {
-            let user = data[0];
-            console.log(user.code);
-            console.log(req.params.code);
-            if(user.code == req.params.code) {
-                let sql1 = 'UPDATE Signing SET result=? WHERE userid=? AND code=?';
-                conn.query(sql1, ['Y', req.params.hashid, req.params.code], (err, rows, fields) => {
-                    if(err) { return res.status(400).json({ msg: '처리하는 과정에서 에러가 발생했습니다.' }); }
-                    res.sendFile('account/wName.html', { root: path.join(__dirname, '../public/html') });
-                });
-            } else {
-                let sql1 = 'DELETE FROM Signing WHERE userid=?';
-                conn.query(sql1, [req.params.hashid], (err) => { if(err) throw err; });
-                res.sendFile('account/ECErr.html', { root: path.join(__dirname, '../public/html') });
-            }
-        } else {
-            res.send("회원가입중인 상태가 아닙니다..!");
+// .post('/signup/overlap/email/', (req, res) => {
+//     let email = req.body.uemail;
+//     let sql = 'SELECT * FROM account WHERE email=?';
+//     conn.query(sql, [email], (err, data) => {
+//         let info = data[0];
+//         if(err) {
+//             console.log('중복 확인도중 에러가 발생했습니다.');
+//             res.status(400).json({ errmsg: '중복 확인도중 에러가 발생했습니다. 관리자에게 문의해주세요.' });
+//         } else if(info == undefined || info == null) {
+//             let code = Math.floor(Math.random() * 1000000) + 100000;
+//             if(code > 100000) { code = code - 100000; }
+
+//             let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+//             let min_length = 7;
+//             let max_length = 13;
+//             let string_length = Math.floor(Math.random() * (max_length - min_length +1)) + min_length;
+//             let randomString = '';
+//             for(let i=0; i<string_length; i++) {
+//                 let rnum = Math.floor(Math.random() * chars.length);
+//                 randomString += chars.substring(rnum, rnum+1);
+//             }
+
+//             let sql1 = 'INSERT INTO Signing (`originalid`, `userid`, `userpass`, `password_salt`, `phone`, `email`, `seller`, `code`, `result`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+//             conn.query(sql1, [req.body.uid, SHA256(req.body.uid), SHA256(req.body.upass + randomString), randomString, req.body.uphone, req.body.uemail, String(req.body.seller), code, 'N'], (err, rows, fields) => {
+//                 if(err) { return res.status(400).json({ errmsg: '저장하는 과정에서 에러가 발생했습니다.\n관리자에게 연락해주세요!' }); }
+//                 sm(email, res, req.body.uid, code);
+//             });
+//         } else { res.status(200).json({ msg: '이미 등록된 이메일입니다.' }); }
+//     });
+// })
+// .get("/signup/email/waitingpage/certification/:hashid/:code", check, (req, res) => {
+//     res.sendFile('account/OpenWName.html', { root: path.join(__dirname, '../public/html') });
+// })
+// .get('/signup/email/certification/:hashid/:code', check, (req, res) => {
+//     let sql = 'SELECT * FROM Signing WHERE userid=?';
+//     conn.query(sql, [req.params.hashid], (err, data) => {
+//         if(err) { return res.status(400).json({ msg: '데이터를 읽는 과정에서 에러가 발생했습니다.' }); }
+//         if(data.length > 0) {
+//             let user = data[0];
+//             console.log(user.code);
+//             console.log(req.params.code);
+//             if(user.code == req.params.code) {
+//                 let sql1 = 'UPDATE Signing SET result=? WHERE userid=? AND code=?';
+//                 conn.query(sql1, ['Y', req.params.hashid, req.params.code], (err, rows, fields) => {
+//                     if(err) { return res.status(400).json({ msg: '처리하는 과정에서 에러가 발생했습니다.' }); }
+//                     res.sendFile('account/wName.html', { root: path.join(__dirname, '../public/html') });
+//                 });
+//             } else {
+//                 let sql1 = 'DELETE FROM Signing WHERE userid=?';
+//                 conn.query(sql1, [req.params.hashid], (err) => { if(err) throw err; });
+//                 res.sendFile('account/ECErr.html', { root: path.join(__dirname, '../public/html') });
+//             }
+//         } else {
+//             res.send("회원가입중인 상태가 아닙니다..!");
+//         }
+//     });
+// })
+// .post('/email/Certification', (req, res) => {
+//     let sql = 'SELECT * FROM Signing WHERE originalid=?';
+//     conn.query(sql, [req.body.uid], (err, data) => {
+//         if(err) throw err;
+//         if(data.length > 0) {
+//             let user = data[0];
+//             if(user.result == "Y") { return res.status(200).json({ result: "success" }); }
+//             else { return res.status(200).json({ result: "fail" }); }
+//         } else {
+//             return res.status(200).json({ result: 'deleted' });
+//         }
+//     });
+// })
+
+.post('/signup/codeCheck', (req, res) => {
+    let sql = 'SELECT * FROM smsCode WHERE userid=? ORDER BY `ID` DESC LIMIT 1000;';
+    conn.query(sql, [req.body.userid], (err, data) => {
+        if(err) return res.status(400).json({ result: 'error' });
+        if(data.length == 0) return res.status(400).json({ result: 'error' });
+        let user = data[0];
+        if(user.code == req.body.code) {
+            let sql1 = 'UPDATE smsCode SET result=? WHERE userid=? and code=?';
+            conn.query(sql1, ['true', req.body.userid, req.body.code], (err) => {
+                if(err) return res.status(400).json({ result: 'error' });
+                return res.status(200).json({ result: 'success' });
+            });
         }
+        else return res.status(400).json({ result: 'fail' });
     });
 })
-.post('/email/Certification', (req, res) => {
-    let sql = 'SELECT * FROM Signing WHERE originalid=?';
-    conn.query(sql, [req.body.uid], (err, data) => {
-        if(err) throw err;
-        if(data.length > 0) {
-            let user = data[0];
-            if(user.result == "Y") { return res.status(200).json({ result: "success" }); }
-            else { return res.status(200).json({ result: "fail" }); }
-        } else {
-            return res.status(200).json({ result: 'deleted' });
-        }
+
+.post('/signup/phone/smscer', async (req, res) => {
+    let userid = req.body.userid;
+    let phone = req.body.phone.substring(1, req.body.phone.length);
+
+    var result = Math.floor(Math.random() * 1000000)+100000;
+    if(result>1000000){
+        result = result - 100000;
+    }
+
+    AWS.config.update({
+        accessKeyId: 'AKIA3E2KWJGWEWPLND4F',
+        secretAccessKey: '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',
+        region: 'ap-northeast-1'
     });
+
+    var params = {
+        Message: `[통합 택배 조회 서비스]\n통합 택배 조회 서비스 본인 인증번호는 [${result}] 입니다.`,
+        PhoneNumber: `+82${phone}`,
+    };
+
+    var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(params).promise();
+
+    function rs(data) {
+        let sql = 'INSERT INTO smsCode (`userid`, `phone`, `code`, `msgID`) VALUES(?, ?, ?, ?)';
+        conn.query(sql, [userid, `+82${phone}`, result, data.MessageId], (err) => {
+            if(err) return res.status(400).json({ result: 'fail' });
+            res.status(200).json({ result: 'success' });
+        });
+    }
+
+    try {
+        let send = await publishTextPromise;
+        rs(send);
+    } catch(err) {
+        console.error(err, err.stack);
+        res.status(400).json({ result: 'fail' });
+    }
+        // function(data) {
+        //     let sql = 'INSERT INTO smsCode (`userid`, `phone`, `code`, `msgID`) VALUES(?, ?, ?, ?)';
+        //     conn.query(sql, [userid, `+82${phone}`, result, data.MessageId], (err) => { return res.status(400).json({ result: 'fail' }); });
+        //     res.status(200).json({ result: 'success' });
+        // }).catch(
+        //     function(err) {
+        //         console.error(err, err.stack);
+        //     res.status(400).json({ result: 'fail' });
+        // });
 })
 
 .post('/signup/overlap/id/', (req, res) => {
@@ -457,67 +533,73 @@ router
     let token = req.cookies.user;
     if(!token) { res.redirect('/account/login/'); }
     else {
-        jwt.verify(token, config.secret, (err, decoded) => {
+        jwt.verify(token, config.secret, async (err, decoded) => {
+            function ps(_response) {
+                _response = JSON.parse(_response);
+                if(_response.status === 200) {
+                    if(_response.data.receipt_id == req.body.data.receipt_id && _response.data.price == req.body.data.price) {
+                        let sq = `INSERT INTO payment VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                        let sql = `INSERT INTO subsc VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        
+                        let cn = _response.data.payment_data.card_no;
+                        let cn1 = cn.substring(0, 4);
+                        let cn2 = cn.substring(4, 8);
+                        let cn3 = cn.substring(8, 12);
+                        let cn4 = cn.substring(12, cn.length);
+        
+                        if(cn1 == '0000') { cn1 = "****"; }
+                        if(cn2 == '0000') { cn2 = "****"; }
+                        if(cn3 == '0000') { cn3 = "****"; }
+                        if(cn4 == '0000') { cn4 = "****"; }
+        
+                        let card_number = cn1 + "-" + cn2 + "-" + cn3 + "-" + cn4;
+        
+                        let date = moment();
+                        let now = date.format("YYYYMMDD");
+        
+                        date.add(30, "d");
+                        let end = date.format("YYYYMMDD");
+        
+                        if(_response.data.name == "국제 택배 조회" && _response.data.price == 1200) {
+                            conn.query(sq, [decoded.unum, 'pay1', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
+                            [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now].forEach(v => console.log(typeof v));
+                            conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now], (err, rows, fields) => {
+                                if(err) { return res.status(400).json({ buySu: false }); }
+                                console.log(`${decoded.unum}\n${decoded.uid}\n${decoded.uname}\n${_response.data.name}\npay1\n${_response.data.price}\n${now}\n${end}\n${now}`);
+                                res.status(200).json({ buySu: true });
+                            });
+                        } else if(_response.data.name == "카카오톡 봇 이용" && _response.data.price == 1500) {
+                            conn.query(sq, [decoded.unum, 'pay2', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
+                            conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay2', _response.data.price, now, end, now], (err, rows, fields) => {
+                                if(err) { return res.status(400).json({ buySu: false }); }
+                                res.status(200).json({ buySu: true });
+                            });
+                        } else if(_response.data.name == "둘다 마음껏" && _response.data.price == 2500) {
+                            conn.query(sq, [decoded.unum, 'pay3', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
+                            conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay3', _response.data.price, now, end, now], (err, rows, fields) => {
+                                if(err) { return res.status(400).json({ buySu: false }); }
+                                res.status(200).json({ buySu: true });
+                            });
+                        }
+                    } else { res.status(400).json({ buySu: false, msg: '변조가 감지되었습니다.' }); }
+                } else { res.status(400).json({ buySu: false, msg: '에러가 발생했습니다.' }); }
+            }
+        
+            async function bs(response) {
+                if(response.status === 200 && response.data.token !== undefined) {
+                    const data1 = await BootpayRest.verify(req.body.data.receipt_id);
+                    ps(data1);
+                }
+            }
+
             if(err) { res.json({ err: err }); }
             BootpayRest.setConfig(
                 "5ef815974f74b40021f2b98c",
                 "9VV9mQE4zOv+NdtKirEDIDFqAqY9ZZXcpES9UCBRWxE="
             );
 
-            BootpayRest.getAccessToken().then(function (response) {
-                if(response.status === 200 && response.data.token !== undefined) {
-                    BootpayRest.verify(req.body.data.receipt_id).then(function (_response) {
-                        _response = JSON.parse(_response);
-                        if(_response.status === 200) {
-                            if(_response.data.receipt_id == req.body.data.receipt_id && _response.data.price == req.body.data.price) {
-                                let sq = `INSERT INTO payment VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-                                let sql = `INSERT INTO subsc VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-                                let cn = _response.data.payment_data.card_no;
-                                let cn1 = cn.substring(0, 4);
-                                let cn2 = cn.substring(4, 8);
-                                let cn3 = cn.substring(8, 12);
-                                let cn4 = cn.substring(12, cn.length);
-
-                                if(cn1 == '0000') { cn1 = "****"; }
-                                if(cn2 == '0000') { cn2 = "****"; }
-                                if(cn3 == '0000') { cn3 = "****"; }
-                                if(cn4 == '0000') { cn4 = "****"; }
-
-                                let card_number = cn1 + "-" + cn2 + "-" + cn3 + "-" + cn4;
-
-                                let date = moment();
-                                let now = date.format("YYYYMMDD");
-
-                                date.add(30, "d");
-                                let end = date.format("YYYYMMDD");
-
-                                if(_response.data.name == "국제 택배 조회" && _response.data.price == 1200) {
-                                    conn.query(sq, [decoded.unum, 'pay1', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
-                                    [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now].forEach(v => console.log(typeof v));
-                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay1', _response.data.price, now, end, now], (err, rows, fields) => {
-                                        if(err) { return res.status(400).json({ buySu: false }); }
-                                        console.log(`${decoded.unum}\n${decoded.uid}\n${decoded.uname}\n${_response.data.name}\npay1\n${_response.data.price}\n${now}\n${end}\n${now}`);
-                                        res.status(200).json({ buySu: true });
-                                    });
-                                } else if(_response.data.name == "카카오톡 봇 이용" && _response.data.price == 1500) {
-                                    conn.query(sq, [decoded.unum, 'pay2', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
-                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay2', _response.data.price, now, end, now], (err, rows, fields) => {
-                                        if(err) { return res.status(400).json({ buySu: false }); }
-                                        res.status(200).json({ buySu: true });
-                                    });
-                                } else if(_response.data.name == "둘다 마음껏" && _response.data.price == 2500) {
-                                    conn.query(sq, [decoded.unum, 'pay3', _response.data.price, _response.data.payment_data.card_name, card_number, _response.data.payment_data.n, _response.data.receipt_id, _response.data.purchased_at, _response.data.status_en, _response.data.pg_name], (err, rows, fields) => { if(err) throw err; });
-                                    conn.query(sql, [decoded.unum, decoded.uid, decoded.uname, _response.data.name, 'pay3', _response.data.price, now, end, now], (err, rows, fields) => {
-                                        if(err) { return res.status(400).json({ buySu: false }); }
-                                        res.status(200).json({ buySu: true });
-                                    });
-                                }
-                            } else { res.status(400).json({ buySu: false, msg: '변조가 감지되었습니다.' }); }
-                        } else { res.status(400).json({ buySu: false, msg: '에러가 발생했습니다.' }); }
-                    });
-                }
-            });
+            const data = await BootpayRest.getAccessToken();
+            bs(data);
         });
     }
 })
@@ -549,7 +631,34 @@ router
         jwt.verify(token, config.secret, (err, decoded) => {
             if(err) { return res.status(400).json({ msg: '에러가 발생했습니다..' }); }
             let sql = 'SELECT * FROM payment WHERE id=? AND toolname=?';
-            conn.query(sql, [decoded.unum, req.body.toolname], (err, data) => {
+            conn.query(sql, [decoded.unum, req.body.toolname], async (err, data) => {
+                function rfsf(response) {
+                    console.log("aa");
+                    console.log(response);
+                    if (response.status === 200) {
+                        let sql = 'DELETE FROM payment WHERE id=? AND toolname=?';
+                        conn.query(sql, [decoded.unum, req.body.toolname], (err, data) => {
+                            if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                        });
+                        let sq = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
+                        conn.query(sq, [decoded.unum, req.body.toolname, req.body.userid], (err, data) => {
+                            if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
+                        });
+                        // TODO: 결제 취소에 관련된 로직을 수행하시면 됩니다.
+                        res.status(200).json({ msg: "환불조치가 완료되었습니다." });
+                    } else {
+                        res.status(400).json({ msg: response.message });
+                    }
+                }
+            
+                async function rfs(token) {
+                    if (token.status === 200) {
+                        console.log("bb");
+                        const data1 = await BootpayRest.cancel(info.receipt_id, Number(req.body.refund_pay), req.body.username, '고객의 환불 요청');
+                        rfsf(data1);
+                    }
+                }
+
                 if(err) { return res.status(400).json({ msg: '확인도중 에러가 발생했습니다..' }); }
                 let info = data[0];
                 BootpayRest.setConfig(
@@ -557,24 +666,8 @@ router
                     "9VV9mQE4zOv+NdtKirEDIDFqAqY9ZZXcpES9UCBRWxE="
                 );
                 
-                BootpayRest.getAccessToken().then(function (token) {
-                    if (token.status === 200) {
-                        BootpayRest.cancel(info.receipt_id, Number(req.body.refund_pay), req.body.username, '고객의 환불 요청').then(function (response) {
-                            if (response.status === 200) {
-                                let sql = 'DELETE FROM payment WHERE id=? AND toolname=?';
-                                conn.query(sql, [decoded.unum, req.body.toolname], (err, data) => {
-                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
-                                });
-                                let sq = 'DELETE FROM subsc WHERE id=? AND toolname=? AND userid=?';
-                                conn.query(sq, [decoded.unum, req.body.toolname, req.body.userid], (err, data) => {
-                                    if(err) { return res.status(400).json({ msg: '삭제하는 과정에서 에러가 발생했습니다.' }); }
-                                });
-                                // TODO: 결제 취소에 관련된 로직을 수행하시면 됩니다.
-                                res.status(200).json({ msg: "결제최소가 완료되었습니다." });
-                            }
-                        });
-                    }
-                });
+                const btg = await BootpayRest.getAccessToken();
+                rfs(btg);
             });
         });
     }
@@ -641,6 +734,6 @@ function check(req, res, next){
     }
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) { return res.json(err); }
-        return res.sendFile('comeback.html', { root: path.join(__dirname, '../public/html') });
+        return res.sendFile('comeback.html', { root: path.join(__dirname, '../public/html/err') });
     });
 }

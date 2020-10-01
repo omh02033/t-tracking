@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="/stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR8VK-avCGrciG2XlevFz65VwWRNIa_yKTFWg&usqp=CAU">
+    <style>
+        body {
+            margin: 0;
+            min-height: 850px;
+            height: 100vh;
+        }
+
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .mlogin {
+            position: absolute;
+            right: 50px;
+        }
+        .mlogin table {
+            text-align: left;
+            border-collapse: unset !important;
+        }
+        .mlogin table td, .mlogin table th {
+            padding: 2px !important;
+        }
+        .main {
+            width: 100%;
+            height: fit-content;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+            height: calc(100% - 90px);
+        }
+        .backmain {
+            height: 78%;
+            margin: auto;
+            display: flex;
+        }
+        .backmain > .mainleft {
+            height: 100%;
+        }
+        .backmain > .mainright {
+            height: 100%;
+        }
+        .backmain > .mainright > iframe {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .user {
+            width: 100%;
+            height: 92px;
+            border-bottom: 1px solid darkgray;
+            position: relative;
+            display: flex;
+            padding: 6px;
+        }
+        .user:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .user.sel {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .user span {
+            font-weight: bold;
+            color: black;
+            font-size: 22px;
+            display: block;
+            margin-top: 5px;
+        }
+        .user img {
+            border-radius: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            width: 46px;
+            height: 46px;
+        }
+        .user .userImg {
+            height: 100%;
+            width: 86px;
+            position: relative;
+            margin-right: 10px;
+        }
+        .user .userIn {
+            height: 100%;
+            width: calc(100% - 86px);
+        }
+        .fu {
+            width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #828282;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        .fu.no {
+            color: black !important;
+            font-weight: bold;
+        }
+        .not {
+            position: absolute;
+            right: 12px;
+            transform: translate(0%, -50%);
+            top: 50%;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background-color: orange;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+            .menu {
+                display: none;
+            }
+            .backmain {
+                width: 100%;
+            }
+            .backmain > .mainleft {
+                width: 100%;
+            }
+            .backmain > .mainright {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .backmain {
+                width: 70%;
+            }
+            .backmain > .mainleft {
+                width: 38%;
+                border: 1px solid darkgray;
+            }
+            .backmain > .mainright {
+                width: 62%;
+            }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .mlogin {
+                display: none;
+            }
+            .backmain {
+                width: 70%;
+            }
+            .backmain > .mainleft {
+                width: 38%;
+                border: 1px solid darkgray;
+            }
+            .backmain > .mainright {
+                width: 62%;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+            .menu {
+                display: none;
+            }
+            .backmain {
+                width: 100%;
+            }
+            .backmain > .mainleft {
+                width: 100%;
+            }
+            .backmain > .mainright {
+                display: none;
+            }
+        }
+    </style>
+    <title>채팅 기록</title>
+    <script src="/javascripts/IProfile.js"></script>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo hide-on-med-and-down" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>채팅 기록</span>
+        </div>
+        <div class="mlogin hide-on-med-and-down">
+            <% if(decoded) { %>
+                <table id="logined">
+                    <tbody>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %> | </td><td style="margin-left: 10px !important;"><a href="/account/logout">로그아웃</a></td></tr>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                    <table id="nlogin">
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="userid" id="uid" placeholder="ID" required></td>·
+                                <td><input type="password" name="userpass" id="upass" placeholder="Password" required></td>
+                                <td><input type="submit" value="로그인" id="userloginsubmit"></td>
+                            </tr>
+                            <tr>
+                                <td><a style="color: white;" href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a style="color: white;" href="/account/signup" target="_blank">회원가입</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55 sel" onclick="chatdown(this, true);">판매자와 채팅 ▼</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="asschat sel" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="mprofileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="mmenutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap55 sel" onclick="mchatdown(this, true);">판매자와 채팅 ▼</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="masschat sel" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+            <% if(decoded) { %>
+                <span class="mmlogin" style="position: absolute; top: 20px; right: 10px;"><%=decoded.uname%> : <%=decoded.uid%></span><br>
+                <a class="mmlogin" href="/account/logout" style="color: gray; position:absolute; right: 10px; top: 40px;">로그아웃</a>
+            <% } else {%>
+                <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
+            <% } %>
+
+            <div class="backmain">
+                <div class="mainleft">
+                    <% for(let i=0; i<chatData.length; i++) { %>
+                        <% if(me == chatData[i].senderID) { %>
+                            <div class="user" data-me="<%=chatData[i].senderID%>" data-target="<%=chatData[i].recipientID%>" data-num="<%=chatData[i].denum%>" data-room="<%=chatData[i].roomID%>" onclick="userclick(this);">
+                        <% } else { %>
+                            <% if(chatData[i].readS == 1) { %>
+                                <div class="user nor" data-me="<%=chatData[i].recipientID%>" data-target="<%=chatData[i].senderID%>" data-num="<%=chatData[i].denum%>" data-room="<%=chatData[i].roomID%>" onclick="userclick(this);">
+                            <% } else { %>
+                                <div class="user" data-me="<%=chatData[i].recipientID%>" data-target="<%=chatData[i].senderID%>" data-num="<%=chatData[i].denum%>" data-room="<%=chatData[i].roomID%>" onclick="userclick(this);">
+                            <% } %>
+                        <% } %>
+                            <div class="userImg">
+                                <% if(me == chatData[i].senderID) { %>
+                                    <img src="/images/userProfile/<%=sha256(String(chatData[i].recipientID))%>" onerror="this.src='/images/userProfile/none.png';" alt="">
+                                <% } else { %>
+                                    <img src="/images/userProfile/<%=sha256(String(chatData[i].senderID))%>" onerror="this.src='/images/userProfile/none.png';" alt="">
+                                <% } %>
+                            </div>
+                            <div class="userIn">
+                                <% if(me == chatData[i].senderID) { %>
+                                    <span><%=chatData[i].recipientName%></span>
+                                    <div class="fu">회원님 : <%=chatData[i].content%> · <%=chatData[i].week.substring(0, 1)%> <%=chatData[i].time%></div>
+                                <% } else { %>
+                                    <span><%=chatData[i].senderName%></span>
+                                    <% if(chatData[i].readS == 1) { %>
+                                        <div class="fu no"><%=chatData[i].content%> · <%=chatData[i].week.substring(0, 1)%> <%=chatData[i].time%></div>
+                                    <% } else { %>
+                                        <div class="fu"><%=chatData[i].content%> · <%=chatData[i].week.substring(0, 1)%> <%=chatData[i].time%></div>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                            <% if(chatData[i].recipientID == me && chatData[i].readS == 1) { %>
+                                <div class="not"></div>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="mainright">
+                    <% if(chatData.length == 0) { %>
+                        <iframe src="/chat/chatnotfound" width="100%" height="100%" id="chat"></iframe>
+                    <% } else { %>
+                        <iframe src="" width="100%" height="100%" id="chat"></iframe>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div id="proselectd">
+            <div id="proselect">
+                <div id="toppro">
+                    <% if(decoded) { %>
+                        <span style="position: absolute; top: 10px; right: 15px; color:gray;"><%=decoded.uid%></span>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="IProfile();" id="deimg">
+                    <% } else { %>
+                        <i class="far fa-user" style="font-size: 35px;"></i>
+                        <div id="deimg" style="display: none !important;"></div>
+                    <% } %>
+                    <h4 id="delh4">프로필</h4>
+                </div>
+                <div id="psoption">
+                    <div id="originalPro"><span>기본 프로필</span></div>
+                    <div id="profilechange">
+                        <label for="chpro" id="al">프로필 변경</label>
+                        <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
+                            <input type="file" name="proImage" id="chpro" style="display: none !important;" accept="image/png, image/jpg, image/jpeg" onchange="prochfilecheck(this);">
+                            <input type="submit" style="display: none !important;" id="psub">
+                        </form>
+                    </div>
+                </div>
+                <div id="closeselect"><span>닫기</span></div>
+            </div>
+        </div>
+        <div id="mproselectd"></div>
+
+
+    <script src="/javascripts/menu.js"></script>
+    <script>
+        // /chat/3/380160267435/1/history/
+        let screen = document.getElementById("chat");
+        function userclick(user) {
+            let room = user.dataset.room;
+            let roomID = room.split('.').join('/');
+            
+            screen.src = `/chat/${roomID}/history`;
+            let udiv = document.querySelectorAll(".user");
+            for(let i=0; i<udiv.length; i++) {
+                if(udiv[i].classList.contains('sel')) {
+                    udiv[i].classList.remove('sel');
+                }
+            }
+            user.classList.add('sel');
+            if(user.classList.contains('nor')) {
+                user.children[1].children[1].classList.remove('no');
+                if(user.lastElementChild.classList.contains('not')) {
+                    user.removeChild(user.lastElementChild);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

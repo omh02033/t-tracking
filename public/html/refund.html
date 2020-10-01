@@ -28,7 +28,8 @@
     <script>
         let shpa = document.getElementById("shpa");
 
-        function refundS(username, pay, id, toolname, userid) {
+        async function refundS(username, pay, id, toolname, userid) {
+            console.log("cc");
             let userInfo = {
                 username: username,
                 refund_py: pay,
@@ -36,17 +37,28 @@
                 toolname: toolname,
                 userid: userid
             };
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', '/account/refund/try/');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function () {
-                let data = JSON.parse(xhr.responseText);
-                if(xhr.readyState === 4 && xhr.status === 200) {
+            try{
+                let data = await fetch('/account/refund/try/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify(userInfo)
+                });
+                if(data.status === 200){
+                    console.log("bb");
+                    data = await data.json();
+                    console.log("aa");
                     alert(data.msg);
+                    window.opener.location.reload()
                     window.close();
-                } else if(xhr.status === 400) { alert(data.msg); }
+                } else {
+                    data = await data.json();
+                    alert(data.msg)
+                }
+            }catch(err){
+                console.error(err); 
             }
-            xhr.send(JSON.stringify(userInfo));
         }
 
         function cardnoCheck(pay, id, toolname, username, userid) {

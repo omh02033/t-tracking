@@ -18,7 +18,7 @@
         body{ margin: 0; }
         #main {
             height: 100vh;
-            width: 500px;
+            width: 100vw;
             margin: 0;
             background-color: rgb(228, 228, 228);
             position: relative;
@@ -27,25 +27,32 @@
             margin: 0;
             background-color: rgb(199, 199, 199);
             font-weight: bold;
-            padding-bottom: 10px;
             box-shadow: 0 0 10px gray;
-            padding-top: 5px;
+            padding: 10px;
+            box-sizing: border-box;
             position: relative;
-        }
-        #top > h4 {
-            margin-top: 0;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        #top > h6 {
-            margin-bottom: 0;
-            text-align: center;
+        #top span {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #top a {
+            position: absolute;
+            right: 25px;
+            color: rgb(49, 49, 49);
+            transform: translate(-50%, -50%);
+            top: 50%;
         }
         #talkContents {
             display:flex;
             flex-direction: column;
             width: 100%;
-            height: calc(100% - 174.77px);
-            padding: 10px;
+            height: calc(100% - 86px);
+            padding: 20px;
             position: relative;
             overflow-y: auto;
             box-sizing: border-box;
@@ -67,7 +74,7 @@
         }
         .textinput {
             width: 100%;
-            height: 100px;
+            height: 35px;
             position: absolute;
             bottom: 0;
         }
@@ -77,13 +84,13 @@
         }
         #content {
             background-color: white;
-            width: 85%;
+            width: calc(100% - 35px);
             height: 100%;
         }
         #sendbtn {
             margin: 0;
             height: 100%;
-            width: 15%;
+            width: 35px;
             position: absolute;
             top: 0;
             right: 0;
@@ -236,12 +243,12 @@
             to { top: 0; }
         }
         @keyframes tcOn {
-            from { height: calc(100% - 174.77px); }
-            to { height: calc(100% - 195.77px); }
+            from { height: calc(100% - 86px); }
+            to { height: calc(100% - 107px); }
         }
         @keyframes tcOff {
-            from { height: calc(100% - 195.77px); }
-            to { height: calc(100% - 174.77px); }
+            from { height: calc(100% - 107px); }
+            to { height: calc(100% - 86px); }
         }
         .textinput .Tchatting {
             color: white;
@@ -279,19 +286,17 @@
 <body>
     <div id="main">
         <div id="top">
-            <i id="moreVert" class="material-icons">more_vert</i>
             <% if(seller) { %>
-                <h4 class="who seller">구매자님과 채팅</h4>
-                <h6><%=targetName%></h6>
+                <span><%=targetName%></span>
             <% } else { %>
-                <h4 class="who consumer">판매자님과 채팅</h4>
-                <h6><%=targetName%></h6>
+                <span><%=targetName%></span>
             <% } %>
+            <a href="tel:<%=targetInfo.phone%>"><i class="material-icons">phone_forwarded</i></a>
         </div>
         <div id="talkContents"></div>
         <div class="textinput">
             <div class="Tchatting"><span>상대가 입력중입니다...</span></div>
-            <textarea name="" id="content" cols="30" rows="15" maxlength="152" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
+            <textarea name="" id="content" cols="30" rows="1" maxlength="1000000" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
             <a id="sendbtn" class="waves-effect waves-light btn"><i class="material-icons">send</i></a>
         </div>
     </div>
@@ -316,7 +321,7 @@
 
         const socket = io();
 
-        let lastDate = { data: undefined };
+        let lastDate;
 
         document.body.classList.add('ontap');
         window.addEventListener('focus', () => {
@@ -347,11 +352,9 @@
             xhr.onreadystatechange = function () {
                 if(xhr.readyState === 4 && xhr.status === 200) {
                     let data = JSON.parse(xhr.responseText);
-                    
                     if(data.result == "success") {
                         let thenDate;
 
-                        console.log(data);
                         if(data.data.length == 0) {
                             let start = document.createElement("span");
                             start.classList.add("startSpan");
@@ -359,7 +362,7 @@
                             talkContents.append(start);
                             talkContents.classList.add('first');
                         } else {
-                            lastDate = data.data[data.data.length-1];
+                            lastDate = data.data[data.data.length-1].date;
 
                             for(let i=0; i<data.data.length; i++) {
                                 if(thenDate == data.data[i].date) {
@@ -538,10 +541,6 @@
         let content = document.getElementById("content");
         let sendbtn = document.getElementById("sendbtn");
 
-        let moreVert = document.getElementById("moreVert");
-
-        let closeselect = document.getElementById("closeselect");
-
         let profilechange = document.getElementById("profilechange");
         let phone = document.getElementById("phone");
         profilechange.onclick = () => {
@@ -638,7 +637,7 @@
 
             let date = await Xrequest('/chat/getWeek');
 
-            if(lastDate.date != date.date) {
+            if(lastDate != date.date) {
                 let datebox = document.createElement('div');
                 datebox.classList.add('datebox');
 
@@ -682,7 +681,7 @@
             wi100.append(span);
             talkContents.append(wi100);
             talkContents.scrollTop = talkContents.scrollHeight;
-            lastDate = date;
+            lastDate = date.date;
 
             let msgID1 = { msgID };
             console.log(msgID);
@@ -736,12 +735,11 @@
             socket.emit("hi", JSON.stringify(Info));
 
             let date = await Xrequest('/chat/getWeek');
-            console.log(date.date);
-            console.log(lastDate.date);
 
-            if(lastDate.date != date.date) {
+            if(lastDate != date.date) {
                 let datebox = document.createElement('div');
                 datebox.classList.add('datebox');
+
                 let backLine = document.createElement('div');
                 backLine.classList.add('back-line');
                 datebox.append(backLine);
@@ -779,36 +777,7 @@
             talkContents.append(wi100);
             talkContents.scrollTop = talkContents.scrollHeight;
             content.value = '';
-            lastDate = date;
-        }
-
-        moreVert.onclick = () => {
-            if(!setoggle) {
-                setoggle = true;
-                proselectd.style.display = "flex";
-                proselect.classList.remove("psc");
-                proselect.classList.remove("pso");
-                proselect.classList.add("pso");
-            }
-        }
-
-        closeselect.onclick = () => {
-            if(setoggle) {
-                setoggle = false;
-                proselect.classList.remove("pso");
-                proselect.classList.remove("psc");
-                proselect.classList.add("psc");
-                let dis = setTimeout(() => {
-                    proselectd.style.display = "none";
-                    clearTimeout(dis);
-                }, 370);
-            } else if(!setoggle) {
-                setoggle = true;
-                proselectd.style.display = "flex";
-                proselect.classList.remove("psc");
-                proselect.classList.remove("pso");
-                proselect.classList.add("pso");
-            }
+            lastDate = date.date;
         }
         async function Xrequest(url) {
             let data = await fetch(url, { method: 'GET' });

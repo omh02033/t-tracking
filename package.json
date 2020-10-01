@@ -7,6 +7,7 @@
     "start-dev": "env NODE_ENV=development supervisor app.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.763.0",
     "axios": "^0.19.2",
     "bootpay-rest-client": "^2.0.1",
     "cookie-parser": "~1.4.4",

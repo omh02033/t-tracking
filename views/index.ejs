@@ -774,7 +774,7 @@
                             On
                         </label>
                       </div>
-                    <% if(payment.pay1) { %>
+                    <% if(payment.pay1 || payment.pay3) { %>
                         <select name="delichoose" id="delichoose" onchange="gcolor('c');" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: fit-content; height: 25px; padding: 0;">
                             <option value="domestic">국내택배 (Korean delivery)</option>
                             <option value="international">국제택배 (International delivery)</option>

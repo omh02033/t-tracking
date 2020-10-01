@@ -31,7 +31,7 @@ function chatcheck(req, res, next) {
         res.locals.decoded = null;
         res.locals.ProFile = null;
         res.locals.seller = null;
-        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html' ) });
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html/err' ) });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
@@ -48,7 +48,7 @@ function check(req, res, next) {
         res.locals.decoded = null;
         res.locals.ProFile = null;
         res.locals.seller = null;
-        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html/err') });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
@@ -65,7 +65,7 @@ function youSeller(req, res, next) {
         res.locals.decoded = null;
         res.locals.ProFile = null;
         res.locals.seller = null;
-        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html/err') });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
@@ -76,7 +76,7 @@ function youSeller(req, res, next) {
             res.locals.seller = seller;
             return next();
         }
-        else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html') }); }
+        else { return res.sendFile('yournotseller.html', { root: path.join(__dirname, '../public/html/err') }); }
     })
 }
 

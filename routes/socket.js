@@ -81,11 +81,14 @@ function connectHandler(socket) {
 
         let date = `${year}년 ${month}월 ${day}일`;
 
-        let sql = 'INSERT INTO chat (`msgID`, `senderID`, `recipientID`, `roomID`, `denum`, `content`, `date`, `week`, `time`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        conn.query(sql, [msgID, sender, recipient, room, denum, msg, date, KoWeek, time], (err, rows, fields) => {
-            if(err) console.log('Error : ', err);
+        let sql1 = 'SELECT * FROM account WHERE id=?';
+        conn.query(sql1, [sender], (err, data1) => {
+            conn.query(sql1, [recipient], (err, data2) => {
+                let sql = 'INSERT INTO chat (`msgID`, `senderID`, `senderName`, `recipientID`, `recipientName`, `roomID`, `denum`, `content`, `date`, `week`, `time`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                conn.query(sql, [msgID, sender, data1[0].name, recipient, data2[0].name, room, denum, msg, date, KoWeek, time], (err, rows, fields) => { if(err) console.log('Error : ', err); });
+                socket.to(room).emit("metoo", data);
+            });
         });
-        socket.to(room).emit("metoo", data);
     });
 
     socket.on('nowRead', (data) => {

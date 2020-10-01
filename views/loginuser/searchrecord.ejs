@@ -68,7 +68,7 @@
         .main1 h3 { font-size: 28px; }
         .main1 h4 { font-size: 20px; }
         #show table tr:first-child td:first-child, #ing table tr:first-child td:first-child { width: 33.33333%; }
-        #show table tr:first-child td:last-child, #ing table tr:first-child td:last-child { width: 66.66667%; }
+        /* #show table tr:first-child td:last-child, #ing table tr:first-child td:last-child { width: 66.66667%; } */
         #chdate {
             margin-left: 50px;
             width: fit-content;
@@ -361,8 +361,6 @@
                                     td1.innerHTML = item.title;
                                     let td2 = document.createElement("td");
                                     td2.innerHTML = item.property ? data.data[i][item.property] : item.value;
-                                    td2.className = item.className;
-
                                     tr.append(td1, td2);
                                     tabl.append(tr);
                                 }
@@ -430,7 +428,6 @@
                         let tr5 = document.createElement("tr"); // 기사 전번
                         let tr6 = document.createElement("tr"); // 현재 위치
                         let tr7 = document.createElement("tr"); // 배송 상태
-                        
                         let td11 = document.createElement("td");
                         td11.innerHTML = '물품 번호';
                         let td12 = document.createElement("td");
@@ -631,7 +628,6 @@
                         if(data.result == "success") {
                             while ( show.hasChildNodes() ) { show.removeChild( show.firstChild ); }
                             for(let i=0; i<data.data.length; i++) {
-                                console.log(data.data[i].date, chdate.value);
                                 if(data.data[i].date == chdate.value) {
                                     if(data.data[i].result == 6) {
                                         let h3 = document.createElement("h4");
