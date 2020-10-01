@@ -251,6 +251,10 @@
                             <td><label class="btn waves-effect waves-orange" id="wcon">미완</label></td>
                         </tr>
                         <tr>
+                            <td>이름</td>
+                            <td><label class="btn waves-effect waves-orange" id="wINB">미완</label></td>
+                        </tr>
+                        <tr>
                             <td>전화번호</td>
                             <td><label class="btn waves-effect waves-orange" id="wphone">미완</label></td>
                         </tr>
@@ -258,70 +262,65 @@
                             <td>본인인증</td>
                             <td><label class="btn waves-effect waves-orange" id="wemail">미완</label></td>
                         </tr>
-                        <tr>
-                            <td>이름</td>
-                            <td><label class="btn waves-effect waves-orange" id="wINB">미완</label></td>
-                        </tr>
                     </table>
                 </div>
                 <div class="mright">
                     <div class="loginp">
                         <h3>회원가입</h3>
                         <span class="who" style="position: absolute; right: 15px; top: 5px;"></span>
-                        <form action="/account/signup" method="POST" onsubmit="userEnrollment(event, this, 'c');">
-                            <div id="sellercheck">
-                                <h4>당신은 ?</h4>
-                                <label>
-                                    <input type="radio" name="seller" id="consumer" onchange="idchang('c');"> <span>구매자</span><br><br>
-                                </label>
-                                <label>
-                                    <input type="radio" name="seller" id="seller" onchange="idchang('s');"> <span>판매자</span>
-                                </label>
+                        <div id="sellercheck">
+                            <h4>당신은 ?</h4>
+                            <label>
+                                <input type="radio" name="seller" id="consumer" onchange="idchang('c');"> <span>구매자</span><br><br>
+                            </label>
+                            <label>
+                                <input type="radio" name="seller" id="seller" onchange="idchang('s');"> <span>판매자</span>
+                            </label>
+                        </div>
+                        <div id="sid" style="display: none;">
+                            <h4>아이디</h4>
+                            <input type="text" name="uid" id="uid" minlength="5" placeholder="ID" required><br>
+                            <span class="checkid"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign1"><i class="material-icons right">navigate_next</i>다음</a><br>
+                        </div>
+                        <div id="spass" style="display: none;">
+                            <h4>비밀번호</h4>
+                            <input type="password" name="upass" id="upass" minlength="6" placeholder="PASSWORD" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign2"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back2"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="scon" style="display: none;">
+                            <h4>비밀번호 확인</h4>
+                            <input type="password" name="conpass" id="upasscon" placeholder="Confirm Password" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign3"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back3"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="sINB" style="display: none;">
+                            <h4>이름</h4>
+                            <input type="text" name="unick" id="unick" maxlength="5" placeholder="NAME" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign33"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back33"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="sphone" style="display: none;">
+                            <h4>전화번호</h4>
+                            <input type="text" name="phonenum" id="uphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
+                            <span class="checkphone"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign35"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back35"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="semail" style="display: none;">
+                            <h4>본인 인증</h4>
+                            <div class="cerinum">
+                                <input type="number" name="" id="cnum-1" maxlength='1' required>
+                                <input type="number" name="" id="cnum-2" maxlength='1' required>
+                                <input type="number" name="" id="cnum-3" maxlength='1' required>
+                                <input type="number" name="" id="cnum-4" maxlength='1' required>
+                                <input type="number" name="" id="cnum-5" maxlength='1' required>
+                                <input type="number" name="" id="cnum-6" maxlength='1' required>
                             </div>
-                            <div id="sid" style="display: none;">
-                                <h4>아이디</h4>
-                                <input type="text" name="uid" id="uid" minlength="5" placeholder="ID" required><br>
-                                <span class="checkid"></span>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign1"><i class="material-icons right">navigate_next</i>다음</a><br>
-                            </div>
-                            <div id="spass" style="display: none;">
-                                <h4>비밀번호</h4>
-                                <input type="password" name="upass" id="upass" minlength="6" placeholder="PASSWORD" required>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign2"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back2"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="scon" style="display: none;">
-                                <h4>비밀번호 확인</h4>
-                                <input type="password" name="conpass" id="upasscon" placeholder="Confirm Password" required>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign3"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back3"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="sphone" style="display: none;">
-                                <h4>전화번호</h4>
-                                <input type="text" name="phonenum" id="uphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
-                                <span class="checkphone"></span>
-                                <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign35"><i class="material-icons right">navigate_next</i>다음</a>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back35"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="semail" style="display: none;">
-                                <h4>본인 인증</h4>
-                                <div class="cerinum">
-                                    <input type="number" name="" id="cnum-1" maxlength='1' required>
-                                    <input type="number" name="" id="cnum-2" maxlength='1' required>
-                                    <input type="number" name="" id="cnum-3" maxlength='1' required>
-                                    <input type="number" name="" id="cnum-4" maxlength='1' required>
-                                    <input type="number" name="" id="cnum-5" maxlength='1' required>
-                                    <input type="number" name="" id="cnum-6" maxlength='1' required>
-                                </div>
-                                <span class="time"><span class="m">3</span>:<span class="sec">00</span></span>
-                                <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back4"><i class="material-icons left">navigate_before</i>이전</a>
-                            </div>
-                            <div id="sINB" style="display: none;">
-                                <h4>이름</h4>
-                                <input type="text" name="unick" id="unick" maxlength="5" placeholder="NAME" required>
-                                <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="signsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
-                            </div>
-                        </form>
+                            <span class="time"><span class="m">3</span>:<span class="sec">00</span></span>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back4"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -329,60 +328,59 @@
                 <div class="loginp">
                     <h3>회원가입</h3>
                     <span class="who" style="position: absolute; right: 10px; top: 5px;"></span>
-                    <form action="/account/signup" method="POST" onsubmit="userEnrollment(event, this, 'm');">
-                        <div id="msellercheck">
-                            <h4>당신은 ?</h4>
-                            <label>
-                                <input type="radio" name="seller" id="mconsumer" onchange="midchang('c');"> <span>구매자</span><br><br>
-                            </label>
-                            <label>
-                                <input type="radio" name="seller" id="mseller" onchange="midchang('s');"> <span>판매자</span>
-                            </label>
+                    <div id="msellercheck">
+                        <h4>당신은 ?</h4>
+                        <label>
+                            <input type="radio" name="seller" id="mconsumer" onchange="midchang('c');"> <span>구매자</span><br><br>
+                        </label>
+                        <label>
+                            <input type="radio" name="seller" id="mseller" onchange="midchang('s');"> <span>판매자</span>
+                        </label>
+                    </div>
+                    <div id="msid" style="display: none;">
+                        <h4>아이디</h4>
+                        <input type="text" name="uid" id="muid" minlength="4" maxlength="45" placeholder="ID" required><br>
+                        <span class="checkid"></span>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign1"><i class="material-icons right">navigate_next</i>다음</a>
+                    </div>
+                    <div id="mspass" style="display: none;">
+                        <h4>비밀번호</h4>
+                        <input type="password" name="upass" id="mupass" minlength="6" placeholder="PASSWORD" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign2"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback2"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="mscon" style="display: none;">
+                        <h4>비밀번호 확인</h4>
+                        <input type="password" name="conpass" id="mupasscon" placeholder="Confirm Password" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msINB" style="display: none;">
+                        <h4>이름</h4>
+                        <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign33"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback33"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msphone" style="display: none;">
+                        <h4>전화번호</h4>
+                        <input type="text" name="phonenum" id="muphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
+                        <span class="checkphone"></span>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign35"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback35"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msemail" style="display: none;">
+                        <h4>본인 인증</h4>
+                        <div class="cerinum">
+                            <input type="number" name="" id="mnum-1" maxlength='1' required>
+                            <input type="number" name="" id="mnum-2" maxlength='1' required>
+                            <input type="number" name="" id="mnum-3" maxlength='1' required>
+                            <input type="number" name="" id="mnum-4" maxlength='1' required>
+                            <input type="number" name="" id="mnum-5" maxlength='1' required>
+                            <input type="number" name="" id="mnum-6" maxlength='1' required>
                         </div>
-                        <div id="msid" style="display: none;">
-                            <h4>아이디</h4>
-                            <input type="text" name="uid" id="muid" minlength="4" maxlength="45" placeholder="ID" required><br>
-                            <span class="checkid"></span>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign1"><i class="material-icons right">navigate_next</i>다음</a>
-                        </div>
-                        <div id="mspass" style="display: none;">
-                            <h4>비밀번호</h4>
-                            <input type="password" name="upass" id="mupass" minlength="6" placeholder="PASSWORD" required>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign2"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback2"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="mscon" style="display: none;">
-                            <h4>비밀번호 확인</h4>
-                            <input type="password" name="conpass" id="mupasscon" placeholder="Confirm Password" required>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="msphone" style="display: none;">
-                            <h4>전화번호</h4>
-                            <input type="text" name="phonenum" id="muphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
-                            <span class="checkphone"></span>
-                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign35"><i class="material-icons right">navigate_next</i>다음</a>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback35"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="msemail" style="display: none;">
-                            <h4>본인 인증</h4>
-                            <div class="cerinum">
-                                <input type="number" name="" id="mnum-1" maxlength='1' required>
-                                <input type="number" name="" id="mnum-2" maxlength='1' required>
-                                <input type="number" name="" id="mnum-3" maxlength='1' required>
-                                <input type="number" name="" id="mnum-4" maxlength='1' required>
-                                <input type="number" name="" id="mnum-5" maxlength='1' required>
-                                <input type="number" name="" id="mnum-6" maxlength='1' required>
-                            </div>
-                            <span class="mtime"><span class="mm">3</span>:<span class="msec">00</span></span>
-                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
-                        </div>
-                        <div id="msINB" style="display: none;">
-                            <h4>이름</h4>
-                            <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
-                            <Button type="submit" class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msignsubmit"><i class="material-icons right" style="color: green;">check</i>제출</Button>
-                        </div>
-                    </form>
+                        <span class="mtime"><span class="mm">3</span>:<span class="msec">00</span></span>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -414,12 +412,14 @@
 
         let sign1 = document.getElementById("sign1");  // 아이디 창
         let sign2 = document.getElementById("sign2");  // 비밀번호 창
+        let sign33 = document.getElementById("sign33"); // 이름 창
         let sign35 = document.getElementById("sign35"); // 전화번호 창
         let sign3 = document.getElementById("sign3");  // 비밀번호 확인 창
 
         let back1 = document.getElementById("back1");
         let back2 = document.getElementById("back2");
         let back3 = document.getElementById("back3");
+        let back33 = document.getElementById("back33");
         let back35 = document.getElementById("back35");
         let back4 = document.getElementById("back4");
 
@@ -440,11 +440,13 @@
         let msign1 = document.getElementById("msign1");  // 아이디 창
         let msign2 = document.getElementById("msign2");  // 비밀번호 창
         let msign3 = document.getElementById("msign3");  // 비밀번호 확인 창
+        let msign33 = document.getElementById("msign33");
         let msign35 = document.getElementById("msign35");// 전화번호 창
 
         let mback1 = document.getElementById("mback1");
         let mback2 = document.getElementById("mback2");
         let mback3 = document.getElementById("mback3");
+        let mback33 = document.getElementById("mback33");
         let mback35 = document.getElementById("mback35");
         let mback4 = document.getElementById("mback4");
 
@@ -454,7 +456,7 @@
         let mupass = document.getElementById("mupass");         // 유저 비밀번호
         let mupasscon = document.getElementById("mupasscon");   // 비밀번호 확인
         let muphone = document.getElementById("muphone");       // 유저 전화번호
-        let munick = document.getElementById("munick");          // 유저 이릠
+        let munick = document.getElementById("munick");          // 유저 이름
 
         let cnum_1 = document.getElementById("cnum-1");
         let cnum_2 = document.getElementById("cnum-2");
@@ -609,12 +611,14 @@
             if(device == 'c') {
                 info = {
                     userid: uid.value,
-                    phone
+                    phone,
+                    name: unick.value
                 }
             } else {
                 info = {
                     userid: muid.value,
-                    phone
+                    phone,
+                    name: munick.value
                 }
             }
             let xhr = new XMLHttpRequest();
@@ -627,7 +631,7 @@
                         let sM = minute.innerHTML;
                         let sS = sec.innerHTML;
                         countdown = setInterval(() => {
-                            if(minute.innerHTML == '00' && sec.innerHTML == '00') {
+                            if(minute.innerHTML == '0' && sec.innerHTML == '00') {
                                 alert('시간이 만료되었습니다.\n다시 시도해주세요.');
                                 cnum_1.value = '';
                                 cnum_2.value = '';
@@ -639,10 +643,13 @@
                                 wphone.innerHTML = "진행중..";
                                 semail.style.display = "none";
                                 sphone.style.display = "block";
+                                uphone.value = '';
                                 uphone.focus();
                                 minute.innerHTML = '3';
                                 sec.innerHTML = '00';
+                                for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
                                 clearInterval(countdown);
+                                delCode('c');
                             } else if(sS == '00') {
                                 sM -= 1;
                                 sS = 59;
@@ -658,7 +665,7 @@
                         let sM = mminute.innerHTML;
                         let sS = msec.innerHTML;
                         mcountdown = setInterval(() => {
-                            if(mminute.innerHTML == '00' && msec.innerHTML == '00') {
+                            if(mminute.innerHTML == '0' && msec.innerHTML == '00') {
                                 alert('시간이 만료되었습니다.\n다시 시도해주세요.');
                                 mnum_1.value = '';
                                 mnum_2.value = '';
@@ -670,8 +677,11 @@
                                 msphone.style.display = "block";
                                 mminute.innerHTML = '3';
                                 msec.innerHTML = '00';
+                                muphone.value = '';
                                 muphone.focus();
+                                for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
                                 clearInterval(mcountdown);
+                                delCode('m');
                             } else if(sS == '00') {
                                 sM -= 1;
                                 sS = 59;
@@ -740,80 +750,118 @@
             xhr.send(JSON.stringify(phoneInfo));
         }
 
-        function cerfi(device) {
+        function delCode(device) {
             let info;
             if(device == 'c') {
-                info = {
-                    userid: uid.value,
-                    code: `${cnum_1.value}${cnum_2.value}${cnum_3.value}${cnum_4.value}${cnum_5.value}${cnum_6.value}`
-                }
+                info = { userid: uid.value };
             } else {
-                info = {
-                    userid: muid.value,
-                    code: `${mnum_1.value}${mnum_2.value}${mnum_3.value}${mnum_4.value}${mnum_5.value}${mnum_6.value}`
-                }
+                info = { userid: muid.value };
             }
 
             let xhr = new XMLHttpRequest();
-            xhr.open('POST', '/account/signup/codeCheck');
+            xhr.open('POST', '/account/signup/sms/del');
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState === 4 && xhr.status == 200) {
-                    let data = JSON.parse(xhr.responseText);
-                    if(data.result) {
-                        if(device == 'c') {
-                            clearInterval(countdown);
-                            semail.style.display = "none";
-                            sINB.style.display = "block";
-                            wINB.innerHTML = "진행중..";
-                            wemail.innerHTML = "완료";
-                            unick.focus();
-                        } else {
-                            clearInterval(mcountdown);
-                            msemail.style.display = "none";
-                            msINB.style.display = "block";
-                            munick.focus();
-                        }
-                    }
-                } else if(xhr.readyState === 4 && xhr.status == 400) {
-                    let data = JSON.parse(xhr.responseText);
-                    if(data.result == 'fail') {
-                        chance--;
-                        alert(`인증번호가 일치하지 않습니다.\n기회 : ${chance}`);
-                        cnum_1.value = '';
-                        cnum_2.value = '';
-                        cnum_3.value = '';
-                        cnum_4.value = '';
-                        cnum_5.value = '';
-                        cnum_6.value = '';
-                        mnum_1.value = '';
-                        mnum_2.value = '';
-                        mnum_3.value = '';
-                        mnum_4.value = '';
-                        mnum_5.value = '';
-                        mnum_6.value = '';
-                    }
-                }0
-            }
             xhr.send(JSON.stringify(info));
         }
 
-        cnum_1.onkeyup = () => { cnum_2.focus(); }
-        cnum_2.onkeyup = () => { cnum_3.focus(); }
-        cnum_3.onkeyup = () => { cnum_4.focus(); }
-        cnum_4.onkeyup = () => { cnum_5.focus(); }
-        cnum_5.onkeyup = () => { cnum_6.focus(); }
-        cnum_6.onkeyup = () => { cerfi('c'); }
+        function cerfi(device) {
+            if(`${cnum_1.value}${cnum_2.value}${cnum_3.value}${cnum_4.value}${cnum_5.value}${cnum_6.value}`.length == 6 || `${mnum_1.value}${mnum_2.value}${mnum_3.value}${mnum_4.value}${mnum_5.value}${mnum_6.value}`.length == 6) {
+                let info;
+                if(device == 'c') {
+                    info = {
+                        userid: uid.value,
+                        code: `${cnum_1.value}${cnum_2.value}${cnum_3.value}${cnum_4.value}${cnum_5.value}${cnum_6.value}`,
+                        name: unick.value
+                    }
+                } else {
+                    info = {
+                        userid: muid.value,
+                        code: `${mnum_1.value}${mnum_2.value}${mnum_3.value}${mnum_4.value}${mnum_5.value}${mnum_6.value}`,
+                        name: munick.value
+                    }
+                }
+    
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/account/signup/codeCheck');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState === 4 && xhr.status == 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.result) {
+                            if(device == 'c') {
+                                clearInterval(countdown);
+                                userEnrollment('c');
+                            } else {
+                                clearInterval(mcountdown);
+                                userEnrollment('m');
+                            }
+                        }
+                    } else if(xhr.readyState === 4 && xhr.status == 400) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.result == 'fail') {
+                            cnum_1.value = '';
+                            cnum_2.value = '';
+                            cnum_3.value = '';
+                            cnum_4.value = '';
+                            cnum_5.value = '';
+                            cnum_6.value = '';
+                            mnum_1.value = '';
+                            mnum_2.value = '';
+                            mnum_3.value = '';
+                            mnum_4.value = '';
+                            mnum_5.value = '';
+                            mnum_6.value = '';
+                            chance--;
+                            if(chance == 0) {
+                                alert('기회가 모두 소진되었습다.\n다시 시도해주세요.');
+                                if(device == 'c') {
+                                    wemail.innerHTML = "미완";
+                                    wphone.innerHTML = "진행중..";
+                                    semail.style.display = "none";
+                                    sphone.style.display = "block";
+                                    uphone.value = '';
+                                    uphone.focus();
+                                    for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
+                                    clearInterval(countdown);
+                                    delCode('c');
+                                    minute.innerHTML = '3';
+                                    sec.innerHTML = '00';
+                                } else {
+                                    msemail.style.display = "none";
+                                    msphone.style.display = "block";
+                                    muphone.value = '';
+                                    muphone.focus();
+                                    for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
+                                    clearInterval(mcountdown);
+                                    delCode('m');
+                                    mminute.innerHTML = '3';
+                                    msec.innerHTML = '00';
+                                }
+                            } else {
+                                alert(`인증번호가 일치하지 않습니다.\n기회 : ${chance}`);
+                            }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(info));
+            } else return 0;
+        }
 
-        mnum_1.onkeyup = () => { mnum_2.focus(); }
-        mnum_2.onkeyup = () => { mnum_3.focus(); }
-        mnum_3.onkeyup = () => { mnum_4.focus(); }
-        mnum_4.onkeyup = () => { mnum_5.focus(); }
-        mnum_5.onkeyup = () => { mnum_6.focus(); }
-        mnum_6.onkeyup = () => { cerfi('m'); }
+        cnum_1.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_2.focus(); }
+        cnum_2.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_3.focus(); }
+        cnum_3.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_4.focus(); }
+        cnum_4.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_5.focus(); }
+        cnum_5.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_6.focus(); }
+        cnum_6.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cerfi('c'); }
 
-        function userEnrollment(e, form, device) {
-            e.preventDefault();
+        mnum_1.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_2.focus(); }
+        mnum_2.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_3.focus(); }
+        mnum_3.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_4.focus(); }
+        mnum_4.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_5.focus(); }
+        mnum_5.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) mnum_6.focus(); }
+        mnum_6.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cerfi('m'); }
+
+        function userEnrollment(device) {
             let info;
             if(device == 'c') {
                 info = {
@@ -849,9 +897,8 @@
                     if(data.result == 'not found') {
                         alert('에러가 발생했습니다.\n본인인증을 다시 진행해주세요..');
                         if(device == 'c') {
-                            sINB.style.display = "none";
+                            semail.style.display = "none";
                             sphone.style.display = "block";
-                            wINB.innerHTML = "미완";
                             wemail.innerHTML = "미완";
                             wphone.innerHTMl = "진행중..";
                             uphone.value = '';
@@ -862,8 +909,11 @@
                             cnum_5.value = '';
                             cnum_6.value = '';
                             uphone.focus();
+                            delCode('c');
+                            minute.innerHTML = '3';
+                            sec.innerHTML = '00';
                         } else {
-                            msINB.style.display = "none";
+                            msemail.style.display = "none";
                             msphone.style.display = "block";
                             muphone.value = '';
                             mnum_1.value = '';
@@ -873,13 +923,14 @@
                             mnum_5.value = '';
                             mnum_6.value = '';
                             muphone.focus();
+                            mminute.innerHTML = '3';
+                            msec.innerHTML = '00';
                         }
                     } else if(data.result == 'not cer') {
                         alert('본인 인증이 완전히 완료되지 않았습니다.');
                         if(device == 'c') {
-                            sINB.style.display = "none";
+                            semail.style.display = "none";
                             sphone.style.display = "block";
-                            wINB.innerHTML = "미완";
                             wemail.innerHTML = "미완";
                             wphone.innerHTMl = "진행중..";
                             uphone.value = '';
@@ -890,8 +941,11 @@
                             cnum_5.value = '';
                             cnum_6.value = '';
                             uphone.focus();
+                            delCode('c');
+                            minute.innerHTML = '3';
+                            sec.innerHTML = '00';
                         } else {
-                            msINB.style.display = "none";
+                            msemail.style.display = "none";
                             msphone.style.display = "block";
                             muphone.value = '';
                             mnum_1.value = '';
@@ -901,6 +955,9 @@
                             mnum_5.value = '';
                             mnum_6.value = '';
                             muphone.focus();
+                            delCode('m');
+                            mminute.innerHTML = '3';
+                            msec.innerHTML = '00';
                         }
                     } else if(data.result == 'fail') {
                         alert('예상치 못한 에러가 발생했습니다.\n다시시도 해주세요..');
@@ -986,10 +1043,10 @@
         sign3.onclick = () => {
             if(upass.value == upasscon.value) {
                 scon.style.display = "none";
-                sphone.style.display = "block";
-                uphone.focus();
+                sINB.style.display = "block";
+                unick.focus();
                 wcon.innerHTML = "완료";
-                wphone.innerHTML = "진행중..";
+                wINB.innerHTML = "진행중..";
                 let signin = document.querySelector(".signin");
                 signin.classList.add("signint");
             } else if(upasscon.value == "") {
@@ -1002,10 +1059,10 @@
             if(event.keyCode == 13) {
                 if(upass.value == upasscon.value) {
                     scon.style.display = "none";
-                    sphone.style.display = "block";
-                    uphone.focus();
+                    sINB.style.display = "block";
+                    unick.focus();
                     wcon.innerHTML = "완료";
-                    wphone.innerHTML = "진행중..";
+                    wINB.innerHTML = "진행중..";
                     let signin = document.querySelector(".signin");
                     signin.classList.add("signint");
                 } else if(upasscon.value == "") {
@@ -1015,17 +1072,38 @@
                 }
             }
         }
+        sign33.onclick = () => {
+            if(unick.value == '') {
+                alert('이름을 입력해주세요.');
+            } else {
+                sINB.style.display = "none";
+                sphone.style.display = "block";
+                wINB.innerHTML = "완료";
+                wphone.innerHTML = "진행중..";
+                uphone.focus();
+            }
+        }
+        unick.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(unick.value == '') {
+                    alert('이름을 입력해주세요.');
+                } else {
+                    sINB.style.display = "none";
+                    sphone.style.display = "block";
+                    wINB.innerHTML = "완료";
+                    wphone.innerHTML = "진행중..";
+                    uphone.focus();
+                }
+            }
+        }
         sign35.onclick = () => {
             if(uphone.value == '') {
                 alert('전화번호를 입력해주세요.');
             } else if(uphone.value.length != 11) {
                 alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
             } else if(uphone.value.length == 11) {
-                if(phonecheck && nowphone == uphone.value) {
-                    sphone.style.display = "none";
-                    semail.style.display = "block";
-                    wphone.innerHTML = "완료";
-                    wemail.innerHTML = "진행중..";
+                if(phonecheck && nowphone == uphone.value) {;
+                    phoneoverlapcheck('c');
                 } else {
                     for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ""; }
                     phonecheck = false;
@@ -1041,10 +1119,7 @@
                     alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
                 } else if(uphone.value.length == 11) {
                     if(phonecheck && nowphone == uphone.value) {
-                        sphone.style.display = "none";
-                        semail.style.display = "block";
-                        wphone.innerHTML = "완료";
-                        wemail.innerHTML = "진행중..";
+                        phoneoverlapcheck('c');
                     } else {
                         for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ""; }
                         phonecheck = false;
@@ -1073,11 +1148,18 @@
             let s1 = document.querySelector(".s1");
             s1.classList.remove("s1t");
         }
-        back35.onclick = () => {
-            sphone.style.display = "none";
+        back33.onclick = () => {
+            sINB.style.display = "none";
             scon.style.display = "block";
             upasscon.focus();
+            wINB.innerHTML = "미완";
             wcon.innerHTML = "진행중..";
+        }
+        back35.onclick = () => {
+            sphone.style.display = "none";
+            sINB.style.display = "block";
+            unick.focus();
+            wINB.innerHTML = "진행중..";
             wphone.innerHTML = "미완";
             let signin = document.querySelector(".signin");
             signin.classList.remove("signint");
@@ -1086,12 +1168,14 @@
             semail.style.display = "none";
             sphone.style.display = "block";
             uphone.focus();
+            delCode('c');
+            minute.innerHTML = '3';
+            sec.innerHTML = '00';
             wphone.innerHTML = "진행중..";
             wemail.innerHTML = "미완";
             let signup2 = document.querySelector(".signup2");
             signup2.classList.remove("signup2t");
         }
-
 
 
         msign1.onclick = () => {
@@ -1127,14 +1211,23 @@
         msign3.onclick = () => {
             if(mupasscon.value == mupass.value) {
                 mscon.style.display = "none";
-                msphone.style.display = "block";
-                muphone.focus();
+                msINB.style.display = "block";
+                munick.focus();
                 let signin = document.querySelector(".signin");
                 signin.classList.add("signint");
             } else if(mupasscon.value == "") {
                 alert('비밀번호를 다시 입력해주세요.');
             } else {
                 alert('비밀번호가 일치하지 않습니다.');
+            }
+        }
+        msign33.onclick = () => {
+            if(munick.value == '') {
+                alert('이름을 입력해주세요.');
+            } else {
+                msINB.style.display = "none";
+                msphone.style.display = "block";
+                muphone.focus();
             }
         }
         msign35.onclick = () => {
@@ -1144,8 +1237,7 @@
                 alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
             } else if(muphone.value.length == 11) {
                 if(phonecheck && mnowphone == muphone.value) {
-                    msphone.style.display = "none";
-                    msemail.style.display = "block";
+                    phoneoverlapcheck('m');
                 } else {
                     for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ""; }
                     phonecheck = false;
@@ -1168,10 +1260,15 @@
             let s1 = document.querySelector("s1");
             s1.classList.remove("s1t");
         }
-        mback35.onclick = () => {
-            msphone.style.display = "none";
+        mback33.onclick = () => {
+            msINB.style.display = "none";
             mscon.style.display = "block";
             mupasscon.focus();
+        }
+        mback35.onclick = () => {
+            msphone.style.display = "none";
+            msINB.style.display = "block";
+            munick.focus();
             let signin = document.querySelector("signin");
             signin.classList.remove("signint");
         }
@@ -1179,6 +1276,9 @@
             msemail.style.display = "none";
             msphone.style.display = "block";
             muphone.focus();
+            delCode('m');
+            mminute.innerHTML = '3';
+            msec.innerHTML = '00';
         }
     </script>
 </body>

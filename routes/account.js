@@ -133,8 +133,8 @@ router
                         result: 'fail'
                     });
                 } else {
-                    let desql = 'DELETE FROM smsCode WHERE userid=? AND code=?';
-                    conn.query(desql, [req.body.userid, req.body.code], (err) => { if(err) { console.log(err); } });
+                    let desql = 'DELETE FROM smsCode WHERE userid=?';
+                    conn.query(desql, [req.body.userid], (err) => { if(err) { console.log(err); } });
                     console.log('signup : success');
                     res.status(200).json({
                         msg: '유저 등록이 성공적으로 이루어졌습니다.',
@@ -256,8 +256,8 @@ router
     var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(params).promise();
 
     function rs(data) {
-        let sql = 'INSERT INTO smsCode (`userid`, `phone`, `code`, `msgID`) VALUES(?, ?, ?, ?)';
-        conn.query(sql, [userid, `+82${phone}`, result, data.MessageId], (err) => {
+        let sql = 'INSERT INTO smsCode (`userid`, `name`, `phone`, `code`, `msgID`) VALUES(?, ?, ?, ?, ?)';
+        conn.query(sql, [userid, req.body.name, `+82${phone}`, result, data.MessageId], (err) => {
             if(err) return res.status(400).json({ result: 'fail' });
             res.status(200).json({ result: 'success' });
         });
@@ -281,6 +281,13 @@ router
         // });
 })
 
+.post('/signup/sms/del', (req, res) => {
+    let sql = 'DELETE FROM smsCode WHERE userid=?';
+    conn.query(sql, [req.body.userid], (err) => {
+        if(err) return res.status(400).json({ result: 'fail' });
+        return res.status(200).json({ result: 'success' });
+    })
+})
 .post('/signup/overlap/id/', (req, res) => {
     let uid = req.body.id;
     let sql = 'SELECT * FROM account WHERE userid=?';
