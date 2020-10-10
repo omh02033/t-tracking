@@ -18,7 +18,7 @@
         body{ margin: 0; }
         #main {
             height: 100vh;
-            width: 500px;
+            width: 100vw;
             margin: 0;
             background-color: rgb(228, 228, 228);
             position: relative;
@@ -160,14 +160,17 @@
             top:10px;
             left:-15px;
         }
-
-        #moreVert {
+        #top > a {
+            width: 30px;
+            height: 30px;
+            color: black;
+            display: flex;
             position: absolute;
+            justify-content: center;
+            align-items: center;
             transform: translate(-50%, -50%);
             top: 50%;
-            left: 30px;
-            z-index: 100;
-            cursor: pointer;
+            right: 10px;
         }
         #toppro > h4 {
             bottom: 55px !important;
@@ -279,7 +282,7 @@
 <body>
     <div id="main">
         <div id="top">
-            <i id="moreVert" class="material-icons">more_vert</i>
+            <a href="tel:<%=targetInfo.phone%>"><i class="material-icons">call</i></a>
             <% if(seller) { %>
                 <h4 class="who seller">구매자님과 채팅</h4>
                 <h6><%=targetName%></h6>
@@ -293,20 +296,6 @@
             <div class="Tchatting"><span>상대가 입력중입니다...</span></div>
             <textarea name="" id="content" cols="30" rows="15" maxlength="152" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
             <a id="sendbtn" class="waves-effect waves-light btn"><i class="material-icons">send</i></a>
-        </div>
-    </div>
-
-    <div id="proselectd">
-        <div id="proselect">
-            <div id="toppro">
-                <h4 id="delh4">상대 정보</h4>
-                <img src="/images/userProfile/<%=ProFile%>" onerror="IProfile();" id="deimg">
-            </div>
-            <div id="psoption">
-                <div id="originalPro" style="display: none;"><span></span></div>
-                <div id="profilechange"><a id="phone" href="tel:<%=targetInfo.phone%>">전화하기</a></div>
-            </div>
-            <div id="closeselect"><span>닫기</span></div>
         </div>
     </div>
 
@@ -537,18 +526,6 @@
         }
         let content = document.getElementById("content");
         let sendbtn = document.getElementById("sendbtn");
-
-        let moreVert = document.getElementById("moreVert");
-
-        let closeselect = document.getElementById("closeselect");
-
-        let profilechange = document.getElementById("profilechange");
-        let phone = document.getElementById("phone");
-        profilechange.onclick = () => {
-            location.href = phone.href;
-        }
-
-        let setoggle = false;
 
         socket.on('connect', () => {
             console.log("GOOD");  
@@ -782,34 +759,6 @@
             lastDate = date;
         }
 
-        moreVert.onclick = () => {
-            if(!setoggle) {
-                setoggle = true;
-                proselectd.style.display = "flex";
-                proselect.classList.remove("psc");
-                proselect.classList.remove("pso");
-                proselect.classList.add("pso");
-            }
-        }
-
-        closeselect.onclick = () => {
-            if(setoggle) {
-                setoggle = false;
-                proselect.classList.remove("pso");
-                proselect.classList.remove("psc");
-                proselect.classList.add("psc");
-                let dis = setTimeout(() => {
-                    proselectd.style.display = "none";
-                    clearTimeout(dis);
-                }, 370);
-            } else if(!setoggle) {
-                setoggle = true;
-                proselectd.style.display = "flex";
-                proselect.classList.remove("psc");
-                proselect.classList.remove("pso");
-                proselect.classList.add("pso");
-            }
-        }
         async function Xrequest(url) {
             let data = await fetch(url, { method: 'GET' });
             data = await data.json();

@@ -199,7 +199,6 @@ router
 .post('/lookupcheck', (req, res) => {
     if(req.body.app == 'apploval') {
         let dt = [];
-        let mdt = [];
         let sql = 'SELECT * FROM `delivery`.`top` ORDER BY `lookup` DESC LIMIT 1000';
         conn.query(sql, (err, data) => {
             if(err) { res.status(400).json({ msg: '에러가 발생했습니다(06)' }); }
@@ -208,14 +207,9 @@ router
                     "name": data[i].name,
                     "lookup": data[i].lookup
                 });
-                mdt.push({
-                    "name": data[i].name.substring(0, 3),
-                    "lookup": data[i].lookup
-                });
             }
             let redt = dt.reverse();
-            let mredt = mdt.reverse();
-            res.status(200).json({ result: 'success', data: redt, mdata: mredt });
+            res.status(200).json({ result: 'success', data: redt });
         })
     }
 })

@@ -140,9 +140,12 @@
                 display: none;
             }
             .backmain {
+                display: none;
+            }
+            .mbackmain {
                 width: 100%;
             }
-            .backmain > .mainleft {
+            .mbackmain > .mmainleft {
                 width: 100%;
             }
             .backmain > .mainright {
@@ -154,6 +157,9 @@
                 display: none;
             }
             #mmenubar {
+                display: none;
+            }
+            .mbackmain {
                 display: none;
             }
             .backmain {
@@ -175,6 +181,9 @@
                 display: none;
             }
             .mlogin {
+                display: none;
+            }
+            .mbackmain {
                 display: none;
             }
             .backmain {
@@ -199,13 +208,13 @@
                 display: none;
             }
             .backmain {
-                width: 100%;
-            }
-            .backmain > .mainleft {
-                width: 100%;
-            }
-            .backmain > .mainright {
                 display: none;
+            }
+            .mbackmain {
+                width: 100%;
+            }
+            .mbackmain > .mmainleft {
+                width: 100%;
             }
         }
     </style>
@@ -370,6 +379,47 @@
                     <% } %>
                 </div>
             </div>
+
+
+            <div class="mbackmain">
+                <div class="mmainleft">
+                    <% for(let i=0; i<chatData.length; i++) { %>
+                        <% if(me == chatData[i].senderID) { %>
+                            <div class="user" data-me="<%=chatData[i].senderID%>" data-target="<%=chatData[i].recipientID%>" data-num="<%=chatData[i].denum%>" data-room="<%=chatData[i].roomID%>" onclick="muserclick(this);">
+                        <% } else { %>
+                            <% if(chatData[i].readS == 1) { %>
+                                <div class="user nor" data-me="<%=chatData[i].recipientID%>" data-target="<%=chatData[i].senderID%>" data-num="<%=chatData[i].denum%>" data-room="<%=chatData[i].roomID%>" onclick="muserclick(this);">
+                            <% } else { %>
+                                <div class="user" data-me="<%=chatData[i].recipientID%>" data-target="<%=chatData[i].senderID%>" data-num="<%=chatData[i].denum%>" data-room="<%=chatData[i].roomID%>" onclick="muserclick(this);">
+                            <% } %>
+                        <% } %>
+                            <div class="userImg">
+                                <% if(me == chatData[i].senderID) { %>
+                                    <img src="/images/userProfile/<%=sha256(String(chatData[i].recipientID))%>" onerror="this.src='/images/userProfile/none.png';" alt="">
+                                <% } else { %>
+                                    <img src="/images/userProfile/<%=sha256(String(chatData[i].senderID))%>" onerror="this.src='/images/userProfile/none.png';" alt="">
+                                <% } %>
+                            </div>
+                            <div class="userIn">
+                                <% if(me == chatData[i].senderID) { %>
+                                    <span class="TargetName"><%=chatData[i].recipientName%></span>
+                                    <div class="fu">회원님 : <%=chatData[i].content%> · <%=chatData[i].week.substring(0, 1)%> <%=chatData[i].time%></div>
+                                <% } else { %>
+                                    <span><%=chatData[i].senderName%></span>
+                                    <% if(chatData[i].readS == 1) { %>
+                                        <div class="fu no"><%=chatData[i].content%> · <%=chatData[i].week.substring(0, 1)%> <%=chatData[i].time%></div>
+                                    <% } else { %>
+                                        <div class="fu"><%=chatData[i].content%> · <%=chatData[i].week.substring(0, 1)%> <%=chatData[i].time%></div>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                            <% if(chatData[i].recipientID == me && chatData[i].readS == 1) { %>
+                                <div class="not"></div>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
         </div>
 
         <div id="proselectd">
@@ -409,6 +459,24 @@
             let roomID = room.split('.').join('/');
             
             screen.src = `/chat/${roomID}/history`;
+            let udiv = document.querySelectorAll(".user");
+            for(let i=0; i<udiv.length; i++) {
+                if(udiv[i].classList.contains('sel')) {
+                    udiv[i].classList.remove('sel');
+                }
+            }
+            user.classList.add('sel');
+            if(user.classList.contains('nor')) {
+                user.children[1].children[1].classList.remove('no');
+                if(user.lastElementChild.classList.contains('not')) {
+                    user.removeChild(user.lastElementChild);
+                }
+            }
+        }
+        function muserclick(user) {
+            let room = user.dataset.room;
+            let roomID = room.split('.').join('/');
+            window.open(`/chat/${roomID}`, '', 'width=500,height=705,scrollbar=yes,top=150,left=800');
             let udiv = document.querySelectorAll(".user");
             for(let i=0; i<udiv.length; i++) {
                 if(udiv[i].classList.contains('sel')) {

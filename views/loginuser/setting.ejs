@@ -310,10 +310,6 @@
                             <td>전화번호</td>
                             <td class="phone"></td>
                         </tr>
-                        <tr>
-                            <td>이메일</td>
-                            <td class="email"></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -439,7 +435,6 @@
                     
                     let pass = document.querySelectorAll(".pass");
                     let phone = document.querySelectorAll(".phone");
-                    let email = document.querySelectorAll(".email");
 
                     let starpass = "";
 
@@ -457,7 +452,6 @@
                         pass[i].append(passa);
                     }
                     for(let i=0; i<phone.length; i++) { phone[i].innerHTML = data.userphone; }
-                    for(let i=0; i<email.length; i++) { email[i].innerHTML = data.useremail; }
                 }
             }
             xhr.send(JSON.stringify(Info));
