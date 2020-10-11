@@ -322,7 +322,7 @@ function check(req, res, next) {
         res.locals.decoded = null;
         res.locals.ProFile = null;
         res.locals.seller = null;
-        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html') });
+        return res.sendFile('loginpage.html', { root: path.join(__dirname, '../public/html/err') });
     }
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) { return res.json(err); }
