@@ -853,7 +853,7 @@
         cnum_3.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_4.focus(); }
         cnum_4.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_5.focus(); }
         cnum_5.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_6.focus(); }
-        cnum_6.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cerfi('c'); }
+        cnum_6.onkeyup = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cerfi('c'); }
 
         mnum_1.onkeyup = () => { mnum_2.focus(); }
         mnum_2.onkeyup = () => { mnum_3.focus(); }
