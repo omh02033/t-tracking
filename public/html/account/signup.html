@@ -1099,9 +1099,9 @@
         sign35.onclick = () => {
             if(uphone.value == '') {
                 alert('전화번호를 입력해주세요.');
-            } else if(uphone.value.length != 11) {
-                alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
-            } else if(uphone.value.length == 11) {
+            // } else if(uphone.value.length != 11) {
+            //     alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
+            } else if(uphone.value.length <= 11) {
                 if(phonecheck && nowphone == uphone.value) {;
                     phoneoverlapcheck('c');
                 } else {
