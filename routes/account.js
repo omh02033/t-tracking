@@ -74,13 +74,13 @@ router
 .post('/login/', (req, res) => {
     let uid = req.body.id;
     let upass = req.body.password;
-    let sql = 'SELECT * FROM account WHERE userid=?';
-    conn.query(sql, [uid], (err, data) => {
+    let sql = 'SELECT * FROM account WHERE userid=? OR phone=?';
+    conn.query(sql, [uid, uid], (err, data) => {
         if(err) {
             console.log(err + "(00)");
             res.status(400).json({
                 msg: '에러가 발생했습니다.'
-            })
+            });
         } else if(data.length < 1) {
             res.status(200).json({
                 msg: '아이디 또는 비밀번호가 일치하지 않습니다.',
