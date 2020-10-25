@@ -21,8 +21,16 @@ app.use('/account/', require('./routes/account.js'));
 app.use('/tracking/', require('./routes/track.js'));
 app.use('/loginuser/', require('./routes/loginuser.js'));
 app.use('/chat/', require('./routes/chat.js'));
+app.use(/\/(?!account).*/, (req, res) => { err404(req, res); });
+app.use(/\/(?!tracking).*/, (req, res) => { err404(req, res); });
+app.use(/\/(?!loginuser).*/, (req, res) => { err404(req, res); });
+app.use(/\/(?!chat).*/, (req, res) => { err404(req, res); });
 
 const httpServer = app.listen(3000, () => { console.log("Connected !") });
 
 const Socket = require("./routes/socket");
 Socket.init(httpServer);
+
+function err404(req, res) {
+    res.sendFile('404.html', { root: path.join(__dirname, '/public/html/err') });
+}
