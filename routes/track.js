@@ -309,59 +309,33 @@ router
 module.exports = router;
 
 function tssample(req, res, type) {    // 샘플
-    let today = new Date();
-    
-    let year = String(today.getFullYear());
-    let month = String(today.getMonth() + 1);
-    let date = String(today.getDate());
+    setTimeout(() =>{
+        let today = new Date();
+        
+        let year = String(today.getFullYear());
+        let month = String(today.getMonth() + 1);
+        let date = String(today.getDate());
 
-    let sodate = month;
-    let pdate = year + '년 ' + month + '월 ' + date + '일 ';
-    let token = req.cookies.user;
-    if(!token) {
-        return res.status(200).json({
-            code: '333',
-            uname: '디미고',
-            itemName: '델리 트래킹',
-            where: '안산시',
-            level: 4,
-            t_code: '123456050203'
-        });
-    } else {
-        jwt.verify(token, config.secret, (err, decoded) => {
-            if(err) return res.json(err);
-            let sql = 'SELECT * FROM delirecord WHERE id=? and denum=?';
-            conn.query(sql, [decoded.unum, '123456050203'], (err, data) => {
-                if(err) return res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' });
-                let dat = data[0];
-                if(dat) {
-                    return res.status(200).json({
-                        code: '333',
-                        uname: '디미고',
-                        itemName: '델리 트래킹',
-                        where: '안산시',
-                        level: 4,
-                        t_code: '123456050203'
-                    });
-                } else {
-                    if(type === '유료' || type === '무료' && !req.body.sec){
-                        let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                        conn.query(sq, [decoded.unum, '123456050203', '333', '델리 트래킹', 4, '01040389960', '오명훈', '디미고', '안산시', sodate, pdate], (err, rows, field) => {
-                            if(err) {
-                                console.log(err);
-                                return res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
-                            } else {
-                                return res.status(200).json({
-                                    code: '333',
-                                    uname: '디미고',
-                                    itemName: '델리 트래킹',
-                                    where: '안산시',
-                                    level: 4,
-                                    t_code: '123456050203'
-                                });
-                            }
-                        })
-                    } else {
+        let sodate = month;
+        let pdate = year + '년 ' + month + '월 ' + date + '일 ';
+        let token = req.cookies.user;
+        if(!token) {
+            return res.status(200).json({
+                code: '333',
+                uname: '디미고',
+                itemName: '델리 트래킹',
+                where: '안산시',
+                level: 4,
+                t_code: '123456050203'
+            });
+        } else {
+            jwt.verify(token, config.secret, (err, decoded) => {
+                if(err) return res.json(err);
+                let sql = 'SELECT * FROM delirecord WHERE id=? and denum=?';
+                conn.query(sql, [decoded.unum, '123456050203'], (err, data) => {
+                    if(err) return res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' });
+                    let dat = data[0];
+                    if(dat) {
                         return res.status(200).json({
                             code: '333',
                             uname: '디미고',
@@ -370,11 +344,39 @@ function tssample(req, res, type) {    // 샘플
                             level: 4,
                             t_code: '123456050203'
                         });
+                    } else {
+                        if(type === '유료' || type === '무료' && !req.body.sec){
+                            let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                            conn.query(sq, [decoded.unum, '123456050203', '333', '델리 트래킹', 4, '01040389960', '오명훈', '디미고', '안산시', sodate, pdate], (err, rows, field) => {
+                                if(err) {
+                                    console.log(err);
+                                    return res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
+                                } else {
+                                    return res.status(200).json({
+                                        code: '333',
+                                        uname: '디미고',
+                                        itemName: '델리 트래킹',
+                                        where: '안산시',
+                                        level: 4,
+                                        t_code: '123456050203'
+                                    });
+                                }
+                            })
+                        } else {
+                            return res.status(200).json({
+                                code: '333',
+                                uname: '디미고',
+                                itemName: '델리 트래킹',
+                                where: '안산시',
+                                level: 4,
+                                t_code: '123456050203'
+                            });
+                        }
                     }
-                }
+                });
             });
-        });
-    }
+        }
+    }, 1320);
 }
 
 function ts(req, res, response, type) {
