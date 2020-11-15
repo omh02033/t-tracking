@@ -131,7 +131,7 @@ router
 })
 
 .post('/detail', async (req, res) => {
-    if(req.body.t_code == '123456050203' && req.body.t_invoice == '333') {
+    if(req.body.t_code == '333' && req.body.t_invoice == '123456050203') {
         return res.status(200).json({
             data: {
                 invoiceNo: '123456050203',
@@ -321,12 +321,12 @@ function tssample(req, res, type) {    // 샘플
         let token = req.cookies.user;
         if(!token) {
             return res.status(200).json({
-                code: '333',
+                code: '123456050203',
                 uname: '디미고',
                 itemName: '델리 트래킹',
                 where: '안산시',
-                level: 4,
-                t_code: '123456050203'
+                level: 6,
+                t_code: '333'
             });
         } else {
             jwt.verify(token, config.secret, (err, decoded) => {
@@ -337,12 +337,12 @@ function tssample(req, res, type) {    // 샘플
                     let dat = data[0];
                     if(dat) {
                         return res.status(200).json({
-                            code: '333',
+                            code: '123456050203',
                             uname: '디미고',
                             itemName: '델리 트래킹',
                             where: '안산시',
-                            level: 4,
-                            t_code: '123456050203'
+                            level: 6,
+                            t_code: '333'
                         });
                     } else {
                         if(type === '유료' || type === '무료' && !req.body.sec){
@@ -353,23 +353,23 @@ function tssample(req, res, type) {    // 샘플
                                     return res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
                                 } else {
                                     return res.status(200).json({
-                                        code: '333',
+                                        code: '123456050203',
                                         uname: '디미고',
                                         itemName: '델리 트래킹',
                                         where: '안산시',
-                                        level: 4,
-                                        t_code: '123456050203'
+                                        level: 6,
+                                        t_code: '333'
                                     });
                                 }
                             })
                         } else {
                             return res.status(200).json({
-                                code: '333',
+                                code: '123456050203',
                                 uname: '디미고',
                                 itemName: '델리 트래킹',
                                 where: '안산시',
-                                level: 4,
-                                t_code: '123456050203'
+                                level: 6,
+                                t_code: '333'
                             });
                         }
                     }
