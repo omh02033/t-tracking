@@ -14,9 +14,9 @@ let conn = mysql.createConnection({
 });
 conn.connect();
 
-let apis = ['mw0yXQhMpgbBdiFlMiypXw', '5FyvBQwYnT5vRGXWH5M6rg'];
-//5FyvBQwYnT5vRGXWH5M6rg
-//mw0yXQhMpgbBdiFlMiypXw
+let apis = ['RNGV4kBcpllubpkgwcRVTQ', 'ggs0bikJEzRyghtBVRf0sA'];
+//ggs0bikJEzRyghtBVRf0sA
+//RNGV4kBcpllubpkgwcRVTQ
 let apiIndex = 0;
 
 let gcode = ['99', '37', '29',     // 국제 택배
@@ -41,27 +41,9 @@ router
     let promises = [];
     let proIndex = 0;
     if(!req.body.select) {
-        const p = new Promise((resolve, reject) => {
-            for(let i=0; i<code.length; i++) {
-                promises.push(
-                    axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
-                        params: {
-                            t_key: apis[apiIndex],
-                            t_code: code[i],
-                            t_invoice: req.body.num
-                        }
-                    })
-                );
-            }
-        });
-        try{
-            let data = await Promise.all(promises)
-            ts(req, res, data, '무료');
-        } catch(err){
-            console.log('catch', err);
-        }
-    } else if(req.body.select) {
-        if(req.body.select == 'domestic') {
+        if(req.body.num == '123456050203') {    // 샘플 코드
+            tssample(req, res, '무료');
+        } else {
             const p = new Promise((resolve, reject) => {
                 for(let i=0; i<code.length; i++) {
                     promises.push(
@@ -72,35 +54,73 @@ router
                                 t_invoice: req.body.num
                             }
                         })
-                    )
+                    );
                 }
-            })
-            try{
+            });
+            try {
                 let data = await Promise.all(promises);
-                ts(req, res, data, '유료')
+                ts(req, res, data, '무료');
             } catch(err){
-                res.status(400).json({ msg: '유효하지 않은 운송장 번호 혹은 택배사 코드를 입력하셨습니다. 다시 시도해주세요.' });
                 console.log('catch', err);
             }
-        } else if(req.body.select == 'international') {
-            const p = new Promise((resolve, reject) => {
-                for(let i=0; i<gcode.length; i++) {
-                    promises.push(
-                        axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
-                            params: {
-                                t_key: apis[apiIndex],
-                                t_code: gcode[i],
-                                t_invoice: req.body.num
-                            }
-                        })
-                    )
+        }
+    } else if(req.body.select) {
+        if(req.body.select == 'domestic') {
+            if(req.body.num == '123456050203') {    // 샘플 코드
+                tssample(req, res, '유료');
+            } else {
+                const p = new Promise((resolve, reject) => {
+                    for(let i=0; i<code.length; i++) {
+                        promises.push(
+                            axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
+                                params: {
+                                    t_key: apis[apiIndex],
+                                    t_code: code[i],
+                                    t_invoice: req.body.num
+                                }
+                            })
+                        )
+                    }
+                })
+                try {
+                    if(req.body.num == '123456050203') {
+                        tssample(req, res, '유료');
+                    } else {
+                        let data = await Promise.all(promises);
+                        ts(req, res, data, '유료');
+                    }
+                } catch(err){
+                    res.status(400).json({ msg: '유효하지 않은 운송장 번호 혹은 택배사 코드를 입력하셨습니다. 다시 시도해주세요.' });
+                    console.log('catch', err);
                 }
-            })
-            try{
-                let data = await Promise.all(promises);
-                ts(req, res, data, '유료')
-            } catch(err){
-                console.log('catch', err);
+            }
+        } else if(req.body.select == 'international') {
+            if(req.body.num == '123456050203') {    // 샘플 코드
+                tssample(req, res, '유료');
+            } else {
+                const p = new Promise((resolve, reject) => {
+                    for(let i=0; i<gcode.length; i++) {
+                        promises.push(
+                            axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
+                                params: {
+                                    t_key: apis[apiIndex],
+                                    t_code: gcode[i],
+                                    t_invoice: req.body.num
+                                }
+                            })
+                        )
+                    }
+                })
+                try {
+                    if(req.body.num == '123456050203') {
+                        tssample(req, res, '유료');
+                    } else {
+                        let data = await Promise.all(promises);
+                        ts(req, res, data, '유료')
+                    }
+                } catch(err){
+                    console.log('catch', err);
+                }
             }
         }
     }
@@ -111,22 +131,94 @@ router
 })
 
 .post('/detail', async (req, res) => {
-    function checking(response) {
-        if(response.data.result == 'Y') {
-            res.status(200).json({ data: response.data });
-        } else {
-            console.log('fail');
-            res.status(400).json({ msg: '조회를 하지 못하였습니다.' });
+    if(req.body.t_code == '123456050203' && req.body.t_invoice == '333') {
+        return res.status(200).json({
+            data: {
+                invoiceNo: '333',
+                receiverName: '디미고',
+                senderName: '오명훈',
+                receiverAddr: '안산시',
+                itemName: '델리 트래킹',
+                trackingDetails: [
+                    {
+                        timeString: '2020-11-14 09:52:11',
+                        where: '경기평택청북',
+                        kind: '집화처리',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    },
+                    {
+                        timeString: '2020-11-15 10:15:51',
+                        where: '경기평택청북',
+                        kind: '행남포장',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    },
+                    {
+                        timeString: '2020-11-15 16:09:13',
+                        where: '경기평택청북',
+                        kind: '가선상차',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    },
+                    {
+                        timeString: '2020-11-15 19:15:05',
+                        where: '평택B',
+                        kind: '가선하차',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    },
+                    {
+                        timeString: '2020-11-15 20:01:43',
+                        where: '평택B',
+                        kind: '가선상차',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    },
+                    {
+                        timeString: '2020-11-15 23:48:05',
+                        where: '안산시',
+                        kind: '가선하차',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    },
+                    {
+                        timeString: '2020-11-16 16:09:13',
+                        where: '안산시',
+                        kind: '배달출발 (배달예정시간:17~19시)',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    },
+                    {
+                        timeString: '2020-11-16 10:59:12',
+                        where: '안산시 단원구',
+                        kind: '배달완료',
+                        manName: '상훈쌤',
+                        telno2: '01040389960'
+                    }
+                ],
+                recipient: '',
+                estimate: '17~19시'
+            }
+        });
+    } else {
+        function checking(response) {
+            if(response.data.result == 'Y') {
+                res.status(200).json({ data: response.data });
+            } else {
+                console.log('fail');
+                res.status(400).json({ msg: '조회를 하지 못하였습니다.' });
+            }
         }
+        const data = await axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
+            params: {
+                t_key: apis[apiIndex],
+                t_code: req.body.t_code,
+                t_invoice: req.body.t_invoice
+            }
+        });
+        checking(data);
     }
-    const data = await axios.get('http://info.sweettracker.co.kr/api/v1/trackingInfo', {
-        params: {
-            t_key: apis[apiIndex],
-            t_code: req.body.t_code,
-            t_invoice: req.body.t_invoice
-        }
-    });
-    checking(data);
 })
 .post('/recordcheck', (req, res) => {
     if(req.body.apploval == true) {
@@ -216,6 +308,75 @@ router
 
 module.exports = router;
 
+function tssample(req, res, type) {    // 샘플
+    let today = new Date();
+    
+    let year = String(today.getFullYear());
+    let month = String(today.getMonth() + 1);
+    let date = String(today.getDate());
+
+    let sodate = month;
+    let pdate = year + '년 ' + month + '월 ' + date + '일 ';
+    let token = req.cookies.user;
+    if(!token) {
+        return res.status(200).json({
+            code: '333',
+            uname: '디미고',
+            itemName: '델리 트래킹',
+            where: '안산시',
+            level: 4,
+            t_code: '123456050203'
+        });
+    } else {
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err) return res.json(err);
+            let sql = 'SELECT * FROM delirecord WHERE id=? and denum=?';
+            conn.query(sql, [decoded.unum, '123456050203'], (err, data) => {
+                if(err) return res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' });
+                let dat = data[0];
+                if(dat) {
+                    return res.status(200).json({
+                        code: '333',
+                        uname: '디미고',
+                        itemName: '델리 트래킹',
+                        where: '안산시',
+                        level: 4,
+                        t_code: '123456050203'
+                    });
+                } else {
+                    if(type === '유료' || type === '무료' && !req.body.sec){
+                        let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        conn.query(sq, [decoded.unum, '123456050203', '333', '델리 트래킹', 4, '01040389960', '오명훈', '디미고', '안산시', sodate, pdate], (err, rows, field) => {
+                            if(err) {
+                                console.log(err);
+                                return res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
+                            } else {
+                                return res.status(200).json({
+                                    code: '333',
+                                    uname: '디미고',
+                                    itemName: '델리 트래킹',
+                                    where: '안산시',
+                                    level: 4,
+                                    t_code: '123456050203'
+                                });
+                            }
+                        })
+                    } else {
+                        return res.status(200).json({
+                            code: '333',
+                            uname: '디미고',
+                            itemName: '델리 트래킹',
+                            where: '안산시',
+                            level: 4,
+                            t_code: '123456050203'
+                        });
+                    }
+                }
+            });
+        });
+    }
+}
+
 function ts(req, res, response, type) {
     for(let i=0; i<response.length; i++) {
         if(response[i].data.result == 'Y') {
@@ -242,7 +403,7 @@ function ts(req, res, response, type) {
                     if(err) { return res.json(err); }
                     let sql = 'SELECT * FROM delirecord WHERE id=? and denum=?';
                     conn.query(sql, [decoded.unum, req.body.num], (err, data) => {
-                        if(err) { res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' }); }
+                        if(err) { return res.status(400).json({ msg: '중복 조회 과정에서 에러가 발생했습니다.' }); }
                         let dat = data[0];
                         if(dat) {
                             return res.status(200).json({

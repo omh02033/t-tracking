@@ -1154,10 +1154,22 @@
                     }
                 } else {
                     if(document.cookie) {
-                        info = {
-                            num: jcode.value,
-                            sec: se.checked
-                        } 
+                        try {
+                            info = {
+                                num: jcode.value,
+                                sec: se.checked
+                            } 
+                        } catch {
+                            var doc = document,
+                                domain = domain || doc.domain,
+                                path = path || '/',
+                                cookies = doc.cookie.split(';'),
+                                now = +(new Date);
+                            for (var i = cookies.length - 1; i >= 0; i--) {
+                                doc.cookie = cookies[i].split('=')[0] + '=; expires=' + now + '; domain=' + domain + '; path=' + path;
+                            }
+                            alert('쿠키 에러 발생으로 다시 시도해주세요..');
+                        }
                     } else {
                         info = { num: jcode.value }
                     }
@@ -1172,9 +1184,21 @@
                     }
                 } else {
                     if(document.cookie) {
-                        info = {
-                            num: mjcode.value,
-                            sec: mse.checked
+                        try {
+                            info = {
+                                num: mjcode.value,
+                                sec: mse.checked
+                            }
+                        } catch {
+                            var doc = document,
+                                domain = domain || doc.domain,
+                                path = path || '/',
+                                cookies = doc.cookie.split(';'),
+                                now = +(new Date);
+                            for (var i = cookies.length - 1; i >= 0; i--) {
+                                doc.cookie = cookies[i].split('=')[0] + '=; expires=' + now + '; domain=' + domain + '; path=' + path;
+                            }
+                            alert('쿠키 에러 발생으로 다시 시도해주세요..');
                         }
                     } else { info = { num: mjcode.value } }
                 }
