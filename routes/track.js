@@ -347,7 +347,7 @@ function tssample(req, res, type) {    // 샘플
                     } else {
                         if(type === '유료' || type === '무료' && !req.body.sec){
                             let sq = 'INSERT INTO delirecord (id, denum, tcode, toolname, result, phonenum, manname, receiverName, `where`, `date`, pdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                            conn.query(sq, [decoded.unum, '123456050203', '333', '델리 트래킹', 4, '01040389960', '오명훈', '디미고', '안산시', sodate, pdate], (err, rows, field) => {
+                            conn.query(sq, [decoded.unum, '123456050203', '333', '델리 트래킹', 6, '01040389960', '오명훈', '디미고', '안산시', sodate, pdate], (err, rows, field) => {
                                 if(err) {
                                     console.log(err);
                                     return res.status(400).json({msg: '저장하는 중에 에러가 발생하였습니다.'});
