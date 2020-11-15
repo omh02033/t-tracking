@@ -134,10 +134,10 @@ router
     if(req.body.t_code == '123456050203' && req.body.t_invoice == '333') {
         return res.status(200).json({
             data: {
-                invoiceNo: '333',
+                invoiceNo: '123456050203',
                 receiverName: '디미고',
                 senderName: '오명훈',
-                receiverAddr: '안산시',
+                receiverAddr: '안산 인코딩 플러스',
                 itemName: '델리 트래킹',
                 trackingDetails: [
                     {
