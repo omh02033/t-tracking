@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta property="og:image" content="data:image/png;base64,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">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <% if(seller) { %>
+        <title>구매자(<%= targetName %>)님과 채팅</title>
+    <% } else { %>
+        <title>판매자(<%= targetName %>)님과 채팅</title>
+    <% } %>
+    <style>
+        body{ margin: 0; }
+        #main {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            background-color: rgb(228, 228, 228);
+            position: relative;
+        }
+        #top {
+            margin: 0;
+            background-color: rgb(199, 199, 199);
+            font-weight: bold;
+            padding-bottom: 10px;
+            box-shadow: 0 0 10px gray;
+            padding-top: 5px;
+            position: relative;
+        }
+        #top > h4 {
+            margin-top: 0;
+            text-align: center;
+        }
+        #top > h6 {
+            margin-bottom: 0;
+            text-align: center;
+        }
+        #talkContents {
+            display:flex;
+            flex-direction: column;
+            width: 100%;
+            height: calc(100% - 174.77px);
+            padding: 10px;
+            position: relative;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        #talkContents::-webkit-scrollbar { width: 7px; }
+        #talkContents::-webkit-scrollbar-thumb {
+            background: linear-gradient(#ffa136, #e07902);
+            background-color: #b96301;
+            box-shadow: 0 1px 1px #f8b569;
+            border-radius: 50px;
+        }
+        #talkContents::-webkit-scrollbar-track {
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
+        #talkContents > *{
+            flex-shrink: 0;
+        }
+        .textinput {
+            width: 100%;
+            height: 100px;
+            position: absolute;
+            bottom: 0;
+        }
+        .textinput textarea, .textinput a {
+            position: absolute;
+            z-index: 50;
+        }
+        #content {
+            background-color: white;
+            width: 85%;
+            height: 100%;
+        }
+        #sendbtn {
+            margin: 0;
+            height: 100%;
+            width: 15%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(#ffa136, #e07902);
+            background-color: #b96301;
+            box-shadow: 0 1px 1px #f8b569;
+        }
+
+        .mybox {
+            width: 100%;
+            position: relative;
+            left: 5px;
+            float: right;
+            display: flex;
+            align-items: flex-end;
+            flex-direction: row-reverse;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+        .speechBubbleme {
+            background: linear-gradient(#ffa136, #e07902);
+            background-color: #b96301;
+            box-shadow: 0 1px 1px #f8b569;
+            position: relative;
+            width: fit-content;
+            right: 0px;
+            margin: 3px;
+            border-radius: 10px;
+            padding: 6px 8px;
+            color: white;
+        }
+        .speechBubbltme::after {
+            border-top: 15px solid #ffa136;
+            border-left: 0px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 0px solid transparent;
+            content:"";
+            position:absolute;
+            top:10px;
+            right:-15px;
+        }
+
+        .targetbox {
+            align-items: flex-end;
+            display: flex;
+            overflow: hidden;
+            word-break: break-all;
+            width: 78%;
+            word-wrap: break-word;
+        }
+        .speechBubbletarget {
+            background: linear-gradient(#ffffff, #d4d4d4);
+            background-color: #ffffff;
+            box-shadow: 0 1px 1px #dddddd;
+            /* background-color: white; */
+            position: relative;
+            width: fit-content;
+            left: 0px;
+            margin: 3px;
+            border-radius: 10px;
+            padding: 6px 8px;
+            float: left;
+        }
+        .speechBubblttarget::after {
+            border-top: 15px solid #e4ddd4;
+            border-left: 15px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 0px solid transparent;
+            content:"";
+            position:absolute;
+            top:10px;
+            left:-15px;
+        }
+        #top > a {
+            width: 30px;
+            height: 30px;
+            color: black;
+            display: flex;
+            position: absolute;
+            justify-content: center;
+            align-items: center;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            right: 10px;
+        }
+        #toppro > h4 {
+            bottom: 55px !important;
+        }
+        #toppro > i, #toppro > img {
+            top: 30px !important;
+        }
+        .timespan, .readS {
+            color: darkgray;
+            font-size: 10px;
+            flex-shrink: 0;
+            padding-right: 8px;
+        }
+        .timebox.me {
+            vertical-align: bottom;
+            text-align: right;
+        }
+        .back-line {
+            width: 100%;
+            height: 1.2px;
+            background-color: darkgray;
+            position: absolute;
+            transform: translate(0%, -50%);
+            top: 50%;
+            z-index: 5;
+        }
+        .date-span {
+            z-index: 10;
+            background-color: rgb(228, 228, 228);
+            font-size: 15px;
+            font-weight: bold;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+        .timespan.me, .readS.me {
+            text-align: right;
+            display: block;
+        }
+        .timespan.target, .readS.target {
+            padding-left: 8px;
+            display: block;
+        }
+        .datebox {
+            height: 23px;
+            text-align: center;
+            position: relative;
+            margin: 8px 0 5px 0;
+        }
+        .startSpan {
+            position: relative;
+            transform: translate(-50%, -50%);
+            top: 20%;
+            left: 50%;
+            color: darkgray;
+            font-size: 20px;
+            text-align: center;
+        }
+        @keyframes ingOn {
+            from { top: 0; }
+            to { top: -21px; }
+        }
+        @keyframes ingOff {
+            from { top: -21px; }
+            to { top: 0; }
+        }
+        @keyframes tcOn {
+            from { height: calc(100% - 174.77px); }
+            to { height: calc(100% - 195.77px); }
+        }
+        @keyframes tcOff {
+            from { height: calc(100% - 195.77px); }
+            to { height: calc(100% - 174.77px); }
+        }
+        .textinput .Tchatting {
+            color: white;
+            background-color: rgb(161, 161, 161);
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            z-index: 10;
+            padding-left: 20px;
+        }
+        .textinput .Tchatting.on { animation: ingOn 0.6s forwards; }
+        #talkContents.chaton { animation: tcOn 0.6s forwards; }
+        .textinput .Tchatting.off { animation: ingOff 0.2s forwards; }
+        #talkContents.chatoff { animation: tcOff 0.2s forwards; }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="top">
+            <a href="tel:<%=targetInfo.phone%>"><i class="material-icons">call</i></a>
+            <% if(seller) { %>
+                <h4 class="who seller">구매자님과 채팅</h4>
+                <h6><%=targetName%></h6>
+            <% } else { %>
+                <h4 class="who consumer">판매자님과 채팅</h4>
+                <h6><%=targetName%></h6>
+            <% } %>
+        </div>
+        <div id="talkContents"></div>
+        <div class="textinput">
+            <div class="Tchatting"><span>상대가 입력중입니다...</span></div>
+            <textarea name="" id="content" cols="30" rows="15" maxlength="152" placeholder="내용을 입력해주세요.   줄바꿈 = Shift + Enter"></textarea>
+            <a id="sendbtn" class="waves-effect waves-light btn"><i class="material-icons">send</i></a>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let talkContents = document.getElementById("talkContents");
+
+        const socket = io();
+
+        let lastDate = { data: undefined };
+
+        document.body.classList.add('ontap');
+        window.addEventListener('focus', () => {
+            document.body.classList.remove('offtap');
+            document.body.classList.add('ontap');
+
+            let not = document.querySelectorAll('.not');
+            if(not.length != 0) {
+                for(let i of not) {
+                    let data = { msgID: i.parentNode.dataset.msgid };
+                    i.innerHTML = "읽음";
+                    socket.emit('nowRead', data);
+                    i.classList.remove('not');
+                }
+            }
+        });
+        window.addEventListener('blur', () => {
+            document.body.classList.remove('ontap');
+            document.body.classList.add('offtap');
+        });
+
+        window.onload = () => {
+            let ur = location.href.split('/');
+            let url = { url: `${ur[4]}.${ur[5]}.${ur[6]}` }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/chat/history/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    
+                    if(data.result == "success") {
+                        let thenDate;
+
+                        console.log(data);
+                        if(data.data.length == 0) {
+                            let start = document.createElement("span");
+                            start.classList.add("startSpan");
+                            start.innerHTML = "먼저 말을 걸어보세요..!";
+                            talkContents.append(start);
+                            talkContents.classList.add('first');
+                        } else {
+                            lastDate = data.data[data.data.length-1];
+
+                            for(let i=0; i<data.data.length; i++) {
+                                if(thenDate == data.data[i].date) {
+                                    if(data.data[i].senderID == data.me) {
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("mybox");
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbleme");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        wi100.append(speechBubble);
+
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('me');
+                                        span.dataset.msgid = data.data[i].msgID;
+                                        let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        readS.classList.add('me');
+                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
+                                        else if(data.data[i].readS == 1) {
+                                            readS.innerHTML = "안읽음";
+                                            readS.classList.add('menot');
+                                        }
+                                        timespan.innerHTML = data.data[i].time;
+                                        span.append(readS);
+                                        span.append(timespan);
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('me');
+
+                                        wi100.append(span);
+                                        talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+                                    } else {
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('target');
+                                        span.dataset.msgid = data.data[i].msgID;
+                                        let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        readS.classList.add('target');
+                                        if(data.data[i].readS == 1) {
+                                            let dt = { data: data.data[i] };
+                                            let xhr1 = new XMLHttpRequest();
+                                            xhr1.open('POST', '/chat/readed/');
+                                            xhr1.setRequestHeader('Content-Type', 'application/json');
+                                            xhr1.onreadystatechange = () => {
+                                                let data1 = JSON.parse(xhr1.responseText);
+                                                if(xhr1.readyState === 4 && xhr1.status === 400) { alert(data1.msg);}
+                                                else if(xhr1.readyState === 4 && xhr1.status === 200) {
+                                                    socket.emit('nowRead', data.data[i]);
+                                                }
+                                            }
+                                            xhr1.send(JSON.stringify(dt));
+                                        }
+                                        readS.innerHTML = "읽음";
+                                        span.append(readS);
+                                        span.append(timespan);
+                                        timespan.innerHTML = data.data[i].time;
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('target');
+
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("targetbox");
+
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbletarget");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        wi100.append(speechBubble);
+
+                                        wi100.append(span);
+                                        talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+                                    }
+                                } else {
+                                    thenDate = data.data[i].date;
+                                    let datebox = document.createElement('div');
+                                    datebox.classList.add('datebox');
+
+                                    let backLine = document.createElement('div');
+                                    backLine.classList.add('back-line');
+                                    datebox.append(backLine);
+
+                                    let datespan = document.createElement('span');
+                                    datespan.innerHTML = `${data.data[i].date} ${data.data[i].week}`;
+                                    datespan.classList.add('date-span');
+
+                                    datebox.append(datespan);
+                                    talkContents.append(datebox);
+
+                                    if(data.data[i].senderID == data.me) {
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("mybox");
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbleme");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        wi100.append(speechBubble);
+
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('me');
+                                        span.dataset.msgid = data.data[i].msgID;
+                                        let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        readS.classList.add('me');
+                                        if(data.data[i].readS == 0) readS.innerHTML = "읽음";
+                                        else if(data.data[i].readS == 1) {
+                                            readS.innerHTML = "안읽음";
+                                            readS.classList.add('menot');
+                                        }
+                                        span.append(readS);
+                                        span.append(timespan);
+                                        timespan.innerHTML = data.data[i].time;
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('me');
+
+                                        wi100.append(span);
+                                        talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+                                    } else {
+                                        let wi100 = document.createElement("div");
+                                        wi100.classList.add("targetbox");
+
+                                        let speechBubble = document.createElement("div");
+                                        speechBubble.classList.add("speechBubbletarget");
+                                        speechBubble.innerHTML = data.data[i].content;
+
+                                        let span = document.createElement("span");
+                                        span.classList.add('timebox');
+                                        span.classList.add('target');
+                                        let timespan = document.createElement("span");
+                                        let readS = document.createElement("span");
+                                        readS.classList.add('readS');
+                                        readS.classList.add('target');
+                                        span.dataset.msgid = data.data[i].msgID;
+                                        if(data.data[i].readS == 1) {
+                                            let dt = { data: data.data[i] };
+                                            let xhr1 = new XMLHttpRequest();
+                                            xhr1.open('POST', '/chat/readed/');
+                                            xhr1.setRequestHeader('Content-Type', 'application/json');
+                                            xhr1.onreadystatechange = () => {
+                                                let data1 = JSON.parse(xhr1.responseText);
+                                                if(xhr1.readyState === 4 && xhr1.status === 400) { alert(data1.msg); }
+                                                else if(xhr1.readyState === 4 && xhr1.status === 200) {
+                                                    socket.emit('nowRead', data.data[i]);
+                                                }
+                                            }
+                                            xhr1.send(JSON.stringify(dt));
+                                        }
+                                        readS.innerHTML = "읽음";
+                                        span.append(readS);
+                                        span.append(timespan);
+                                        timespan.innerHTML = data.data[i].time;
+                                        timespan.classList.add('timespan');
+                                        timespan.classList.add('target');
+
+                                        wi100.append(speechBubble);
+
+                                        wi100.append(span);
+                                        talkContents.append(wi100);
+                                        talkContents.scrollTop = talkContents.scrollHeight;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(url));
+        }
+        let content = document.getElementById("content");
+        let sendbtn = document.getElementById("sendbtn");
+
+        socket.on('connect', () => {
+            console.log("GOOD");  
+        });
+
+        socket.on("targetNowRead", (data) => {
+            let readS = document.querySelector(`.timebox.me[data-msgID="${data.msgID}"] .readS.menot`);
+            readS.innerHTML = "읽음";
+        });
+
+        let checking;
+
+        function chatStopChecker() {
+            if(checking !== undefined)
+                clearTimeout(checking);
+            checking = setTimeout(() => {
+                socket.emit('myNoChatting', 'noChatting');
+            }, 3000);
+        }
+
+        content.onkeyup = () => {
+            socket.emit('mychatting', 'chatting');
+            chatStopChecker();
+        }
+
+        let toggle = false;
+
+        socket.on("targetChatting", (d) => {
+            if(d == 'chatting') {
+                if(!toggle) {
+                    document.querySelector(".Tchatting").classList.remove('off');
+                    document.querySelector(".Tchatting").classList.add('on');
+                    talkContents.classList.remove('chatoff');
+                    talkContents.classList.add('chaton');
+                    let idx = 30;
+                    let down = setInterval(() => {
+                        if(idx == 600) {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            clearInterval(down);
+                        } else {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            idx += 30;
+                        }
+                    }, 30);
+                    toggle = true;
+                }
+            }
+        });
+        socket.on("targetNoChatting", (d) => {
+            if(d == 'noChatting') {
+                if(toggle) {
+                    document.querySelector(".Tchatting").classList.remove('on');
+                    document.querySelector(".Tchatting").classList.add('off');
+                    talkContents.classList.remove('chaton');
+                    talkContents.classList.add('chatoff');
+                    let idx = 10;
+                    let down = setInterval(() => {
+                        if(idx == 200) {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            clearInterval(down);
+                        } else {
+                            talkContents.scrollTop = talkContents.scrollHeight;
+                            idx += 10;
+                        }
+                    }, 10);
+                    toggle = false;
+                }
+            }
+        });
+
+        socket.on("metoo", async (d)=>{
+            let data = JSON.parse(d);
+            let time = data.time;
+            let msg = data.bmsg;
+            let msgID = data.msgID;
+
+            document.querySelector(".Tchatting").classList.remove('on');
+            document.querySelector(".Tchatting").classList.add('off');
+            talkContents.classList.remove('chaton');
+            talkContents.classList.add('chatoff');
+
+            if(talkContents.classList.contains('first')) {
+                let start = document.querySelector(".startSpan");
+                start.parentNode.removeChild(start);
+                talkContents.classList.remove('first');
+            }
+
+            let date = await Xrequest('/chat/getWeek');
+
+            if(lastDate.date != date.date) {
+                let datebox = document.createElement('div');
+                datebox.classList.add('datebox');
+
+                let backLine = document.createElement('div');
+                backLine.classList.add('back-line');
+                datebox.append(backLine);
+
+                let datespan = document.createElement('span');
+                datespan.innerHTML = `${date.date} ${date.KoWeek}`;
+                datespan.classList.add('date-span');
+
+                datebox.append(datespan);
+                talkContents.append(datebox);
+            }
+
+            let wi100 = document.createElement("div");
+            wi100.classList.add("targetbox");
+
+            let speechBubble = document.createElement("div");
+            speechBubble.classList.add("speechBubbletarget");
+            speechBubble.innerHTML = msg;
+
+            let span = document.createElement("span");
+            span.classList.add('timebox', 'target');
+            span.dataset.msgid = msgID;
+            let readS = document.createElement("span");
+            readS.classList.add('readS', 'target');
+            if(document.body.classList.contains('ontap')) readS.innerHTML = "읽음";
+            else {
+                readS.innerHTML = "안읽음";
+                readS.classList.add('not');
+            }
+            let timespan = document.createElement("span");
+            timespan.innerHTML = time;
+            timespan.classList.add('timespan');
+            timespan.classList.add('target');
+            span.append(readS);
+            span.append(timespan);
+
+            wi100.append(speechBubble);
+            wi100.append(span);
+            talkContents.append(wi100);
+            talkContents.scrollTop = talkContents.scrollHeight;
+            lastDate = date;
+
+            let msgID1 = { msgID };
+            console.log(msgID);
+
+            if(document.body.classList.contains('ontap')) {
+                socket.emit('nowRead', msgID1);
+            }
+        });
+
+        content.addEventListener('keyup', (event)=>{
+            if(event.keyCode == 13) {
+                if(content.value.trim().length > 0 && !event.shiftKey) {
+                    send(content.value.trim());
+                } else if(content.value.trim().length == 0 && !event.shiftKey) { alert("문자를 입력해주세요."); }
+            }
+        });
+        content.addEventListener('keydown', (event) => {
+            if(event.keyCode == 13 && !event.shiftKey){
+                event.preventDefault();
+            }
+        })
+        sendbtn.onclick = () => {
+            if(content.value.trim().length > 0) {
+                send(content.value.trim());
+            } else if(content.value.trim().length == 0) { alert("문자를 입력해주세요."); }
+        }
+
+        async function send(msg) {
+            if(talkContents.classList.contains('first')) {
+                let start = document.querySelector(".startSpan");
+                start.parentNode.removeChild(start);
+                talkContents.classList.remove('first');
+            }
+
+            let getmsgid = await Xrequest('/chat/getMsgid');
+
+            let regex = /\n/gi;
+            let bmsg = msg.replace(regex, '<br>');
+
+            let url = location.href.split('/');
+            let msgID = `${url[4]}${url[5]}${url[6]}${getmsgid.year}${getmsgid.month}${getmsgid.day}${getmsgid.hours}${getmsgid.minutes}${getmsgid.seconds}${getmsgid.milliseconds}`;
+
+            let time = await Xrequest('/chat/getTime');
+
+            let Info = {
+                time: time.time,
+                bmsg,
+                msgID
+            }
+
+            socket.emit("hi", JSON.stringify(Info));
+
+            let date = await Xrequest('/chat/getWeek');
+            console.log(date.date);
+            console.log(lastDate.date);
+
+            if(lastDate.date != date.date) {
+                let datebox = document.createElement('div');
+                datebox.classList.add('datebox');
+                let backLine = document.createElement('div');
+                backLine.classList.add('back-line');
+                datebox.append(backLine);
+
+                let datespan = document.createElement('span');
+                datespan.innerHTML = `${date.date} ${date.KoWeek}`;
+                datespan.classList.add('date-span');
+
+                datebox.append(datespan);
+                talkContents.append(datebox);
+            }
+
+            let wi100 = document.createElement("div");
+            wi100.classList.add("mybox");
+            let speechBubble = document.createElement("div");
+            speechBubble.classList.add("speechBubbleme");
+            speechBubble.innerHTML = bmsg;
+
+            let span = document.createElement("span");
+            span.classList.add('timebox', 'me');
+            span.dataset.msgid = msgID;
+            let readS = document.createElement("span");
+            readS.classList.add('readS', 'me');
+            readS.innerHTML = "안읽음";
+            readS.classList.add('menot');
+            let timespan = document.createElement('span');
+            timespan.innerHTML = time.time;
+            timespan.classList.add('timespan');
+            timespan.classList.add('me');
+            span.append(readS);
+            span.append(timespan);
+
+            wi100.append(speechBubble);
+            wi100.append(span);
+            talkContents.append(wi100);
+            talkContents.scrollTop = talkContents.scrollHeight;
+            content.value = '';
+            lastDate = date;
+        }
+
+        async function Xrequest(url) {
+            let data = await fetch(url, { method: 'GET' });
+            data = await data.json();
+            return data;
+        }
+    </script>
+</body>
+</html>

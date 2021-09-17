@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="/stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR8VK-avCGrciG2XlevFz65VwWRNIa_yKTFWg&usqp=CAU">
+    <style>
+        body {
+            margin: 0;
+            min-height: 850px;
+            height: 100vh;
+        }
+
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .mlogin {
+            position: absolute;
+            right: 50px;
+        }
+        .mlogin table {
+            text-align: left;
+            border-collapse: unset !important;
+        }
+        .mlogin table td, .mlogin table th {
+            padding: 2px !important;
+        }
+        .main {
+            width: 100%;
+            height: fit-content;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+        }
+
+        .backmain {
+            border-top: 6px solid #ff951c;
+            border-bottom: 2px solid #ea7d00;
+            background: rgba(0,0,0,0.1);
+            height: 300px;
+            margin: auto;
+            box-sizing: border-box;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .backmain h3 {
+            margin-bottom: 80px;
+            text-align: center;
+        }
+        #denumS {
+            width: 90%;
+            background-color: white;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .sellerF {
+            width: 250px;
+            height: 280px;
+            border-radius: 8px;
+            border: 2px solid #b66d1a;
+            background: rgba(237, 140, 23, 0.35);
+            padding: 5px;
+            margin: auto;
+            text-align: center;
+        }
+        .sellerF #denum, .sellerF #mname {
+            font-weight: bold;
+        }
+        .dn {
+            display: none !important;
+        }
+        .db {
+            display: block !important;
+        }
+        .sellerF .infobox {
+            height: 81px;
+            margin-bottom: 18px;
+            position: relative;
+            text-align: left;
+        }
+        .sellerF .infobox .left {
+            position: relative;
+            left: 0;
+        }
+        .sellerF .infobox {
+            padding: 0 8px;
+        }
+        .sellerF .infobox .left span {
+            display: block;
+            line-height: 27px;
+        }
+        .sellerF .infobox .right span {
+            display: block;
+            line-height: 27px;
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .nav {
+            width: 150px;
+        }
+        .nav div {
+            border: 1px solid black;
+
+        }
+
+        @media only screen and (max-width: 600px) {
+            .backmain { width: 90%; }
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .backmain { width: 50%; }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            .backmain { width: 50%; }
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .mlogin {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            .backmain { width: 90%; }
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+        }
+    </style>
+    <title>판매자 검색</title>
+    <script src="/javascripts/IProfile.js"></script>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo hide-on-med-and-down" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>판매자 검색</span>
+        </div>
+        <div class="mlogin hide-on-med-and-down">
+            <% if(decoded) { %>
+                <table id="logined">
+                    <tbody>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %> | </td><td style="margin-left: 10px !important;"><a href="/account/logout">로그아웃</a></td></tr>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                    <table id="nlogin">
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="userid" id="uid" placeholder="ID" required></td>
+                                <td><input type="password" name="userpass" id="upass" placeholder="Password" required></td>
+                                <td><input type="submit" value="로그인" id="userloginsubmit"></td>
+                            </tr>
+                            <tr>
+                                <td><a style="color: white;" href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a style="color: white;" href="/account/signup" target="_blank">회원가입</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55 sel" onclick="chatdown(this, true);">판매자와 채팅 ▼</div>
+            <div class="asschat sel" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="mprofileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="mmenutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap55 sel" onclick="mchatdown(this, true);">판매자와 채팅 ▼</div>
+            <div class="masschat sel" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+            <% if(decoded) { %>
+                <span class="mmlogin" style="position: absolute; top: 20px; right: 10px;"><%=decoded.uname%> : <%=decoded.uid%></span><br>
+                <a class="mmlogin" href="/account/logout" style="color: gray; position:absolute; right: 10px; top: 40px;">로그아웃</a>
+            <% } else {%>
+                <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
+            <% } %>
+
+            <div class="backmain">
+                <h3>송장번호 검색</h3>
+                <input type="text" name="" id="denumS" placeholder="'-' 없이 숫자만 입력하세요.">
+                <a type="submit" class="waves-effect waves-light btn orange" id="search"><i class="material-icons right" style="font-size: 25px;">search</i>검색</a>
+            </div>
+
+
+            <a name="info"></a>
+            <div class="sellerF dn">
+                <h4 id="name">오명훈</h4>
+                <h6 style="margin-bottom: 25px;">판매자</h6>
+                <div class="infobox">
+                    <div class="left">
+                        <span>송장 번호 : </span>
+                        <span>상품 이름 : </span>
+                        <span>도착 예상 시간 : </span>
+                    </div>
+                    <div class="right">
+                        <span id="denum">380160267435</span>
+                        <span id="mname">호러아님</span>
+                        <span id="estimated">20200821</span>
+                    </div>
+                </div>
+                <a class="waves-effect waves-light btn orange darken-1" id="chatbtn"><i class="material-icons left">chat</i>채팅하기</a>
+            </div>
+        </div>
+    </div>
+    <div id="proselectd">
+        <div id="proselect">
+            <div id="toppro">
+                <% if(decoded) { %>
+                    <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
+                    <img src="/images/userProfile/<%=ProFile%>" onerror="IProfile();" id="deimg">
+                <% } else { %>
+                    <i class="far fa-user" style="font-size: 35px;"></i>
+                    <div id="deimg" style="display: none !important;"></div>
+                <% } %>
+                <h4 id="delh4">프로필</h4>
+            </div>
+            <div id="psoption">
+                <div id="originalPro"><span>기본 프로필</span></div>
+                <div id="profilechange">
+                    <label for="chpro" id="al">프로필 변경</label>
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
+                        <input type="file" name="proImage" id="chpro" style="display: none !important;" accept="image/png, image/jpg, image/jpeg" onchange="prochfilecheck(this);">
+                        <input type="submit" style="display: none !important;" id="psub">
+                    </form>
+                </div>
+            </div>
+            <div id="closeselect"><span>닫기</span></div>
+        </div>
+    </div>
+    <div id="mproselectd"></div>
+
+    <script src="/javascripts/menu.js"></script>
+    <script>
+        // window.open(`/chat/3/380160267435/4`, '', 'width=500,height=705,scrollbar=yes,top=150,left=800');
+        let chatbtn = document.getElementById("chatbtn");
+        let searchBtn = document.getElementById("search");
+        let denumS = document.getElementById("denumS");
+        let sellerF = document.querySelector(".sellerF");
+
+        chatbtn.addEventListener("click", chaton);
+        searchBtn.onclick = () => {
+            search();
+            sellerF.scrollIntoView({ block:'start', behavior: 'smooth' });
+        }
+        denumS.onkeyup = () => {
+            if(event.keyCode == 13) {
+                search();
+                sellerF.scrollIntoView({ block:'start', behavior: 'smooth' });
+            }
+        }
+
+        function search() {
+            if(denumS.value.length == 0) { return 0; }
+
+            let Info = { denum: denumS.value };
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/chat/seller/found/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+
+                    if(data.result == "success") {
+                        let name = document.getElementById("name");
+                        let denum = document.getElementById("denum");
+                        let mname = document.getElementById("mname");
+                        let estimated = document.getElementById("estimated");
+
+                        name.innerHTML = data.sellerName;
+                        denum.innerHTML = data.denum;
+                        mname.innerHTML = data.toolname;
+                        estimated.innerHTML = data.estimated;
+
+                        chatbtn.dataset.target = data.sellerID;
+                        chatbtn.dataset.me = data.myID;
+                        chatbtn.dataset.denum = data.denum;
+
+                        sellerF.classList.remove("dn");
+                        sellerF.classList.add("db");
+                    } else if(data.result == "notFound") {
+                        alert(data.msg);
+                    }
+                } else if(xhr.readyState === 4 && xhr.status === 400) {
+                    let data = JSON.parse(xhr.responseText);
+
+                    alert(data.msg);
+                }
+            }
+            xhr.send(JSON.stringify(Info));
+        }
+
+        function chaton() {
+            window.open(`/chat/${chatbtn.dataset.me}/${chatbtn.dataset.denum}/${chatbtn.dataset.target}`, '', 'width=500,height=705,scrollbar=yes,top=150,left=800');
+        }
+    </script>
+</body>
+</html>

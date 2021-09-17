@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>환불</title>
+    <style>
+        body{ margin: 0; }
+        thead {
+            border-bottom: 2px solid darkgray;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <table class="striped centered">
+        <thead>
+            <tr>
+                <th>고객 이름</th>
+                <th>상품 이름</th>
+                <th>전액</th>
+                <th>환불금액</th>
+                <th>환불</th>
+            </tr>
+        </thead>
+        <tbody id="shpa"></tbody>
+    </table>
+    <script>
+        let shpa = document.getElementById("shpa");
+
+        async function refundS(username, pay, id, toolname, userid) {
+            console.log("cc");
+            let userInfo = {
+                username: username,
+                refund_py: pay,
+                id: id,
+                toolname: toolname,
+                userid: userid
+            };
+            try{
+                let data = await fetch('/account/refund/try/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify(userInfo)
+                });
+                if(data.status === 200){
+                    console.log("bb");
+                    data = await data.json();
+                    console.log("aa");
+                    alert(data.msg);
+                    window.opener.location.reload()
+                    window.close();
+                } else {
+                    data = await data.json();
+                    alert(data.msg)
+                }
+            }catch(err){
+                console.error(err); 
+            }
+        }
+
+        function cardnoCheck(pay, id, toolname, username, userid) {
+            console.log(id, toolname)
+            let userInfo = {
+                id,
+                toolname
+            };
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/refund/cardcheck/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                let data = JSON.parse(xhr.responseText);
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let Ccheck = confirm('카드번호 : ' + data.cardno);
+                    if(Ccheck) { refundS(username, pay, id, toolname, userid); }
+                } else if(xhr.status === 400) { alert(data.msg); }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+
+        window.onload = () => {
+            let xhr = new XMLHttpRequest();
+            let foo;
+            xhr.open('POST', '/paycheck/');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+
+                    for(let i=0; i<data.length; i++) {
+                        let tr = document.createElement("tr");
+
+                        let user_name = document.createElement("td");
+                        user_name.innerHTML = data[i].username;
+                        
+                        let tool_name = document.createElement("td");
+                        tool_name.innerHTML = data[i].kinds;
+
+                        let price = document.createElement("td");
+                        price.innerHTML = data[i].price + " 원";
+
+                        let repay = data[i].price * (90 / 100);
+                        let refund_pay = document.createElement("td");
+                        refund_pay.innerHTML = repay + " 원";
+
+                        let rebtn = document.createElement("td");
+                        let btn = document.createElement("a");
+                        btn.classList.add("waves-effect", "waves-light", "btn", "orange", "accent-3", data[i].toolname);
+                        btn.onclick= e => {
+                            let con = confirm(data[i].kinds + "를 환불하시겠습니까?\n환불금액 : " + repay + "원");
+                            if(con) {
+                                cardnoCheck(repay, data[i].id, data[i].toolname, data[i].username, data[i].userid)
+                            }
+                        }
+                        btn.innerHTML = "환불 하기";
+                        rebtn.append(btn);
+
+                        tr.append(user_name);
+                        tr.append(tool_name);
+                        tr.append(price);
+                        tr.append(refund_pay);
+                        tr.append(rebtn);
+
+                        shpa.append(tr);
+                    }
+                }
+            }
+            xhr.send(foo);
+        }
+    </script>
+</body>
+</html>

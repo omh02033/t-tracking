@@ -1,0 +1,32 @@
+{
+  "name": "prac",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "env NODE_ENV=production node app.js",
+    "start-dev": "env NODE_ENV=development supervisor app.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.763.0",
+    "axios": "^0.19.2",
+    "bootpay-rest-client": "^2.0.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.1",
+    "fs": "0.0.1-security",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.27.0",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.18.1",
+    "node-mysql": "^0.4.2",
+    "nodemailer": "^6.4.6",
+    "passport": "^0.4.1",
+    "socket.io": "^2.3.0",
+    "supervisor": "^0.12.0"
+  }
+}

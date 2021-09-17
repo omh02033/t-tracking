@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="/stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta property="og:title" content="통합 택배 조회">
+    <meta property="og:description" content="쉽고 간편한 택배 조회. 국내부터 국제까지 !">
+    <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR8VK-avCGrciG2XlevFz65VwWRNIa_yKTFWg&usqp=CAU">
+    <title>통합 택배 조회 서비스</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 850px;
+            height: 100vh;
+        }
+        .mlogin {
+            position: absolute;
+            right: 50px;
+        }
+        .mlogin table {
+            text-align: left;
+            border-collapse: unset !important;
+        }
+        .mlogin table td, .mlogin table th {
+            padding: 2px !important;
+        }
+        #uid, #upass {
+            width: 140px;
+            height: 15px;
+            padding-bottom: 2px;
+            color: #fff;
+            font-size: 13px !important;
+            margin: 0px 10px 0px 0px !important;
+            border-bottom: 1px solid white;
+        }
+        #userloginsubmit {
+            width: 70px;
+            height: 30px;
+            background-color: #d17000;
+            color : white;
+            border: 1px solid white;
+            font-weight: bold;
+        }
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .main {
+            width: 100%;
+            height: fit-content;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+        }
+        .lookuptable {
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+            border-collapse: collapse;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        .trfirst td {
+            text-align: center !important;
+            box-sizing: border-box;
+        }
+        .trsecond td {
+            border-right: 1px solid rgba(0,0,0,0.12);
+            padding: 3px !important;
+            box-sizing: border-box;
+        }
+        .elli {
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            -o-text-overflow:ellipsis;
+            overflow: hidden;
+            -moz-binding: url('ellipsis.xml#ellipsis');
+        }
+        .mlookuptable {
+            width: 80%;
+            margin: auto;
+            margin-top: 20px;
+            border-collapse: collapse;
+            justify-content: center;
+        }
+        .emphasized {
+            z-index: 500;
+            box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px;
+        }
+        .loading {
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 160px;
+            height: 80px;
+            transform: translate(-50%, -50%);
+        }
+        .loadingif {
+            width: 100%;
+            height: 100%;
+        }
+        .switch label input[type=checkbox]:checked+.lever {
+            background-color: #3C5087 !important;
+        }
+        .switch label input[type=checkbox]:checked+.lever:after {
+            background-color: rgb(85, 109, 173) !important;
+        }
+
+        @keyframes blackbar {
+            0% {
+                background: orange;
+            }
+            100% {
+                background: #3f3f3f;
+            }
+        }
+
+        @keyframes whitebar {
+            0% {
+                background: #3f3f3f;
+            }
+            100% {
+                background: orange;
+            }
+        }
+
+        .bbar {
+            animation-name: blackbar;
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+        .wbar {
+            animation-name: whitebar;
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+        input[type='number']::-webkit-outer-spin-button,
+        input[type='number']::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        @media only screen and (max-width: 600px) {
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+            .lookuptable {
+                display: none;
+            }
+            .tcode {
+                display: none;
+            }
+            .explain {
+                display: none;
+            }
+            .mtcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mtcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width:100%;
+                height: 60px;
+                position: relative;
+            }
+            #mjcode {
+                position: absolute;
+                left: 2%;
+                width: 80%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #mjcodesubmit {
+                position: absolute;
+                right: 3px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #mjcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mexplain {
+                position: absolute;
+                bottom: -150px;
+                width: 100%;
+                height: 100px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+                z-index: -100;
+            }
+            .mexplain1 {
+                height: 100%;
+                width: 85%;
+                margin: auto;
+                text-align: center;
+                padding: 15px 0;
+            }
+            .info-img { 
+                width: 300px;
+                margin: auto;
+                margin-top: 30px;
+                text-align: center;
+            }
+            .info-back {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+            }
+            .info-back-line {
+                position: absolute;
+                background-color: #e2e5e8;
+                width: 100%;
+                height: 1px;
+                margin: 0;
+                top: 40%;
+                box-sizing: border-box;
+                z-index: -10;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .text-center > img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50px;
+                background-color: #EDEDED;
+                padding: 8px 8px;
+            }
+            .nlevel {
+                width: 45px !important;
+                height: 45px !important;
+                background-color: orange !important;
+            }
+            .info-text {
+                font-size: 9px;
+                color: darkgray;
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .mlookuptable {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mexplain {
+                display: none;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            .tcodeinput > span {
+                position: absolute;
+                left: 1%;
+                font-weight: bold;
+                color: white;
+            }
+            #jcode {
+                position: absolute;
+                right: 6%;
+                width: 86.5%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 30px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .explain {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 200px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+            }
+            .explain1 {
+                height: 100%;
+                width: 50%;
+                margin: auto;
+                text-align: center;
+                padding: 30px 0;
+            }
+            .explain a {
+                font-size: .8rem;
+            }
+            .explain table tr {
+                border-bottom: none !important;
+            }
+            .explain table tr td {
+                border-right: 1px solid darkgray;
+                padding:0;
+                margin: 0;
+                text-align: center;
+            }
+            .info-img { 
+                width: 500px;
+                margin: auto;
+                margin-top: 30px;
+                text-align: center;
+            }
+            .info-back {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+            }
+            .info-back-line {
+                position: absolute;
+                background-color: #e2e5e8;
+                width: 100%;
+                height: 1px;
+                margin: 0;
+                top: 40%;
+                box-sizing: border-box;
+                z-index: -10;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .text-center > img {
+                width: 60px;
+                height: 60px;
+                border-radius: 50px;
+                background-color: #EDEDED;
+                padding: 12px 12px;
+            }
+            .nlevel {
+                width: 65px !important;
+                height: 65px !important;
+                background-color: orange !important;
+            }
+            .info-text {
+                font-size: 9px;
+                color: darkgray;
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .mlookuptable {
+                display: none;
+            }
+            .tcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mlogin {
+                display: none;
+            }
+            .tcodeinput .fa {
+                display: none;
+            }
+            .mexplain {
+                display: none;
+            }
+            .tcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width: 100%;
+                height: 60px;
+                position: relative;
+            }
+            .tcodeinput > span {
+                position: absolute;
+                left: 1%;
+                font-weight: bold;
+                color: white;
+            }
+            #jcode {
+                position: absolute;
+                right: 6%;
+                width: 86.5%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #jcodesubmit {
+                position: absolute;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #jcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mtcode {
+                display: none;
+            }
+            .explain {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 200px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+                z-index: -100;
+            }
+            .explain1 {
+                height: 100%;
+                width: 50%;
+                margin: auto;
+                text-align: center;
+                padding: 30px 0;
+            }
+            .info-img { 
+                width: 500px;
+                margin: auto;
+                margin-top: 30px;
+                text-align: center;
+            }
+            .info-back {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+            }
+            .info-back-line {
+                position: absolute;
+                background-color: #e2e5e8;
+                width: 100%;
+                height: 1px;
+                margin: 0;
+                top: 40%;
+                box-sizing: border-box;
+                z-index: -10;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .text-center > img {
+                width: 60px;
+                height: 60px;
+                border-radius: 50px;
+                background-color: #EDEDED;
+                padding: 12px 12px;
+            }
+            .nlevel {
+                width: 65px !important;
+                height: 65px !important;
+                background-color: orange !important;
+            }
+            .info-text {
+                font-size: 9px;
+                color: darkgray;
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+            .lookuptable {
+                display: none;
+            }
+            .tcode {
+                display: none;
+            }
+            .explain {
+                display: none;
+            }
+            .mtcode {
+                margin: auto;
+                width: 80%;
+                text-align: left;
+            }
+            .mtcodeinput {
+                display: flex;
+                align-items: center !important;
+                margin-top: 12px;
+                background-color: orange;
+                border-radius: 25px;
+                width:100%;
+                height: 60px;
+                position: relative;
+            }
+            #mjcode {
+                position: absolute;
+                left: 2%;
+                width: 80%;
+                height: 30px;
+                margin: 0 !important;
+                border-radius: 15px;
+                padding-left: 10px;
+                background-color: #fff;
+            }
+            #mjcodesubmit {
+                position: absolute;
+                right: 3px;
+                width: 45px;
+                height: 45px;
+                padding: 5px;
+                box-sizing: border-box;
+                background-color: rgba(0,0,0,0);
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                border: none;
+            }
+            #mjcodesubmit i {
+                margin: 0;
+                font-size: 30px;
+            }
+            .mexplain {
+                position: absolute;
+                bottom: -150px;
+                width: 100%;
+                height: 100px;
+                border-top: 2px solid #e9ebee;
+                background-color: rgba(233,235,238,0.3);
+                z-index: -100;
+            }
+            .mexplain1 {
+                height: 100%;
+                width: 85%;
+                margin: auto;
+                text-align: center;
+                padding: 15px 0;
+            }
+            .info-img { 
+                width: 300px;
+                margin: auto;
+                margin-top: 30px;
+                text-align: center;
+            }
+            .info-back {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+            }
+            .info-back-line {
+                position: absolute;
+                background-color: #e2e5e8;
+                width: 100%;
+                height: 1px;
+                margin: 0;
+                top: 40%;
+                box-sizing: border-box;
+                z-index: -10;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .text-center > img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50px;
+                background-color: #EDEDED;
+                padding: 8px 8px;
+            }
+            .nlevel {
+                width: 45px !important;
+                height: 45px !important;
+                background-color: orange !important;
+            }
+            .info-text {
+                font-size: 9px;
+                color: darkgray;
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+    </style>
+    <script src="/javascripts/IProfile.js"></script>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo hide-on-med-and-down" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>통합 택배 조회 서비스</span>
+        </div>
+        <div class="mlogin hide-on-med-and-down">
+            <% if(decoded) { %>
+                <table id="logined">
+                    <tbody>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %> | </td><td style="margin-left: 10px !important;"><a href="/account/logout">로그아웃</a></td></tr>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                    <table id="nlogin">
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="userid" id="uid" placeholder="ID" required></td>
+                                <td><input type="password" name="userpass" id="upass" placeholder="Password" required></td>
+                                <td><input type="submit" value="로그인" id="userloginsubmit"></td>
+                            </tr>
+                            <tr>
+                                <td><a style="color: white;" href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a style="color: white;" href="/account/signup" target="_blank">회원가입</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            <% } %>
+        </div>
+    </div>
+    <div class="main">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="menutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55" onclick="chatdown(this, false);">판매자와 채팅 ▼</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="mprofileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="mmenutap menutap1 sel" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap55" onclick="mchatdown(this, false);">판매자와 채팅 ▼</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+            <% if(decoded) { %>
+                <span class="mmlogin" style="position: absolute; top: 20px; right: 10px;"><%=decoded.uname%> : <%=decoded.uid%></span><br>
+                <a class="mmlogin" href="/account/logout" style="color: gray; position:absolute; right: 10px; top: 40px;">로그아웃</a>
+            <% } else {%>
+                <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
+            <% } %>
+            <div class="tcode" style="position: relative;">
+                <label style="padding: 7px;"></label>
+                <% if(decoded) { %>
+                    <div class="switch" style="position:absolute; right: 0; top:-20px;">
+                        <label><a onclick="window.open(`/explain#secret`, '', 'width=600,height=705,scrollbar=yes');">시크릿 모드</a><br></label>
+                        <label>
+                            Off
+                            <input type="checkbox" id="secret" onchange="bbar();">
+                            <span class="lever"></span>
+                            On
+                        </label>
+                      </div>
+                    <% if(payment.pay1 || payment.pay3) { %>
+                        <select name="delichoose" id="delichoose" onchange="gcolor('c');" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: fit-content; height: 25px; padding: 0;">
+                            <option value="domestic">국내택배 (Korean delivery)</option>
+                            <option value="international">국제택배 (International delivery)</option>
+                        </select>
+                        <div class="tcodeinput">
+                            <span>운송장 번호</span>
+                            <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
+                            <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } else { %>
+                        <div class="tcodeinput">
+                            <span>운송장 번호</span>
+                            <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
+                            <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="tcodeinput">
+                        <span>운송장 번호</span>
+                        <input type="number" name="jcode" id="jcode" placeholder="'-' 없이 숫자만 입력하세요.">
+                        <Button id="jcodesubmit"><i class="material-icons">search</i></Button>
+                    </div>
+                <% } %>
+            </div>
+            <div class="mtcode" style="position: relative;">
+                <label style="font-size: 15px;">운송장 번호</label>
+                <% if(decoded) { %>
+                    <div class="switch" style="position:absolute; right: 0; top:-20px;">
+                        <label>
+                            <a onclick="window.open(`/explain#secret`, '', 'width=600,height=705,scrollbar=yes');">시크릿 모드</a><br>
+                            Off
+                            <input type="checkbox" id="msecret" onchange="bbar();">
+                            <span class="lever" style="margin:0 !important;"></span>
+                            On
+                        </label>
+                      </div>
+                    <% if(payment.pay1) { %>
+                        <select name="delichoose" onchange="gcolor('m');" id="mdelichoose" style="display:inline-block !important; position: absolute; transform: translate(-50%, -50%); left: 50%; width: 90px; height: 25px; padding: 0;">
+                            <option value="domestic">국내택배 (Korean delivery)</option>
+                            <option value="international">국제택배 (International delivery)</option>
+                        </select>
+                        <div class="mtcodeinput">
+                            <input type="number" name="jcode" id="mjcode" placeholder="'-' 없이 숫자만 입력하세요.">
+                            <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } else { %>
+                        <div class="mtcodeinput">
+                            <input type="number" name="jcode" id="mjcode" placeholder="'-' 없이 숫자만 입력하세요.">
+                            <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="mtcodeinput">
+                        <input type="number" name="jcode" id="mjcode" placeholder="'-' 없이 숫자만 입력하세요.">
+                        <Button id="mjcodesubmit"><i class="material-icons">search</i></Button>
+                    </div>
+                <% } %>
+            </div>
+            <div class="info-img">
+                <span style="font-weight: bold; margin-bottom: 15px; display:block;">배송 상세</span>
+                <div class="info-back">
+                    <div class="info-back-line"></div>
+                    <div class="text-center">
+                        <img src="/images/level1.png" alt="" class="l1">
+                        <div class="info-text"><span>배송준비중</span></div>
+                    </div>
+                    <div class="text-center">
+                        <img src="/images/level2.png" alt="" class="l2">
+                        <div class="info-text"><span>상품인수</span></div>
+                    </div>
+                    <div class="text-center">
+                        <img src="/images/level3.png" alt="" class="l3">
+                        <div class="info-text"><span>상품이동중</span></div>
+                    </div>
+                    <div class="text-center">
+                        <img src="/images/level4.png" alt="" class="l4">
+                        <div class="info-text"><span>배송지도착</span></div>
+                    </div>
+                    <div class="text-center">
+                        <img src="/images/level5.png" alt="" class="l5">
+                        <div class="info-text"><span>배송출발</span></div>
+                    </div>
+                    <div class="text-center">
+                        <img src="/images/level6.png" alt="" class="l6">
+                        <div class="info-text"><span>배송완료</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="lookuptable">
+                <table border="1" class="responsive-table" style="table-layout: fixed;">
+                    <tbody>
+                        <tr class="trfirst" style="font-weight: bold;">
+                            <td style="width: 10%;">물표 번호</td>
+                            <td style="width: 7%;">받는 사람</td>
+                            <td style="width: 60%;">물품 이름</td>
+                            <td style="width: 7%;">현재 위치</td>
+                            <td style="width: 8%;">배송 상태</td>
+                            <td style="width: 10%;">자세히 보기</td>
+                        </tr>
+                        <tr class="trsecond">
+                            <td style="border-left:1px solid rgba(0,0,0,0.12);text-align:center;">
+                                <div class="ctnum elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                            <td style="border-left:1px solid rgba(0,0,0,0.12);text-align:center;">
+                                <div class="ctuname elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                            <td>
+                                <div class="ctname elli" style="width: 100%; height: 22px; margin: 0; padding:0 15px;"></div>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="elli" style="width: 100%; height: 22px; margin: 0;"><a class="ctloca" href="" target="_blank"></a></div>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="ctstate elli" style="width: 100%; height: 22px; margin: 0;"></div>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="elli" style="width: 100%; height: 22px; margin: 0; cursor: pointer;"><a class="ctdetail" onclick="detail()"></a></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mlookuptable">
+                <table border="1" class="striped" style="table-layout: fixed;">
+                    <tbody>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12); width: 33.333333%;">물표 번호</td>
+                            <td><div class="ctnum elli" style="margin: 0; width: 66.666667%;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">받는 사람</td>
+                            <td><div class="ctuname elli" style="margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">물품 이름</td>
+                            <td><div class="ctname elli" style="margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">현재 위치</td>
+                            <td><div class="elli" style="margin: 0;"><a class="ctloca" href="" target="_blank"></a></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">배송 상태</td>
+                            <td><div class="ctstate elli" style="margin: 0;"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid rgba(0,0,0,0.12);">자세히 보기</td>
+                            <td><div class="elli" style="margin: 0;"><a class="ctdetail" onclick="detail()"></a></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mexplain">
+                <div class="mexplain1">
+                    <label>이 통합 택배 조회 서비스는 다양하고,<br> 대부분의 고객이 많이 이용하시는 택배사들을 위주로 서비스를 제공 하고 있습니다.</label><br>
+                    <label><a href="/about/#taekbae">자세히 보기</a></label>
+                </div>
+            </div>
+        </div>
+        <div class="explain">
+            <div class="explain1">
+                <label>이 통합 택배 조회 서비스는 다양하고, 대부분의 고객이 많이 이용하시는 택배사들을 위주로 서비스를 제공 하고 있습니다.</label><br><br>
+                <label>무료로 조회할 수 있는 국내 택배사 (국내택배 26개사)</label><br>
+                <table>
+                    <tr>
+                        <td><a href="https://www.kunyoung.com/" onclick="console.log('ddd')">건영택배</a></td>
+                        <td><a href="https://kdexp.com/main.kd">경동택배</a></td>
+                        <td><a href="https://www.homepick.com/">홈픽택배</a></td>
+                        <td><a href="http://www.goodstoluck.co.kr/">굿투럭</a></td>
+                        <td><a href="https://ex.nhlogis.co.kr/main.do">농협택배</a></td>
+                        <td><a href="http://www.ds3211.co.kr/">대신택배</a></td>
+                        <td><a href="https://www.ilogen.com/web">로젠택배</a></td>
+                        <td><a href="https://www.lotteglogis.com/">롯데택배</a></td>
+                        <td><a href="http://www.sebang.com/">세방</a></td>
+                        <td style="border-right: none !important;"><a href="https://www.anytrack.co.kr/">애니트랙</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://service.epost.go.kr/">우체국택배</a></td>
+                        <td><a href="https://www.ilyanglogis.com/">일양로지스</a></td>
+                        <td><a href="http://www.chunilps.co.kr/">천일택배</a></td>
+                        <td><a href="http://www.e-handex.co.kr/">한덱스</a></td>
+                        <td><a href="http://www.hanips.com/">한의사랑택배</a></td>
+                        <td><a href="https://www.hanjin.co.kr/">한진택배</a></td>
+                        <td><a href="https://hdexp.co.kr/index.hd">합동택배</a></td>
+                        <td><a href="http://honamlogis.co.kr/">호남택배</a></td>
+                        <td><a href="https://www.cjlogistics.com/">CJ대한통운</a></td>
+                        <td style="border-right: none !important;"><a href="https://www.cupost.co.kr/">CU편의점택배</a></td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: none !important;"></td>
+                        <td style="border-right: none !important;"></td>
+                        <td><a href="https://www.cvsnet.co.kr/main/index.do">CVSnet 편의점택배</a></td>
+                        <td><a href="https://www.kgb.co.kr/index.asp">KGB택배</a></td>
+                        <td><a href="http://kglnetworks.com/">KGL네트웍스</a></td>
+                        <td><a href="http://www.slx.co.kr/">SLX</a></td>
+                        <td><a href="https://play.google.com/store/apps/details?id=com.bandsoft.hilogis&hl=ko">하이택배</a></td>
+                        <td style="border-right: none !important;"><a href="http://www.foreverps.co.kr/theme/business02/html/delivery/transportation.php">FLF퍼레버택배</a></td>
+                    </tr>
+                </table>
+                <label><a href="/about/#taekbae">자세히 보기</a></label>
+            </div>
+        </div>
+    </div>
+    <div id="proselectd">
+        <div id="proselect">
+            <div id="toppro">
+                <% if(decoded) { %>
+                    <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
+                    <img src="/images/userProfile/<%=ProFile%>" onerror="IProfile();" id="deimg">
+                <% } else { %>
+                    <i class="far fa-user" style="font-size: 35px;"></i>
+                    <div id="deimg" style="display: none !important;"></div>
+                <% } %>
+                <h4 id="delh4">프로필</h4>
+            </div>
+            <div id="psoption">
+                <div id="originalPro"><span>기본 프로필</span></div>
+                <div id="profilechange">
+                    <label for="chpro" id="al">프로필 변경</label>
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
+                        <input type="file" name="proImage" id="chpro" style="display: none !important;" accept="image/png, image/jpg, image/jpeg" onchange="prochfilecheck(this);">
+                        <input type="submit" style="display: none !important;" id="psub">
+                    </form>
+                </div>
+            </div>
+            <div id="closeselect"><span>닫기</span></div>
+        </div>
+    </div>
+    <div id="mproselectd"></div>
+    <div class="loading emphasized"><div class="loadingif"><img src="/images/loading.gif" alt="" style="position: absolute; transform: translate(-50%, -50%); left: 50%; max-width: 80px; height:80px; box-shadow: none !important;"></div><span style="position:absolute; bottom:0; color: white; width: 100%; text-align: center;">잠시만 기다려주세요..</span></div>
+    <script src="/javascripts/menu.js"></script>
+    <script>
+        let jcodesubmit = document.getElementById("jcodesubmit");
+        let jcode = document.getElementById("jcode");
+        let lookuptable = document.querySelector(".lookuptable");
+
+        let mjcodesubmit = document.getElementById("mjcodesubmit");
+        let mjcode = document.getElementById("mjcode");
+
+        jcodesubmit.onclick = () => {
+            if(jcode.value.length == 0) { alert('운송장 번호를 입력해주세요'); }
+            else { checktracking('c'); }
+        }
+        jcode.onkeyup = () => {
+            if(event.keyCode == 13) {
+                if(jcode.value.length == 0) { alert('운송장 번호를 입력해주세요'); }
+                else { checktracking('c'); }
+            }
+        }
+        mjcodesubmit.onclick = () => {
+            if(mjcode.value.length == 0) { alert('운송장 번호를 입력해주세요'); }
+            else { checktracking('m'); }
+        }
+
+        let ctnum = document.querySelectorAll(".ctnum");
+        let ctuname = document.querySelectorAll(".ctuname");
+        let ctname = document.querySelectorAll(".ctname");
+        let ctloca = document.querySelectorAll(".ctloca");
+        let ctstate = document.querySelectorAll(".ctstate");
+        let ctdetail = document.querySelectorAll(".ctdetail");
+
+        let loadingScreen = document.querySelector(".loading");
+        let loadingif = document.querySelector(".loadingif");
+
+        let l1 = document.querySelector(".l1");
+        let l2 = document.querySelector(".l2");
+        let l3 = document.querySelector(".l3");
+        let l4 = document.querySelector(".l4");
+        let l5 = document.querySelector(".l5");
+        let l6 = document.querySelector(".l6");
+
+        let se = document.getElementById("secret");
+        let mse = document.getElementById("msecret");
+
+        let tcodeinput = document.querySelector(".tcodeinput");
+        let mtcodeinput = document.querySelector(".mtcodeinput");
+
+        let deliselect;
+        let mdeliselect;
+        if(!document.getElementById("delichoose")) { deliselect = false; }
+        else { deliselet = document.getElementById("delichoose"); }
+        if(!document.getElementById("mdelichoose")) { mdeliselect = false; }
+        else { mdeliselect = document.getElementById("mdelichoose"); }
+
+        function bbar() {
+            if(se.checked || mse.checked) {
+                tcodeinput.classList.remove("wbar");
+                tcodeinput.classList.add("bbar");
+                mtcodeinput.classList.remove("wbar");
+                mtcodeinput.classList.add("bbar");
+                jcodesubmit.style.color = "white";
+                mjcodesubmit.style.color = "white";
+            } else {
+                tcodeinput.classList.remove("bbar");
+                tcodeinput.classList.add("wbar");
+                mtcodeinput.classList.remove("bbar");
+                mtcodeinput.classList.add("wbar");
+                jcodesubmit.style.color = "black";
+                mjcodesubmit.style.color = "black";
+            }
+        }
+
+        function gcolor(device) {
+            let ttop = document.querySelector(".top");
+            if(device == 'c') {
+                let tcodeinput = document.querySelector(".tcodeinput");
+                if(delichoose.value == 'domestic') {
+                    ttop.classList.remove('tgcolor');
+                    tcodeinput.classList.remove('tgcolor');
+                } else if(delichoose.value == 'international') {
+                    ttop.classList.add('tgcolor');
+                    tcodeinput.classList.add('tgcolor');
+                }
+            } else {
+                let mtcodeinput = document.querySelector(".mtcodeinput");
+                if(mdelichoose.value == 'domestic') {
+                    ttop.classList.remove('tgcolor');
+                    mtcodeinput.classList.remove('tgcolor');
+                } else if(mdelichoose.value == 'international') {
+                    ttop.classList.add('tgcolor');
+                    mtcodeinput.classList.add('tgcolor');
+                }
+            }
+        }
+
+
+        // LOGIN
+        function userCheck(e, form) {
+            e.preventDefault();
+
+            let userInfo = {
+                id: form.userid.value,
+                password: form.userpass.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/login/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        console.log(data.msg);
+                        location.replace('/');
+                    } else if(data.result == "fail") {
+                        alert(data.msg);
+                        uid.style.borderBottom = "2px solid red";
+                        upass.style.borderBottom = "2px solid red";
+                        upass.value = "";
+                    } else {
+                        alert("로그인 도중 에러가 발생했습니다. 나중에 다시 시도해주십시오.");
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+
+        //TRACKING
+        function checktracking(device) {
+            jcodesubmit.disabled = true;
+            mjcodesubmit.disabled = true;
+            loadingScreen.style.display = "inline-block";
+            loadingScreen.classList.add('emphasized');
+            let info;
+            if(device == 'c') {
+                if(deliselect) {
+                    info = {
+                        select: deliselect.value,
+                        num: jcode.value,
+                        sec: se.checked
+                    }
+                } else {
+                    if(document.cookie) {
+                        try {
+                            info = {
+                                num: jcode.value,
+                                sec: se.checked
+                            } 
+                        } catch {
+                            var doc = document,
+                                domain = domain || doc.domain,
+                                path = path || '/',
+                                cookies = doc.cookie.split(';'),
+                                now = +(new Date);
+                            for (var i = cookies.length - 1; i >= 0; i--) {
+                                doc.cookie = cookies[i].split('=')[0] + '=; expires=' + now + '; domain=' + domain + '; path=' + path;
+                            }
+                            alert('쿠키 에러 발생으로 다시 시도해주세요..');
+                        }
+                    } else {
+                        info = { num: jcode.value }
+                    }
+                }
+            }
+            else if(device == 'm') {
+                if(deliselect) {
+                    info = {
+                        select: deliselect.value,
+                        num: mjcode.value,
+                        sec: mse.checked
+                    }
+                } else {
+                    if(document.cookie) {
+                        try {
+                            info = {
+                                num: mjcode.value,
+                                sec: mse.checked
+                            }
+                        } catch {
+                            var doc = document,
+                                domain = domain || doc.domain,
+                                path = path || '/',
+                                cookies = doc.cookie.split(';'),
+                                now = +(new Date);
+                            for (var i = cookies.length - 1; i >= 0; i--) {
+                                doc.cookie = cookies[i].split('=')[0] + '=; expires=' + now + '; domain=' + domain + '; path=' + path;
+                            }
+                            alert('쿠키 에러 발생으로 다시 시도해주세요..');
+                        }
+                    } else { info = { num: mjcode.value } }
+                }
+            }
+            else { alert('갑작스러운 에러가 발생했습니다. 관리자에게 문의해주세요.'); }
+            console.log(info.num);
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/tracking/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = ''; }
+            if(l1.classList.contains('nlevel')) { l1.classList.remove('nlevel'); }
+            else if(l2.classList.contains('nlevel')) { l2.classList.remove('nlevel'); }
+            else if(l3.classList.contains('nlevel')) { l3.classList.remove('nlevel'); }
+            else if(l4.classList.contains('nlevel')) { l4.classList.remove('nlevel'); }
+            else if(l5.classList.contains('nlevel')) { l5.classList.remove('nlevel'); }
+            else if(l6.classList.contains('nlevel')) { l6.classList.remove('nlevel'); }
+
+            xhr.onreadystatechange = () => {
+                let data = JSON.parse(xhr.responseText);
+                if(xhr.status === 200 && xhr.readyState === 4) {
+                    jcodesubmit.disabled = false;
+                    mjcodesubmit.disabled = false;
+                    loadingScreen.classList.remove('emphasized');
+                    loadingScreen.style.display = "none";
+                    if(data.msg) { alert(data.msg); }
+                    else {
+                        for(let i=0; i<ctnum.length; i++) { ctnum[i].innerHTML = data.code; }
+                        for(let i=0; i<ctuname.length; i++) { ctuname[i].innerHTML = data.uname; }
+                        for(let i=0; i<ctname.length; i++) { ctname[i].innerHTML = data.itemName; }
+                        if(data.where == '') { ctloca.innerHTML = '조회 실패'; }
+                        else {
+                            for(let i=0; i<ctloca.length; i++) {
+                                ctloca[i].innerHTML = data.where;
+                                ctloca[i].href = `https://www.google.co.kr/maps/search/${data.where}/`;
+                            }
+                        }
+                        if(data.level == 1) {
+                            l1.classList.add("nlevel");
+                            for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송준비중'; }
+                        } else if(data.level == 2) {
+                            l2.classList.add("nlevel");
+                            for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '집화완료'; }
+                        } else if(data.level == 3) {
+                            l3.classList.add("nlevel");
+                            for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송중'; }
+                        } else if(data.level == 4) {
+                            l4.classList.add("nlevel");
+                            for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '지점 도착'; }
+                        } else if(data.level == 5) {
+                            l5.classList.add("nlevel");
+                            for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송출발'; }
+                        } else if(data.level == 6) {
+                            l6.classList.add("nlevel");
+                            for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '배송 완료'; }
+                        }
+                        else { for(let i=0; i<ctstate.length; i++) { ctstate[i].innerHTML = '조회 실패'; } }
+                        for(let i=0; i<ctdetail.length; i++) {
+                            ctdetail[i].innerHTML = '자세히 보기';
+                            ctdetail[i].onclick = () => { window.open(`/tracking/detail?t_invoice=${data.code}&t_code=${data.t_code}`, '', 'width=500,height=705,scrollbar=yes'); }
+                        }
+                        jcodesubmitdisabled = false;
+                        mjcodesubmit.disabled = false;
+                    }
+                } else if(xhr.status === 400 && xhr.readyState === 4 && data.msg){
+                    alert(data.msg);
+                }
+            }
+            xhr.send(JSON.stringify(info));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="/stylesheets/top.css">
+    <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR8VK-avCGrciG2XlevFz65VwWRNIa_yKTFWg&usqp=CAU">
+    <title>로그인</title>
+    <style>
+        .main {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+        }
+        #userid, #userpass {
+            border: none;
+            border-bottom: 1px solid darkgray;
+        }
+        .forget {
+            position: absolute;
+            bottom: 30px;
+            text-align: center;
+            width: 100%;
+        }
+        .mmenu { top: 0 !important; }
+
+        @media only screen and (max-width: 600px) {
+            .logo {
+                display: none;
+            }
+            .loginmain {
+                display: none;
+            }
+            #menubar {
+                display: none;
+            }
+            #mmenubar {
+                margin-bottom: 3px !important;
+            }
+            .mloginmain {
+                position: relative;
+                width: 300px;
+                border-radius: 15px;
+                margin: auto;
+                margin: auto;
+                height: 320px;
+            }
+            .mloginp {
+                padding: 15px;
+                margin: auto;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                width: 300px;
+            }
+            .mloginp h2 {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .mloginp table {
+                margin: auto;
+                width: fit-content !important;
+            }
+            .mloginp table tr, .mloginp table td {
+                padding: 5px !important;
+                border: none !important;
+            }
+            .mloginp table td {
+                padding: 20px;
+            }
+            .mforget {
+                position: absolute;
+                bottom: -50px;
+                width: 100%;
+                text-align: center;
+            }
+            .menu {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            .mloginmain {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .main1 {
+                width: 100%;
+                position: absolute;
+                right: 0;
+            }
+            .loginmain {
+                width: 1300px;
+                height: 600px;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                margin: auto;
+                display: flex;
+            }
+            .mleft {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position:relative;
+            }
+            #libox {
+                z-index: 999;
+                font-size: 100px;
+                color: white;
+                position:absolute;
+                top: 55%;
+            }
+            .mright {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            .lock {
+                font-size: 350px;
+                color: darkorange;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                position: absolute;
+                left: 5px;
+                width: 88%;
+                height: 65%;
+            }
+            .loginp h2 {
+                text-align: center;
+                /* margin-top: 50px; */
+                margin-bottom: 50px;
+            }
+            .loginp table {
+                margin: auto;
+                width: fit-content !important;
+            }
+            .loginp table tr, .loginp table td {
+                padding: 5px !important;
+                border: none !important;
+            }
+            .loginp table td {
+                padding: 20px;
+            }
+        }
+        @media only screen and (min-width: 601px) {
+            .mloginmain {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 993px) {
+            .mloginmain {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="logo" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>로그인</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <label class="weltext">처음 오셨나요?</label>
+                    <i class="fa fa-boxes"></i>
+                    <div class="lbtn">
+                        <button class="lo" onclick="location.replace('/')">메인</button>
+                        <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55" onclick="chatdown(this, false);">판매자와 채팅 ▼</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <label class="weltext">처음 오셨나요?</label>
+                    <i class="fa fa-boxes"></i>
+                    <div class="lbtn">
+                        <button class="lo" onclick="location.replace('/')">메인</button>
+                        <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
+            <div class="mmenutap menutap55" onclick="mchatdown(this, false);">판매자와 채팅 ▼</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <div class="loginmain">
+                <div class="mleft">
+                    <i class="lock fa fa-lock"></i>
+                    <i class="fa fa-box" id="libox"></i>
+                </div>
+                <div class="mright">
+                    <div class="loginp">
+                        <h2>로그인</h2>
+                        <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>아이디</td>
+                                        <td><input type="text" name="userid" id="userid" placeholder="ID" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td>비밀번호</td>
+                                        <td><input type="password" name="userpass" id="userpass" placeholder="PASSWORD" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <button class="btn waves-effect waves-light orange darken-3" type="submit" id="lgsubmit">로그인<i class="material-icons right">vpn_key</i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="forget">
+                        <a href="/account/forget/id">아이디 찾기</a><br>
+                        <a href="/account/forget/password">비밀번호 찾기</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mloginmain">
+                <div class="mloginp">
+                    <h2>로그인</h2>
+                    <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 70px;">아이디</td>
+                                    <td><input type="text" name="userid" id="muserid" placeholder="ID" required></td>
+                                </tr>
+                                <tr>
+                                    <td>비밀번호</td>
+                                    <td><input type="password" name="userpass" id="muserpass" placeholder="PASSWORD" required></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn waves-effect waves-light orange darken-3" type="submit" id="mlgsubmit">로그인<i class="material-icons right">vpn_key</i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="mforget">
+                    <a href="/account/forget/id">아이디 찾기</a><br>
+                    <a href="/account/forget/password">비밀번호 찾기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="proselectd" style="display: none;"></div>
+    <div id="proselect" style="display: none;"></div>
+    <div id="originalPro" style="display: none;"></div>
+    <div id="profilechange" style="display: none;"></div>
+    <div id="closeselect" style="display: none;"></div>
+    <div class="profileImg" style="display: none;"></div>
+    <div class="mprofileImg" style="display:none;"></div>
+    <div id="al" style="display: none;"></div>
+    <script src="/javascripts/menu.js"></script>
+    <script>
+        let uid = document.getElementById("userid");
+        let upass = document.getElementById("userpass");
+
+        let muid = document.getElementById("muserid");
+        let mupass = document.getElementById("muserpass");
+
+
+        function userCheck(e, form) {
+            e.preventDefault();
+
+            let userInfo = {
+                id: form.userid.value,
+                password: form.userpass.value
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/login/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        location.replace('/loginuser/searchrecord');
+                    } else if(data.result == "fail") {
+                        alert(data.msg);
+                        uid.style.borderBottomColor = "red";
+                        upass.style.borderBottomColor = "red";
+                        muid.style.borderBottomColor = "red";
+                        mupass.style.borderBottomColor = "red";
+                        upass.value = "";
+                        mupass.value = "";
+                    } else {
+                        alert("로그인 도중 에러가 발생했습니다. 나중에 다시 시도해주십시오.");
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+    </script>
+</body>
+</html>

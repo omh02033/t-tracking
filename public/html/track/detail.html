@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>자세히 보기</title>
+    <style>
+        body {
+            padding: 15px 25px;
+        }
+        .top {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            font-style: normal;
+            color: #777777;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dddddd;
+        }
+        .basicTable {
+            width: 100%;
+            padding: 0 15px 15px 15px;
+            margin-bottom: 20px;
+        }
+        .formgroup {
+            margin-bottom: 15px;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .formgroup > label {
+            font-size: 16px;
+            color: #aaaaaa;
+            font-weight: normal;
+            width: 33.333333%;
+        }
+        .formgroup > div {
+            font-size: 16px;
+            font-weight: normal;
+            color: #343434;
+            width: 66.666667%;
+            padding: 0 15px;
+            float: right;
+        }
+        .status {
+            width: 100%;
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+        .status thead tr td {
+            border-bottom: 2px solid #ddd;
+            padding: 11px;
+            color: #333;
+            font-weight: bold !important;
+        }
+        .status tbody tr { border-bottom: none !important; }
+        .status tbody tr td {
+            padding: 11px;
+            border-top: 1px solid #f5f5f5 !important;
+            border-bottom: none !important;
+            color: #333;
+        }
+        td {
+            font-weight: normal;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            -o-text-overflow:ellipsis;
+            overflow: hidden;
+            -moz-binding: url('ellipsis.xml#ellipsis');
+        }
+        .statushead {
+            background-color: rgba(173, 173, 173, 0.5);
+        }
+        .statushead td {
+            font-weight: bold !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="top"><span style="font-weight: bold;">통합 택배 조회 서비스</span></div>
+    <div class="basicTable">
+        <div class="formgroup">
+            <label>운송장번호</label>
+            <div id="b_invoice"></div>
+        </div>
+        <div class="formgroup">
+            <label>받는 사람</label>
+            <div id="b_uname"></div>
+        </div>
+        <div class="formgroup">
+            <label>보낸 사람</label>
+            <div id="b_sender"></div>
+        </div>
+        <div class="formgroup">
+            <label>수령 주소</label>
+            <div id="b_home"></div>
+        </div>
+        <div class="formgroup">
+            <label>물품 이름</label>
+            <div id="b_tname"></div>
+        </div>
+    </div>
+
+    <div class="status">
+        <table>
+            <thead>
+                <tr class="statushead">
+                    <td style="width: 150px;">시간</td>
+                    <td>현재 위치</td>
+                    <td>배송 상태</td>
+                </tr>
+            </thead>
+            <tbody class="statusTbody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="top"><span style="font-weight: bold;">자세히 보기</span></div>
+    <div class="detail">
+        <table class="striped">
+            <tr>
+                <td style="font-weight: bold;">배송예정 시간</td>
+                <td class="estimate"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">배송기사 이름</td>
+                <td class="manPic"></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">배송기사 전화번호</td>
+                <td><a class="phone"></a></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">수령인 정보</td>
+                <td class="recip"></td>
+            </tr>
+        </table>
+    </div>
+    <div id="proselectd" style="display: none;"></div>
+    <div id="proselect" style="display: none;"></div>
+    <div id="originalPro" style="display: none;"></div>
+    <div id="profilechange" style="display: none;"></div>
+    <div id="closeselect" style="display: none;"></div>
+    <div class="profileImg" style="display: none;"></div>
+    <div class="mprofileImg" style="display:none;"></div>
+    <div id="al" style="display: none;"></div>
+    <script>
+        window.onload = () => {
+            let code = getParameterByName('t_code');
+            let num = getParameterByName('t_invoice');
+
+            let estimate = document.querySelector(".estimate");
+            let manPic = document.querySelector(".manPic");
+            let phone = document.querySelector(".phone");
+            let recip = document.querySelector(".recip");
+
+            let trindex = 1;
+
+            let b_invoice = document.getElementById("b_invoice");
+            let b_uname = document.getElementById("b_uname");
+            let b_sender = document.getElementById("b_sender");
+            let b_home = document.getElementById("b_home");
+            let b_tname = document.getElementById("b_tname");
+
+            let statusTbody = document.querySelector(".statusTbody");
+
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+
+            let userInfo = {
+                t_code: code,
+                t_invoice: num
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/tracking/detail/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.status === 200 && xhr.readyState === 4) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.msg) { console.log(data.msg); }
+                    b_invoice.innerHTML = data.data.invoiceNo;
+                    b_uname.innerHTML = data.data.receiverName;
+                    b_sender.innerHTML = data.data.senderName;
+                    b_home.innerHTML = data.data.receiverAddr;
+                    b_tname.innerHTML = data.data.itemName;
+                    for(let i=data.data.trackingDetails.length; i>=0; i--) {
+                        let tr = document.createElement("tr");
+                        statusTbody.append(tr);
+                        let th1 = document.createElement("th");
+                        let th2 = document.createElement("th");
+                        let th3 = document.createElement("th");
+                        try {
+                            th1.innerHTML = data.data.trackingDetails[i-1].timeString;
+                            th2.innerHTML = data.data.trackingDetails[i-1].where;
+                            th3.innerHTML = data.data.trackingDetails[i-1].kind;
+                        } catch { continue; }
+                        if(i == data.data.trackingDetails.length) {
+                            th1.style.backgroundColor = "rgba(173,173,173,0.2)";
+                            th1.style.color = "#333";
+                            th2.style.backgroundColor = "rgba(173,173,173,0.2)";
+                            th2.style.color = "#333";
+                            th3.style.backgroundColor = "rgba(173,173,173,0.2)";
+                            th3.style.color = "#333";
+                        } else {
+                            th1.style.color = "#aaa";
+                            th1.style.fontWeight = "normal";
+                            th2.style.color = "#aaa";
+                            th2.style.fontWeight = "normal";
+                            th3.style.color = "#aaa";
+                            th3.style.fontWeight = "normal";
+                        }
+                        let tr1 = document.querySelectorAll("tr");
+                        tr1[trindex].append(th1);
+                        tr1[trindex].append(th2);
+                        tr1[trindex].append(th3);
+                        trindex++;
+                    }
+                    console.log(data.data.estimate);
+                    estimate.innerHTML = data.data.estimate;
+                    manPic.innerHTML = data.data.trackingDetails[data.data.trackingDetails.length - 1].manName;
+                    phone.innerHTML = data.data.trackingDetails[data.data.trackingDetails.length - 1].telno2;
+                    phone.href = `tel:${data.data.trackingDetails[data.data.trackingDetails.length - 1].telno2}`;
+                    recip.innerHTML = data.data.recipient;
+                }
+            }
+            xhr.send(JSON.stringify(userInfo));
+        }
+    </script>
+</body>
+</html>

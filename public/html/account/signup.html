@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="/stylesheets/top.css">
+    <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR8VK-avCGrciG2XlevFz65VwWRNIa_yKTFWg&usqp=CAU">
+    <title>회원가입</title>
+    <style>
+        .main {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .mmenu { top: 0 !important; }
+        .striped .btn { background-color: rgb(70, 92, 153) !important; }
+        .striped { border-color: rgb(190, 190, 190) !important; }
+        .emphasized {
+            z-index: 500;
+            box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px;
+        }
+        .loading {
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 190px;
+            height: 80px;
+            transform: translate(-50%, -50%);
+        }
+        .loadingif {
+            width: 100%;
+            height: 100%;
+        }
+        .cerinum {
+            width: 80%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: auto;
+        }
+        #cnum-1, #cnum-2, #cnum-3, #cnum-4, #cnum-5, #cnum-6,
+        #mnum-1, #mnum-2, #mnum-3, #mnum-4, #mnum-5, #mnum-6 {
+            width: 40px !important;
+            height: 40px !important;
+            background-color: rgba(238, 238, 238, 0.2);
+            border-radius: 5px;
+            border: 1px solid darkgray;
+            text-align: center;
+        }
+        input[type='number']::-webkit-outer-spin-button,
+        input[type='number']::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .logo {
+                display: none;
+            }
+            #menubar {
+                display: none;
+            }
+            .loginmain {
+                display: none;
+            }
+            .mmright {
+                box-sizing: border-box;
+                width: 100%;
+                height: 300px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+            }
+            .loginp input {
+                width: 200px !important;
+                text-align: center;
+            }
+            .loginp h4 {
+                margin-bottom: 50px;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            #mmenubar {
+                display: none;
+            }
+            .mmright {
+                display: none;
+            }
+            .mleft {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position:relative;
+            }
+            .loginp {
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                position: absolute;
+                left: 5px;
+                width: 88%;
+                height: 65%;
+                text-align: center;
+            }
+            .loginp input {
+                width: 300px !important;
+                text-align: center;
+            }
+            #consumer, #seller, #mconsumer, #mseller {
+                width: fit-content !important;
+            }
+            .loginp h4 {
+                margin-bottom: 50px;
+            }
+            .mright {
+                box-sizing: border-box;
+                width: 50%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            .loginmain {
+                width: 1300px;
+                height: 600px;
+                border: 1px solid darkgray;
+                border-radius: 15px;
+                margin: auto;
+                display: flex;
+            }
+            .mleft table {
+                margin: auto;
+                width: fit-content !important;
+            }
+            .mleft table tr, .mleft table td {
+                padding: 5px !important;
+                border: 1px solid darkgray !important;
+                text-align: center;
+            }
+            .mleft table tr {
+                position: relative;
+            }
+        }
+        @media only screen and (min-width: 601px) {
+            #mmenubar {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 993px) {
+            #mmenubar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top s">
+        <div class="logo signin" onclick="location.replace('/');">
+            <i class="fa fa-truck signup2" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp signup1">
+            <span>회원가입</span>
+        </div>
+    </div>
+
+    <div class="main s1">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <label class="weltext">처음 오셨나요?</label>
+                    <i class="fa fa-boxes"></i>
+                    <div class="lbtn">
+                        <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                        <button class="lo" onclick="location.replace('/');">메인</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
+            <div class="menutap menutap55" onclick="chatdown(this, false);">판매자와 채팅 ▼</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <div class="profileImg" style="display: none;"></div>
+                    <label class="weltext">처음 오셨나요?</label>
+                    <i class="fa fa-boxes"></i>
+                    <div class="lbtn">
+                        <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                        <button class="lo" onclick="location.replace('/');">메인</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mmenutap menutap1" onclick="location.replace('/');" style="border-top: 1px solid darkgray;">택배 조회 (메인 화면)</div>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage/');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord/');">택배 조회 기록</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting/');">설정</div>
+            <div class="mmenutap menutap55" onclick="mchatdown(this, false);">판매자와 채팅 ▼</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <div class="loginmain">
+                <div class="mleft">
+                    <table border="1" class="striped">
+                        <tr>
+                            <td style="width: 200px;">아이디</td>
+                            <td><label class="btn waves-effect waves-orange" id="wid">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호</td style="width: 200px;">
+                            <td><label class="btn waves-effect waves-orange" id="wpass">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호 확인</td>
+                            <td><label class="btn waves-effect waves-orange" id="wcon">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>이름</td>
+                            <td><label class="btn waves-effect waves-orange" id="wINB">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>전화번호</td>
+                            <td><label class="btn waves-effect waves-orange" id="wphone">미완</label></td>
+                        </tr>
+                        <tr>
+                            <td>본인인증</td>
+                            <td><label class="btn waves-effect waves-orange" id="wemail">미완</label></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mright">
+                    <div class="loginp">
+                        <h3>회원가입</h3>
+                        <span class="who" style="position: absolute; right: 15px; top: 5px;"></span>
+                        <div id="sellercheck">
+                            <h4>당신은 ?</h4>
+                            <label>
+                                <input type="radio" name="seller" id="consumer" onchange="idchang('c');"> <span>구매자</span><br><br>
+                            </label>
+                            <label>
+                                <input type="radio" name="seller" id="seller" onchange="idchang('s');"> <span>판매자</span>
+                            </label>
+                        </div>
+                        <div id="sid" style="display: none;">
+                            <h4>아이디</h4>
+                            <input type="text" name="uid" id="uid" minlength="5" placeholder="ID" required><br>
+                            <span class="checkid"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign1"><i class="material-icons right">navigate_next</i>다음</a><br>
+                        </div>
+                        <div id="spass" style="display: none;">
+                            <h4>비밀번호</h4>
+                            <input type="password" name="upass" id="upass" minlength="6" placeholder="PASSWORD" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign2"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back2"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="scon" style="display: none;">
+                            <h4>비밀번호 확인</h4>
+                            <input type="password" name="conpass" id="upasscon" placeholder="Confirm Password" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign3"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back3"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="sINB" style="display: none;">
+                            <h4>이름</h4>
+                            <input type="text" name="unick" id="unick" maxlength="5" placeholder="NAME" required>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign33"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back33"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="sphone" style="display: none;">
+                            <h4>전화번호</h4>
+                            <input type="text" name="phonenum" id="uphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
+                            <span class="checkphone"></span>
+                            <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:50px;right:50px;" id="sign35"><i class="material-icons right">navigate_next</i>다음</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back35"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                        <div id="semail" style="display: none;">
+                            <h4>본인 인증</h4>
+                            <div class="cerinum">
+                                <input type="number" name="" id="cnum-1" maxlength='1' required>
+                                <input type="number" name="" id="cnum-2" maxlength='1' required>
+                                <input type="number" name="" id="cnum-3" maxlength='1' required>
+                                <input type="number" name="" id="cnum-4" maxlength='1' required>
+                                <input type="number" name="" id="cnum-5" maxlength='1' required>
+                                <input type="number" name="" id="cnum-6" maxlength='1' required>
+                            </div>
+                            <span class="time"><span class="m">3</span>:<span class="sec">00</span></span><br><br>
+                            <a href="">다시보내기</a>
+                            <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:50px;left:50px;" id="back4"><i class="material-icons left">navigate_before</i>이전</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mmright">
+                <div class="loginp">
+                    <h3>회원가입</h3>
+                    <span class="who" style="position: absolute; right: 10px; top: 5px;"></span>
+                    <div id="msellercheck">
+                        <h4>당신은 ?</h4>
+                        <label>
+                            <input type="radio" name="seller" id="mconsumer" onchange="midchang('c');"> <span>구매자</span><br><br>
+                        </label>
+                        <label>
+                            <input type="radio" name="seller" id="mseller" onchange="midchang('s');"> <span>판매자</span>
+                        </label>
+                    </div>
+                    <div id="msid" style="display: none;">
+                        <h4>아이디</h4>
+                        <input type="text" name="uid" id="muid" minlength="4" maxlength="45" placeholder="ID" required><br>
+                        <span class="checkid"></span>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign1"><i class="material-icons right">navigate_next</i>다음</a>
+                    </div>
+                    <div id="mspass" style="display: none;">
+                        <h4>비밀번호</h4>
+                        <input type="password" name="upass" id="mupass" minlength="6" placeholder="PASSWORD" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign2"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback2"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="mscon" style="display: none;">
+                        <h4>비밀번호 확인</h4>
+                        <input type="password" name="conpass" id="mupasscon" placeholder="Confirm Password" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign3"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback3"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msINB" style="display: none;">
+                        <h4>이름</h4>
+                        <input type="text" name="unick" id="munick" maxlength="5" placeholder="NAME" required>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign33"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback33"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msphone" style="display: none;">
+                        <h4>전화번호</h4>
+                        <input type="text" name="phonenum" id="muphone" maxlength="50" placeholder="'-' 없이 숫자만 입력해주세요." required><br>
+                        <span class="checkphone"></span>
+                        <a class="waves-effect waves-light btn orange" style="position:absolute;bottom:10px;right:30px;" id="msign35"><i class="material-icons right">navigate_next</i>다음</a>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback35"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                    <div id="msemail" style="display: none;">
+                        <h4>본인 인증</h4>
+                        <div class="cerinum">
+                            <input type="number" name="" id="mnum-1" maxlength='1' required>
+                            <input type="number" name="" id="mnum-2" maxlength='1' required>
+                            <input type="number" name="" id="mnum-3" maxlength='1' required>
+                            <input type="number" name="" id="mnum-4" maxlength='1' required>
+                            <input type="number" name="" id="mnum-5" maxlength='1' required>
+                            <input type="number" name="" id="mnum-6" maxlength='1' required>
+                        </div>
+                        <span class="mtime"><span class="mm">3</span>:<span class="msec">00</span></span>
+                        <a class="waves-effect waves-light btn grey darken-1" style="position:absolute;bottom:10px;left:30px;" id="mback4"><i class="material-icons left">navigate_before</i>이전</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loading emphasized"><div class="loadingif"><img src="/images/loading.gif" alt="" style="position: absolute; transform: translate(-50%, -50%); left: 50%; max-width: 80px; height:80px; box-shadow: none !important;"></div><span style="position:absolute; bottom:0; color: white; width: 100%; text-align: center;">이메일 인증을 기다리는 중..</span></div>
+    <div id="proselectd" style="display: none;"></div>
+    <div id="proselect" style="display: none;"></div>
+    <div id="originalPro" style="display: none;"></div>
+    <div id="profilechange" style="display: none;"></div>
+    <div id="closeselect" style="display: none;"></div>
+    <div class="profileImg" style="display: none;"></div>
+    <div class="mprofileImg" style="display:none;"></div>
+    <div id="al" style="display: none;"></div>
+    <script src="/javascripts/menu.js"></script>
+    <script>
+        let wid = document.getElementById("wid");
+        let wpass = document.getElementById("wpass");
+        let wcon = document.getElementById("wcon");
+        let wphone = document.getElementById("wphone");
+        let wemail = document.getElementById("wemail");
+        let wINB = document.getElementById("wINB");
+
+        let sid = document.getElementById("sid");
+        let spass = document.getElementById("spass");
+        let scon = document.getElementById("scon");
+        let sphone = document.getElementById("sphone");
+        let semail = document.getElementById("semail");
+        let sINB = document.getElementById("sINB");
+
+        let sign1 = document.getElementById("sign1");  // 아이디 창
+        let sign2 = document.getElementById("sign2");  // 비밀번호 창
+        let sign33 = document.getElementById("sign33"); // 이름 창
+        let sign35 = document.getElementById("sign35"); // 전화번호 창
+        let sign3 = document.getElementById("sign3");  // 비밀번호 확인 창
+
+        let back1 = document.getElementById("back1");
+        let back2 = document.getElementById("back2");
+        let back3 = document.getElementById("back3");
+        let back33 = document.getElementById("back33");
+        let back35 = document.getElementById("back35");
+        let back4 = document.getElementById("back4");
+
+        let sellercheck = document.getElementById("sellercheck"); // 구매자 / 판매자
+        let uid = document.getElementById("uid");            // 유저 아이디
+        let upass = document.getElementById("upass");        // 유저 비밀번호
+        let upasscon = document.getElementById("upasscon");  // 비밀번호 확인
+        let uphone = document.getElementById("uphone");      // 유저 전화번호
+        let unick = document.getElementById("unick");        // 유저 이름
+
+        let msid = document.getElementById("msid");
+        let mspass = document.getElementById("mspass");
+        let mscon = document.getElementById("mscon");
+        let msphone = document.getElementById("msphone");
+        let msemail = document.getElementById("msemail");
+        let msINB = document.getElementById("msINB");
+
+        let msign1 = document.getElementById("msign1");  // 아이디 창
+        let msign2 = document.getElementById("msign2");  // 비밀번호 창
+        let msign3 = document.getElementById("msign3");  // 비밀번호 확인 창
+        let msign33 = document.getElementById("msign33");
+        let msign35 = document.getElementById("msign35");// 전화번호 창
+
+        let mback1 = document.getElementById("mback1");
+        let mback2 = document.getElementById("mback2");
+        let mback3 = document.getElementById("mback3");
+        let mback33 = document.getElementById("mback33");
+        let mback35 = document.getElementById("mback35");
+        let mback4 = document.getElementById("mback4");
+
+
+        let msellercheck = document.getElementById("msellercheck") // 구매자 / 판매자
+        let muid = document.getElementById("muid");             // 유저 아이디
+        let mupass = document.getElementById("mupass");         // 유저 비밀번호
+        let mupasscon = document.getElementById("mupasscon");   // 비밀번호 확인
+        let muphone = document.getElementById("muphone");       // 유저 전화번호
+        let munick = document.getElementById("munick");          // 유저 이름
+
+        let cnum_1 = document.getElementById("cnum-1");
+        let cnum_2 = document.getElementById("cnum-2");
+        let cnum_3 = document.getElementById("cnum-3");
+        let cnum_4 = document.getElementById("cnum-4");
+        let cnum_5 = document.getElementById("cnum-5");
+        let cnum_6 = document.getElementById("cnum-6");
+
+        let mnum_1 = document.getElementById("mnum-1");
+        let mnum_2 = document.getElementById("mnum-2");
+        let mnum_3 = document.getElementById("mnum-3");
+        let mnum_4 = document.getElementById("mnum-4");
+        let mnum_5 = document.getElementById("mnum-5");
+        let mnum_6 = document.getElementById("mnum-6");
+
+        let idcheckspan = document.querySelectorAll(".checkid");
+        let checkphone = document.querySelectorAll(".checkphone");
+
+        let loadingScreen = document.querySelector(".loading");
+        let loadingif = document.querySelector(".loadingif");
+
+        let who = document.querySelectorAll(".who");
+
+        let time = document.querySelector(".time");
+        let minute = document.querySelector(".m");
+        let sec = document.querySelector(".sec");
+
+        let mtime = document.querySelector(".mtime");
+        let mminute = document.querySelector(".mm");
+        let msec = document.querySelector(".msec");
+
+        let echeck = false;
+        let idcheck = false;
+        let phonecheck = false;
+        let sendemail = false;
+        let nowid = '';
+        let mnowid = '';
+        let nowphone = '';
+        let mnowphone = '';
+
+        let seller = false;
+
+        let countdown;
+        let mcountdown;
+
+        let chance = 5;
+
+        function idchang(job) {
+            sellercheck.style.display = "none";
+            sid.style.display = "block";
+            wid.innerHTML = "진행중..";
+            uid.focus();
+            for(let i=0; i<who.length; i++) {
+                if(job == 'c') { who[i].innerHTML = "구매자"; }
+                else if(job == 's') { who[i].innerHTML = "판매자"; seller=true; }
+            }
+            console.log(seller);
+        }
+        function midchang(job) {
+            msellercheck.style.display = "none";
+            msid.style.display = "block";
+            muid.focus();
+            for(let i=0; i<who.length; i++) {
+                if(job == 'c') { who[i].innerHTML = "구매자"; }
+                else if(job == 's') { who[i].innerHTML = "판매자"; seller=true; }
+            }
+        }
+
+        function emailCertification(userid) {
+            setTimeout(() => {
+                setInterval(() => {
+                    let userInfo = {
+                        uid: userid
+                    }
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/account/email/Certification');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function () {
+                        if(xhr.readyState === 4 && xhr.status === 200) {
+                            let data = JSON.parse(xhr.responseText);
+                            if(data.msg) { console.log(data.msg); }
+                            if(data.result == "success") {
+                                window.close();
+                            } else if(data.result == "deleted") {
+                                location.replace(location.href);
+                            }
+                        }
+                    }
+                    xhr.send(JSON.stringify(userInfo));
+                }, 2000);
+            }, 3000);
+        }
+
+        if(echeck) {
+            msid.style.display = "none";
+            mspass.style.display = "none";
+            mscon.style.display = "none";
+            msphone.style.display = "none";
+            msemail.style.display = "none";
+            msINB.style.display = "none";
+        }
+
+        function idoverlapcheck(device) {
+            let idInfo
+            if(device == 'c') {
+                idInfo = { id: uid.value }
+            } else if(device == 'm') { idInfo = { id: muid.value } }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/signup/overlap/id');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        nowid = uid.value;
+                        mnowid = muid.value;
+                        idcheck = true;
+                        for(let i=0; i<idcheckspan.length; i++) {
+                            idcheckspan[i].innerHTML = "사용 가능한 아이디 입니다.";
+                            idcheckspan[i].style.color = "green";
+                        }
+                        if(!nowid == '' && mnowid == '') {
+                            sid.style.display = "none";
+                            spass.style.display = "block";
+                            upass.focus();
+                            wid.innerHTML = "완료";
+                            wpass.innerHTML = "진행중..";
+                            let s = document.querySelector(".s");
+                            s.classList.add('st');
+                        } else if(!mnowid == '' && nowid == '') {
+                            msid.style.display = "none";
+                            mspass.style.display = "block";
+                            mupass.focus();
+                            let s = document.querySelector(".s");
+                            s.classList.add('st');
+                        } else { alert("아이디를 입력해주세요."); }
+                    } else {
+                        for(let i=0; i<idcheckspan.length; i++) {
+                            idcheckspan[i].innerHTML = "이미 사용중인 아이디 입니다.";
+                            idcheckspan[i].style.color = "red";
+                        }
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(idInfo));
+        }
+
+        function smscer(phone, device) {
+            alert('인증번호 전송중입니다..\n잠시만 기다려주세요!');
+            let info;
+            if(device == 'c') {
+                info = {
+                    userid: uid.value,
+                    phone,
+                    name: unick.value
+                }
+            } else {
+                info = {
+                    userid: muid.value,
+                    phone,
+                    name: munick.value
+                }
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/signup/phone/smscer');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = () => {
+                if(xhr.readyState === 4 && xhr.status == 200) {
+                    alert('인증번호를 전송하였습니다.\n확인해주세요.');
+                    if(device == 'c') {
+                        let sM = minute.innerHTML;
+                        let sS = sec.innerHTML;
+                        countdown = setInterval(() => {
+                            if(minute.innerHTML == '0' && sec.innerHTML == '00') {
+                                alert('시간이 만료되었습니다.\n다시 시도해주세요.');
+                                cnum_1.value = '';
+                                cnum_2.value = '';
+                                cnum_3.value = '';
+                                cnum_4.value = '';
+                                cnum_5.value = '';
+                                cnum_6.value = '';
+                                wemail.innerHTML = "미완";
+                                wphone.innerHTML = "진행중..";
+                                semail.style.display = "none";
+                                sphone.style.display = "block";
+                                uphone.value = '';
+                                uphone.focus();
+                                minute.innerHTML = '3';
+                                sec.innerHTML = '00';
+                                for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
+                                clearInterval(countdown);
+                                delCode('c');
+                            } else if(sS == '00') {
+                                sM -= 1;
+                                sS = 59;
+                                minute.innerHTML = sM;
+                                sec.innerHTML = sS;
+                            } else {
+                                sS -= 1;
+                                if(String(sS).length == 1) sS = `0${sS}`;
+                                sec.innerHTML = sS;
+                            }
+                        }, 1000);
+                    } else {
+                        let sM = mminute.innerHTML;
+                        let sS = msec.innerHTML;
+                        mcountdown = setInterval(() => {
+                            if(mminute.innerHTML == '0' && msec.innerHTML == '00') {
+                                alert('시간이 만료되었습니다.\n다시 시도해주세요.');
+                                mnum_1.value = '';
+                                mnum_2.value = '';
+                                mnum_3.value = '';
+                                mnum_4.value = '';
+                                mnum_5.value = '';
+                                mnum_6.value = '';
+                                msemail.style.display = "none";
+                                msphone.style.display = "block";
+                                mminute.innerHTML = '3';
+                                msec.innerHTML = '00';
+                                muphone.value = '';
+                                muphone.focus();
+                                for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
+                                clearInterval(mcountdown);
+                                delCode('m');
+                            } else if(sS == '00') {
+                                sM -= 1;
+                                sS = 59;
+                                mminute.innerHTML = sM;
+                                msec.innerHTML = sS;
+                            } else {
+                                sS -= 1;
+                                if(String(sS).length == 1) sS = `0${sS}`;
+                                msec.innerHTML = sS;
+                            }
+                        }, 1000);
+                    }
+                    if(device == 'c') {
+                        sphone.style.display = "none";
+                        semail.style.display = "block";
+                        cnum_1.focus();
+                        wphone.innerHTML = "완료";
+                        wemail.innerHTML = "진행중..";
+                        let signup2 = document.querySelector(".signup2");
+                        signup2.classList.add("signup2t");
+                    } else {
+                        msphone.style.display = "none";
+                        msemail.style.display = "block";
+                        mnum_1.focus();
+                        let signup2 = document.querySelector(".signup2");
+                        signup2.classList.add("signup2t");
+                    }
+                } else if(xhr.readyState === 4 && xhr.status == 400) alert('예상치 못한 에러가 발생했습니다.\n다시 시도 해주세요.');
+            }
+            xhr.send(JSON.stringify(info));
+        }
+
+        function phoneoverlapcheck(device) {
+            let phoneInfo;
+            if(device == 'c') {
+                phoneInfo = { phone: uphone.value }
+            } else if(device == 'm') { phoneInfo = { phone: muphone.value } }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/signup/overlap/phone');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data.msg);
+                    if(data.result == "success") {
+                        nowphone = uphone.value;
+                        mnowphone = muphone.value;
+                        phonecheck = true;
+                        for(let i=0; i<checkphone.length; i++) {
+                            checkphone[i].innerHTML = "사용 가능한 번호 입니다.";
+                            checkphone[i].style.color = "green";
+                        }
+                        if(!nowphone == '' && mnowphone == '') {
+                            smscer(nowphone, 'c');
+                        } else if(!mnowphone == '' && nowphone == '') {
+                            smscer(mnowphone, 'm');
+                        } else { alert("번호를 입력해주세요. ex) 01012345678"); }
+                    } else {
+                        for(let i=0; i<checkphone.length; i++) {
+                            checkphone[i].innerHTML = "이미 사용중인 번호 입니다.";
+                            checkphone[i].style.color = "red";
+                        }
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(phoneInfo));
+        }
+
+        function delCode(device) {
+            let info;
+            if(device == 'c') {
+                info = { userid: uid.value };
+            } else {
+                info = { userid: muid.value };
+            }
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/signup/sms/del');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(info));
+        }
+
+        function cerfi(device) {
+            if(`${cnum_1.value}${cnum_2.value}${cnum_3.value}${cnum_4.value}${cnum_5.value}${cnum_6.value}`.length == 6 || `${mnum_1.value}${mnum_2.value}${mnum_3.value}${mnum_4.value}${mnum_5.value}${mnum_6.value}`.length == 6) {
+                let info;
+                if(device == 'c') {
+                    info = {
+                        userid: uid.value,
+                        code: `${cnum_1.value}${cnum_2.value}${cnum_3.value}${cnum_4.value}${cnum_5.value}${cnum_6.value}`,
+                        name: unick.value
+                    }
+                } else {
+                    info = {
+                        userid: muid.value,
+                        code: `${mnum_1.value}${mnum_2.value}${mnum_3.value}${mnum_4.value}${mnum_5.value}${mnum_6.value}`,
+                        name: munick.value
+                    }
+                }
+    
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/account/signup/codeCheck');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState === 4 && xhr.status == 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.result) {
+                            if(device == 'c') {
+                                clearInterval(countdown);
+                                userEnrollment('c');
+                            } else {
+                                clearInterval(mcountdown);
+                                userEnrollment('m');
+                            }
+                        }
+                    } else if(xhr.readyState === 4 && xhr.status == 400) {
+                        let data = JSON.parse(xhr.responseText);
+                        if(data.result == 'fail') {
+                            cnum_1.value = '';
+                            cnum_2.value = '';
+                            cnum_3.value = '';
+                            cnum_4.value = '';
+                            cnum_5.value = '';
+                            cnum_6.value = '';
+                            mnum_1.value = '';
+                            mnum_2.value = '';
+                            mnum_3.value = '';
+                            mnum_4.value = '';
+                            mnum_5.value = '';
+                            mnum_6.value = '';
+                            chance--;
+                            if(chance == 0) {
+                                alert('기회가 모두 소진되었습다.\n다시 시도해주세요.');
+                                if(device == 'c') {
+                                    wemail.innerHTML = "미완";
+                                    wphone.innerHTML = "진행중..";
+                                    semail.style.display = "none";
+                                    sphone.style.display = "block";
+                                    uphone.value = '';
+                                    uphone.focus();
+                                    for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
+                                    clearInterval(countdown);
+                                    delCode('c');
+                                    minute.innerHTML = '3';
+                                    sec.innerHTML = '00';
+                                } else {
+                                    msemail.style.display = "none";
+                                    msphone.style.display = "block";
+                                    muphone.value = '';
+                                    muphone.focus();
+                                    for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ''; }
+                                    clearInterval(mcountdown);
+                                    delCode('m');
+                                    mminute.innerHTML = '3';
+                                    msec.innerHTML = '00';
+                                }
+                            } else {
+                                alert(`인증번호가 일치하지 않습니다.\n기회 : ${chance}`);
+                            }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(info));
+            } else return 0;
+        }
+
+        cnum_1.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_2.focus(); }
+        cnum_2.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_3.focus(); }
+        cnum_3.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_4.focus(); }
+        cnum_4.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_5.focus(); }
+        cnum_5.onkeypress = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cnum_6.focus(); }
+        cnum_6.onkeyup = () => { if((event.keyCode >=48 && event.keyCode <= 57) || (event.keyCode >=96 && event.keyCode <= 105)) cerfi('c'); }
+
+        mnum_1.onkeyup = () => { mnum_2.focus(); }
+        mnum_2.onkeyup = () => { mnum_3.focus(); }
+        mnum_3.onkeyup = () => { mnum_4.focus(); }
+        mnum_4.onkeyup = () => { mnum_5.focus(); }
+        mnum_5.onkeyup = () => { mnum_6.focus(); }
+        mnum_6.onkeyup = () => { cerfi('m'); }
+
+        function userEnrollment(device) {
+            let info;
+            if(device == 'c') {
+                info = {
+                    userid: uid.value,
+                    password: upass.value,
+                    phone: uphone.value,
+                    name: unick.value,
+                    seller
+                }
+            } else {
+                info = {
+                    userid: muid.value,
+                    password: mupass.value,
+                    phone: muphone.value,
+                    name: munick.value,
+                    seller
+                }
+            }
+            
+            let xhr = new XMLHttpRequest;
+            xhr.open('POST', '/account/signup/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = () => {
+                if(xhr.readyState === 4 && xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.result == 'success') {
+                        let loginS = confirm('회원가입이 완료되었습니다!\n로그인 페이지로 돌아가시겠습니까?');
+                        if(loginS) location.replace('/account/login');
+                        else location.replace('/');
+                    }
+                } else if(xhr.readyState === 4 && xhr.status == 400) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.result == 'not found') {
+                        alert('에러가 발생했습니다.\n본인인증을 다시 진행해주세요..');
+                        if(device == 'c') {
+                            semail.style.display = "none";
+                            sphone.style.display = "block";
+                            wemail.innerHTML = "미완";
+                            wphone.innerHTMl = "진행중..";
+                            uphone.value = '';
+                            cnum_1.value = '';
+                            cnum_2.value = '';
+                            cnum_3.value = '';
+                            cnum_4.value = '';
+                            cnum_5.value = '';
+                            cnum_6.value = '';
+                            uphone.focus();
+                            delCode('c');
+                            minute.innerHTML = '3';
+                            sec.innerHTML = '00';
+                        } else {
+                            msemail.style.display = "none";
+                            msphone.style.display = "block";
+                            muphone.value = '';
+                            mnum_1.value = '';
+                            mnum_2.value = '';
+                            mnum_3.value = '';
+                            mnum_4.value = '';
+                            mnum_5.value = '';
+                            mnum_6.value = '';
+                            muphone.focus();
+                            mminute.innerHTML = '3';
+                            msec.innerHTML = '00';
+                        }
+                    } else if(data.result == 'not cer') {
+                        alert('본인 인증이 완전히 완료되지 않았습니다.');
+                        if(device == 'c') {
+                            semail.style.display = "none";
+                            sphone.style.display = "block";
+                            wemail.innerHTML = "미완";
+                            wphone.innerHTMl = "진행중..";
+                            uphone.value = '';
+                            cnum_1.value = '';
+                            cnum_2.value = '';
+                            cnum_3.value = '';
+                            cnum_4.value = '';
+                            cnum_5.value = '';
+                            cnum_6.value = '';
+                            uphone.focus();
+                            delCode('c');
+                            minute.innerHTML = '3';
+                            sec.innerHTML = '00';
+                        } else {
+                            msemail.style.display = "none";
+                            msphone.style.display = "block";
+                            muphone.value = '';
+                            mnum_1.value = '';
+                            mnum_2.value = '';
+                            mnum_3.value = '';
+                            mnum_4.value = '';
+                            mnum_5.value = '';
+                            mnum_6.value = '';
+                            muphone.focus();
+                            delCode('m');
+                            mminute.innerHTML = '3';
+                            msec.innerHTML = '00';
+                        }
+                    } else if(data.result == 'fail') {
+                        alert('예상치 못한 에러가 발생했습니다.\n다시시도 해주세요..');
+                        location.replace(location.href);
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(info));
+        }
+
+        sign1.onclick = () => {
+            if(uid.value == "") {
+                alert('아이디를 입력해주세요.');
+            } else if(uid.value.length < 5) {
+                alert('아이디는 5글자 이상 적어주세요.');
+            } else {
+                if(idcheck && nowid == uid.value) {
+                    sid.style.display = "none";
+                    spass.style.display = "block";
+                    upass.focus();
+                    wid.innerHTML = "완료";
+                    wpass.innerHTML = "진행중..";
+                } else {
+                    for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
+                    idcheck = false;
+                    idoverlapcheck('c');
+                }
+            }
+        }
+        uid.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(uid.value == "") {
+                    alert('아이디를 입력해주세요.');
+                } else if(uid.value.length < 5) {
+                    alert('아이디는 5글자 이상 적어주세요.');
+                } else {
+                    if(idcheck && nowid == uid.value) {
+                        sid.style.display = "none";
+                        spass.style.display = "block";
+                        upass.focus();
+                        wid.innerHTML = "완료";
+                        wpass.innerHTML = "진행중..";
+                    } else {
+                        for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
+                        idcheck = false;
+                        idoverlapcheck('c');
+                    }
+                }
+            }
+        }
+        sign2.onclick = () => {
+            if(upass.value == "") {
+                alert('비밀번호를 입력해주세요.');
+            } else if(upass.value.length < 6) {
+                alert('비밀번호의 길이는 6자 이상입니다.');
+            } else {
+                spass.style.display = "none";
+                scon.style.display = "block";
+                upasscon.focus();
+                wpass.innerHTML = "완료";
+                wcon.innerHTML = "진행중..";
+                let s1 = document.querySelector(".s1");
+                s1.classList.add("s1t");
+            }
+        }
+        upass.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(upass.value == "") {
+                    alert('비밀번호를 입력해주세요.');
+                } else if(upass.value.length < 6) {
+                    alert('비밀번호의 길이는 6자 이상입니다.');
+                } else {
+                    spass.style.display = "none";
+                    scon.style.display = "block";
+                    upasscon.focus();
+                    wpass.innerHTML = "완료";
+                    wcon.innerHTML = "진행중..";
+                    let s1 = document.querySelector(".s1");
+                    s1.classList.add("s1t");
+                }
+            }
+        }
+        sign3.onclick = () => {
+            if(upass.value == upasscon.value) {
+                scon.style.display = "none";
+                sINB.style.display = "block";
+                unick.focus();
+                wcon.innerHTML = "완료";
+                wINB.innerHTML = "진행중..";
+                let signin = document.querySelector(".signin");
+                signin.classList.add("signint");
+            } else if(upasscon.value == "") {
+                alert('비밀번호를 다시 써주세요.');
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+        }
+        upasscon.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(upass.value == upasscon.value) {
+                    scon.style.display = "none";
+                    sINB.style.display = "block";
+                    unick.focus();
+                    wcon.innerHTML = "완료";
+                    wINB.innerHTML = "진행중..";
+                    let signin = document.querySelector(".signin");
+                    signin.classList.add("signint");
+                } else if(upasscon.value == "") {
+                    alert('비밀번호를 다시 써주세요.');
+                } else {
+                    alert('비밀번호가 일치하지 않습니다.');
+                }
+            }
+        }
+        sign33.onclick = () => {
+            if(unick.value == '') {
+                alert('이름을 입력해주세요.');
+            } else {
+                sINB.style.display = "none";
+                sphone.style.display = "block";
+                wINB.innerHTML = "완료";
+                wphone.innerHTML = "진행중..";
+                uphone.focus();
+            }
+        }
+        unick.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(unick.value == '') {
+                    alert('이름을 입력해주세요.');
+                } else {
+                    sINB.style.display = "none";
+                    sphone.style.display = "block";
+                    wINB.innerHTML = "완료";
+                    wphone.innerHTML = "진행중..";
+                    uphone.focus();
+                }
+            }
+        }
+        sign35.onclick = () => {
+            if(uphone.value == '') {
+                alert('전화번호를 입력해주세요.');
+            } else if(uphone.value.length != 11) {
+                alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
+            } else if(uphone.value.length == 11) {
+                if(phonecheck && nowphone == uphone.value) {;
+                    phoneoverlapcheck('c');
+                } else {
+                    for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ""; }
+                    phonecheck = false;
+                    phoneoverlapcheck('c');
+                }
+            }
+        }
+        uphone.onkeyup = (event) => {
+            if(event.keyCode == 13) {
+                if(uphone.value == '') {
+                    alert('전화번호를 입력해주세요.');
+                } else if(uphone.value.length != 11) {
+                    alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
+                } else if(uphone.value.length == 11) {
+                    if(phonecheck && nowphone == uphone.value) {
+                        phoneoverlapcheck('c');
+                    } else {
+                        for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ""; }
+                        phonecheck = false;
+                        phoneoverlapcheck('c');
+                    }
+                }
+            }
+        }
+
+
+        back2.onclick = () => {
+            spass.style.display = "none";
+            sid.style.display = "block";
+            uid.focus();
+            wid.innerHTML = "진행중..";
+            wpass.innerHTML = "미완";
+            let s = document.querySelector(".s");
+            s.classList.remove("st");
+        }
+        back3.onclick = () => {
+            scon.style.display = "none";
+            spass.style.display = "block";
+            upass.focus();
+            wpass.innerHTML = "진행중..";
+            wcon.innerHTML = "미완";
+            let s1 = document.querySelector(".s1");
+            s1.classList.remove("s1t");
+        }
+        back33.onclick = () => {
+            sINB.style.display = "none";
+            scon.style.display = "block";
+            upasscon.focus();
+            wINB.innerHTML = "미완";
+            wcon.innerHTML = "진행중..";
+        }
+        back35.onclick = () => {
+            sphone.style.display = "none";
+            sINB.style.display = "block";
+            unick.focus();
+            wINB.innerHTML = "진행중..";
+            wphone.innerHTML = "미완";
+            let signin = document.querySelector(".signin");
+            signin.classList.remove("signint");
+        }
+        back4.onclick = () => {
+            semail.style.display = "none";
+            sphone.style.display = "block";
+            uphone.focus();
+            delCode('c');
+            minute.innerHTML = '3';
+            sec.innerHTML = '00';
+            wphone.innerHTML = "진행중..";
+            wemail.innerHTML = "미완";
+            let signup2 = document.querySelector(".signup2");
+            signup2.classList.remove("signup2t");
+        }
+
+
+        msign1.onclick = () => {
+            if(muid.value == "") {
+                alert('아이디를 입력해주세요.');
+            } else if(muid.value.length < 5) {
+                alert('아이디는 5글자 이상 적어주세요.');
+            } else {
+                if(idcheck && mnowid == muid.value) {
+                    msid.style.display = "none";
+                    mspass.style.display = "block";
+                    mupass.focus();
+                } else {
+                    for(let i=0; i<idcheckspan.length; i++) { idcheckspan[i].innerHTML = ""; }
+                    idcheck = false;
+                    idoverlapcheck('m');
+                }
+            }
+        }
+        msign2.onclick = () => {
+            if(mupass.value == "") {
+                alert('비밀번호를 입력해주세요.');
+            } else if(mupass.value.length < 6) {
+                alert('비밀번호의 길이는 6자 이상입니다.');
+            } else {
+                mspass.style.display = "none";
+                mscon.style.display = "block";
+                mupasscon.focus();
+                let s1 = document.querySelector(".s1");
+                s1.classList.add("s1t");
+            }
+        }
+        msign3.onclick = () => {
+            if(mupasscon.value == mupass.value) {
+                mscon.style.display = "none";
+                msINB.style.display = "block";
+                munick.focus();
+                let signin = document.querySelector(".signin");
+                signin.classList.add("signint");
+            } else if(mupasscon.value == "") {
+                alert('비밀번호를 다시 입력해주세요.');
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+        }
+        msign33.onclick = () => {
+            if(munick.value == '') {
+                alert('이름을 입력해주세요.');
+            } else {
+                msINB.style.display = "none";
+                msphone.style.display = "block";
+                muphone.focus();
+            }
+        }
+        msign35.onclick = () => {
+            if(muphone.value == '') {
+                alert('전화번호를 입력해주세요.');
+            } else if(muphone.value.length != 11) {
+                alert('전화번호를 올바르게 입력해 주세요. ex) 01012345678');
+            } else if(muphone.value.length == 11) {
+                if(phonecheck && mnowphone == muphone.value) {
+                    phoneoverlapcheck('m');
+                } else {
+                    for(let i=0; i<checkphone.length; i++) { checkphone[i].innerHTML = ""; }
+                    phonecheck = false;
+                    phoneoverlapcheck('m');
+                }
+            }
+        }
+
+        mback2.onclick = () => {
+            mspass.style.display = "none";
+            msid.style.display = "block";
+            muid.focus();
+            let s = document.querySelector(".s");
+            s.classList.remove("st");
+        }
+        mback3.onclick = () => {
+            mscon.style.display = "none";
+            mspass.style.display = "block";
+            mupass.focus();
+            let s1 = document.querySelector("s1");
+            s1.classList.remove("s1t");
+        }
+        mback33.onclick = () => {
+            msINB.style.display = "none";
+            mscon.style.display = "block";
+            mupasscon.focus();
+        }
+        mback35.onclick = () => {
+            msphone.style.display = "none";
+            msINB.style.display = "block";
+            munick.focus();
+            let signin = document.querySelector("signin");
+            signin.classList.remove("signint");
+        }
+        mback4.onclick = () => {
+            msemail.style.display = "none";
+            msphone.style.display = "block";
+            muphone.focus();
+            delCode('m');
+            mminute.innerHTML = '3';
+            msec.innerHTML = '00';
+        }
+    </script>
+</body>
+</html>

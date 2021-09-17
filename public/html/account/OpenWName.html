@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이메일 인증</title>
+</head>
+<body>
+    <script>
+        window.onload = () => {
+            let url = location.href;
+            let uid = url.split("/")[8];
+            let code = url.split("/")[9];
+            window.open(`https://www.delitracking.com/account/signup/email/certification/${uid}/${code}`, '', 'width=1500,height=800,scrollbar=yes,top=150,left=150');
+        }
+    </script>
+</body>
+</html>

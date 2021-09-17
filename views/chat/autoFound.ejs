@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/stylesheets/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manu.css">
+    <link rel="stylesheet" href="/stylesheets/top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR8VK-avCGrciG2XlevFz65VwWRNIa_yKTFWg&usqp=CAU">
+    <style>
+        body {
+            margin: 0;
+            min-height: 850px;
+            height: 100vh;
+        }
+
+        .mlogin table a {
+            color: #8b4a00;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .mlogin {
+            position: absolute;
+            right: 50px;
+        }
+        .mlogin table {
+            text-align: left;
+            border-collapse: unset !important;
+        }
+        .mlogin table td, .mlogin table th {
+            padding: 2px !important;
+        }
+        .main {
+            width: 100%;
+            height: fit-content;
+        }
+        .main1 {
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            right: 0;
+        }
+
+        .backmain {
+            margin: auto;
+            box-sizing: border-box;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            overflow-y: auto;
+            height: 500px;
+        }
+        .backmain > h3 {
+            color: darkgray;
+            font-weight: bold;
+            text-align: center;
+        }
+        .backmain table td {
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .backmain table thead {
+            font-weight: bold;
+        }
+        .backmain::-webkit-scrollbar-track {
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
+        .textred { color: red !important; }
+        footer {
+            display: grid;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: darkgray;
+            border-top: 2px solid rgba(0, 0, 0, 0.12);
+            padding: 14px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .backmain { width: 90%; }
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 1201px) {
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .backmain { width: 50%; }
+        }
+        @media only screen and (min-width: 993px) and (max-width: 1200px) {
+            .backmain { width: 50%; }
+            .mmlogin {
+                display: none;
+            }
+            #mmenubar {
+                display: none;
+            }
+            .mlogin {
+                display: none;
+            }
+        }
+        @media only screen and (min-width: 601px) and (max-width: 992px) {
+            .backmain { width: 90%; }
+            .exp span {
+                font-size: 35px;
+            }
+            #menubar {
+                display: none;
+            }
+        }
+    </style>
+    <title>판매자 검색</title>
+    <script src="/javascripts/IProfile.js"></script>
+</head>
+<body>
+    <div class="top row">
+        <div class="logo hide-on-med-and-down" onclick="location.replace('/');">
+            <i class="fa fa-truck" style="cursor:pointer;"></i>
+        </div>
+        <div class="exp">
+            <span>판매자 자동 검색</span>
+        </div>
+        <div class="mlogin hide-on-med-and-down">
+            <% if(decoded) { %>
+                <table id="logined">
+                    <tbody>
+                        <tr><td><%= decoded.uname %> : <%= decoded.uid %> | </td><td style="margin-left: 10px !important;"><a href="/account/logout">로그아웃</a></td></tr>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <form action="/account/login" method="POST" onsubmit="userCheck(event, this)">
+                    <table id="nlogin">
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="userid" id="uid" placeholder="ID" required></td>
+                                <td><input type="password" name="userpass" id="upass" placeholder="Password" required></td>
+                                <td><input type="submit" value="로그인" id="userloginsubmit"></td>
+                            </tr>
+                            <tr>
+                                <td><a style="color: white;" href="/account/forget">계정을 잊으셨나요?</a></td>
+                                <td><a style="color: white;" href="/account/signup" target="_blank">회원가입</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="menu">
+            <div class="welcometap">
+                <div class="wel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="profileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="profileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="menutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="menutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="menutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="menutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="menutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="menutap menutap55 sel" onclick="chatdown(this, true);">판매자와 채팅 ▼</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="asschat sel" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="asschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="menutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="mmenu" id="semenu">
+            <div class="mwelcometap">
+                <div class="mwel1">
+                    <% if(decoded) { %>
+                        <label class="lweltext"><%=decoded.uname%>님 어서오세요!</label>
+                        <img src="/images/userProfile/<%=ProFile%>" onerror="this.src='/images/userProfile/none.png';" class="mprofileImg">
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/loginuser/searchrecord/');">조회했던 택배 보기</button>
+                        </div>
+                    <% } else { %>
+                        <div class="mprofileImg" style="display: none;"></div>
+                        <label class="weltext">처음 오셨나요?</label>
+                        <i class="fa fa-boxes"></i>
+                        <div class="lbtn">
+                            <button class="lo" onclick="location.replace('/account/login/')">로그인</button>
+                            <button class="lo" onclick="window.open('/account/signup/', '_blank');">회원가입</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="mmenutap menutap1" onclick="location.replace('/');">택배 조회 (메인 화면)</div>
+            <% if(seller) { %>
+                <div class="mmenutap menutap15" onclick="location.replace('/loginuser/delienr');">운송장 등록</div>
+            <% } %>
+            <div class="mmenutap menutap2" onclick="location.replace('/loginuser/tmanage');">택배 관리</div>
+            <div class="mmenutap menutap3" onclick="location.replace('/loginuser/searchrecord');">택배 조회 기록</div>
+            <div class="mmenutap menutap5" onclick="location.replace('/loginuser/setting');">설정</div>
+            <div class="mmenutap menutap55 sel" onclick="mchatdown(this, true);">판매자와 채팅 ▼</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=denum');">운송장 번호 검색</div>
+            <div class="masschat sel" style="display: none;" onclick="location.replace('/chat?location=auto');">자동 검색</div>
+            <div class="masschat" style="display: none;" onclick="location.replace('/chat?location=history');">채팅 기록</div>
+            <div class="mmenutap menutap6" onclick="location.replace('/about/');">더보기</div>
+        </div>
+        <div class="main1">
+            <i class="material-icons" id="menubar" style="font-size: 40px; cursor: pointer;">menu</i>
+            <i class="material-icons" id="mmenubar" style="font-size: 40px; cursor: pointer; z-index: 600;">menu</i>
+            <% if(decoded) { %>
+                <span class="mmlogin" style="position: absolute; top: 20px; right: 10px;"><%=decoded.uname%> : <%=decoded.uid%></span><br>
+                <a class="mmlogin" href="/account/logout" style="color: gray; position:absolute; right: 10px; top: 40px;">로그아웃</a>
+            <% } else {%>
+                <a class="mmlogin" href="/account/login" style="color: gray; position:absolute; right: 10px; top: 30px;">로그인 하러 가기</a>
+            <% } %>
+
+            <div class="backmain">
+                <table class="striped">
+                    <thead>
+                        <tr>
+                            <td>송장 번호</td>
+                            <td>상품 이름</td>
+                            <td>판매자 이름</td>
+                            <td>도착 예상시간</td>
+                            <td>채팅</td>
+                        </tr>
+                    </thead>
+                    <tbody id="data-info"></tbody>
+                </table>
+            </div>
+        </div>
+        <footer>
+            <div class="content">
+                <p class="textred">* 모바일인 경우 옆으로 돌려 보시는것을 권장힙니다.</p>
+                <br>
+                <br>
+                <p>차동 찾기는 <a href="/loginuser/searchrecord">택배 조회 기록</a> 페이지에 있는 데이터를 기반으로 찾습니다.</p>
+            </div>
+        </footer>
+    </div>
+    <div id="proselectd">
+        <div id="proselect">
+            <div id="toppro">
+                <% if(decoded) { %>
+                    <span style="position: absolute; top: 10px; right: 15px; color:gray;;"><%=decoded.uid%></span>
+                    <img src="/images/userProfile/<%=ProFile%>" onerror="IProfile();" id="deimg">
+                <% } else { %>
+                    <i class="far fa-user" style="font-size: 35px;"></i>
+                    <div id="deimg" style="display: none !important;"></div>
+                <% } %>
+                <h4 id="delh4">프로필</h4>
+            </div>
+            <div id="psoption">
+                <div id="originalPro"><span>기본 프로필</span></div>
+                <div id="profilechange">
+                    <label for="chpro" id="al">프로필 변경</label>
+                    <form action="/profileUpload/" method="POST" enctype="multipart/form-data" onsubmit="gprofileSub(event, this);">
+                        <input type="file" name="proImage" id="chpro" style="display: none !important;" accept="image/png, image/jpg, image/jpeg" onchange="prochfilecheck(this);">
+                        <input type="submit" style="display: none !important;" id="psub">
+                    </form>
+                </div>
+            </div>
+            <div id="closeselect"><span>닫기</span></div>
+        </div>
+    </div>
+    <div id="mproselectd"></div>
+
+    <script src="/javascripts/menu.js"></script>
+    <script>
+        // window.open(`/chat/3/380160267435/4`, '', 'width=500,height=705,scrollbar=yes,top=150,left=800');
+        window.onload = () => {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", '/chat/seller/found/auto/');
+            xhr.onreadystatechange = () => {
+                if(xhr.readyState === 4) {
+                    let data1 = JSON.parse(xhr.responseText);
+                    if(xhr.status === 200) {
+                        if(data1.result == 'success') {
+                            let dataInfo = document.getElementById("data-info");
+                            let data = data1.chseller;
+                            for(let i=0; i<data.length; i++) {
+                                let tr = document.createElement("tr");
+                                
+                                let denum = document.createElement("td");
+                                denum.innerHTML = data[i].denum;
+
+                                let toolname = document.createElement("td");
+                                toolname.innerHTML = data[i].toolname;
+
+                                let sellerName = document.createElement("td");
+                                sellerName.innerHTML = data[i].name;
+                                
+                                let estimated = document.createElement("td");
+                                estimated.innerHTML = data[i].estimated;
+
+                                let chatBtnTd = document.createElement("td");
+                                let chatBtn = document.createElement("a");
+                                chatBtn.classList.add('waves-effect', 'waves-light', 'btn', 'orange', 'darken-1');
+                                chatBtn.innerHTML = "채팅하기";
+                                chatBtn.dataset.me = data1.me;
+                                chatBtn.dataset.target = data[i].id;
+                                chatBtn.addEventListener("click", function() { chaton(this) });
+                                let chatIcon = document.createElement("i");
+                                chatIcon.classList.add('material-icons', 'left');
+                                chatIcon.innerHTML = "chat";
+                                chatBtn.append(chatIcon);
+                                chatBtnTd.append(chatBtn);
+                                
+                                tr.append(denum);
+                                tr.append(toolname);
+                                tr.append(sellerName);
+                                tr.append(estimated);
+                                tr.append(chatBtnTd);
+                                dataInfo.append(tr);
+                            }
+                        } else {
+                            let backmain = document.querySelector(".backmain");
+                            while (backmain.hasChildNodes()) { backmain.removeChild(backmain.firstChild); }
+                            
+                            let h1f = document.createElement("h3");
+                            h1f.innerHTML = "조회하신 송장번호 중"
+                            let h1s = document.createElement("h3");
+                            h1s.innerHTML = "등록한 판매자가 없습니다.";
+
+                            backmain.append(h1f);
+                            backmain.append(h1s);
+                        }
+                    } else {
+                        alert(data1.msg);
+                    }
+                }
+            }
+            xhr.send(null);
+        }
+
+        function chaton(btn) {
+            window.open(`/chat/${btn.dataset.me}/380160267435/${btn.dataset.target}`, '', 'width=500,height=705,scrollbar=yes,top=150,left=800');
+        }
+    </script>
+</body>
+</html>
